@@ -5,17 +5,27 @@ import { CoreMenu } from '@core/types';
 export const menu: CoreMenu[] = [
   // Dashboard
   {
-    id: 'dashboard',
-    title: 'Dashboard',
-    translate: 'MENU.DASHBOARD.COLLAPSIBLE',
-    type: 'collapsible',
-    // role: ['Admin'], //? To hide collapsible based on user role
+    // id: 'dashboard',
+    // title: 'Dashboard',
+    // translate: 'MENU.DASHBOARD.COLLAPSIBLE',
+    // type: 'collapsible',
+    // // role: ['Admin'], //? To hide collapsible based on user role
+    // icon: 'home',
+    // badge: {
+    //   title: '2',
+    //   translate: 'MENU.DASHBOARD.BADGE',
+    //   classes: 'badge-light-warning badge-pill'
+    // },
+
+    // If role is not assigned will be display to all
+    id: 'school',
+    title: 'School Dashboard',
+    translate: 'MENU.DASHBOARD.ECOMMERCE',
+    type: 'item',
+    role: ['Admin'], //? To set multiple role: ['Admin', 'Client']
     icon: 'home',
-    badge: {
-      title: '2',
-      translate: 'MENU.DASHBOARD.BADGE',
-      classes: 'badge-light-warning badge-pill'
-    },
+    url: 'dashboard/school'
+    ,
     children: [
       {
         id: 'analytics',
@@ -28,12 +38,13 @@ export const menu: CoreMenu[] = [
       },
       {
         // If role is not assigned will be display to all
-        id: 'ecommerce',
-        title: 'eCommerce',
+        id: 'school',
+        title: 'School Dashboard',
         translate: 'MENU.DASHBOARD.ECOMMERCE',
         type: 'item',
-        icon: 'circle',
-        url: 'dashboard/ecommerce'
+        role: ['Admin'], //? To set multiple role: ['Admin', 'Client']
+        icon: 'home',
+        url: 'dashboard/school'
       }
     ]
   },
@@ -450,6 +461,39 @@ export const menu: CoreMenu[] = [
             type: 'item',
             icon: 'circle',
             url: 'apps/user/user-edit'
+          }
+        ]
+      },
+      {
+        id: 'students',
+        title: 'Student',
+        translate: 'MENU.APPS.STUDENT.COLLAPSIBLE',
+        type: 'collapsible',
+        icon: 'user',
+        children: [
+          {
+            id: 'list',
+            title: 'List',
+            translate: 'MENU.APPS.STUDENT.LIST',
+            type: 'item',
+            icon: 'circle',
+            url: 'apps/student/student-list'
+          },
+          {
+            id: 'view',
+            title: 'View',
+            translate: 'MENU.APPS.STUDENT.VIEW',
+            type: 'item',
+            icon: 'circle',
+            url: 'apps/student/student-view'
+          },
+          {
+            id: 'edit',
+            title: 'Edit',
+            translate: 'MENU.APPS.STUDENT.EDIT',
+            type: 'item',
+            icon: 'circle',
+            url: 'apps/student/student-edit'
           }
         ]
       }

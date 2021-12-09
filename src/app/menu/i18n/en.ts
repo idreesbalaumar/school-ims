@@ -33,6 +33,12 @@ export const locale = {
           LIST: 'List',
           VIEW: 'View',
           EDIT: 'Edit'
+        },
+        STUDENT: {
+          COLLAPSIBLE: 'Student',
+          LIST: 'List',
+          VIEW: 'View',
+          EDIT: 'Edit'
         }
       },
       PAGES: {
