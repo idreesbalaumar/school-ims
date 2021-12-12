@@ -20,6 +20,8 @@ import { ProfileFakeData } from '@fake-db/profile.data';
 import { SearchFakeData } from '@fake-db/search.data';
 import { TodoFakeData } from '@fake-db/todo.data';
 import { UsersFakeData } from '@fake-db/users.data';
+import { StudentsFakeData } from './students.data';
+import { ResultFakeData } from './result.data';
 
 export class FakeDbService implements InMemoryDbService {
   createDb(): any {
@@ -54,8 +56,14 @@ export class FakeDbService implements InMemoryDbService {
       // Users
       'users-data': UsersFakeData.users,
 
+      // Students
+      'students-data': StudentsFakeData.students,
+
       // Invoice
       'invoice-data': InvoiceFakeData.invoices,
+
+      // Result
+      'result-data': ResultFakeData.results,
 
       // Todo
       'todos-data': TodoFakeData.tasks,

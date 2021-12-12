@@ -48,6 +48,81 @@ export const menu: CoreMenu[] = [
       }
     ]
   },
+  {
+    id: 'students',
+    title: 'Student',
+    translate: 'MENU.APPS.STUDENT.COLLAPSIBLE',
+    type: 'collapsible',
+    icon: 'user',
+    children: [
+      {
+        id: 'list',
+        title: 'List',
+        translate: 'MENU.APPS.STUDENT.LIST',
+        type: 'item',
+        icon: 'circle',
+        url: 'apps/student/student-list'
+      },
+      // {
+      //   id: 'view',
+      //   title: 'View',
+      //   translate: 'MENU.APPS.STUDENT.VIEW',
+      //   type: 'item',
+      //   icon: 'circle',
+      //   url: 'apps/student/student-view'
+      // },
+      // {
+      //   id: 'edit',
+      //   title: 'Edit',
+      //   translate: 'MENU.APPS.STUDENT.EDIT',
+      //   type: 'item',
+      //   icon: 'circle',
+      //   url: 'apps/student/student-edit'
+      // }
+    ]
+  },
+  {
+    id: 'result',
+    title: 'Result',
+    translate: 'MENU.APPS.RESULT.COLLAPSIBLE',
+    type: 'collapsible',
+    icon: 'file-text',
+    children: [
+      {
+        id: 'result-list',
+        title: 'List',
+        translate: 'MENU.APPS.RESULT.LIST',
+        type: 'item',
+        icon: 'circle',
+        url: 'apps/result/list'
+      },
+      {
+        id: 'resultPreview',
+        title: 'Preview',
+        translate: 'MENU.APPS.RESULT.PREVIEW',
+        type: 'item',
+        icon: 'circle',
+        url: 'apps/result/preview'
+      },
+      {
+        id: 'resultEdit',
+        title: 'Edit',
+        translate: 'MENU.APPS.RESULT.EDIT',
+        type: 'item',
+        icon: 'circle',
+        url: 'apps/result/edit'
+      },
+      {
+        id: 'resultAdd',
+        title: 'Add',
+        translate: 'MENU.APPS.RESULT.ADD',
+        type: 'item',
+        icon: 'circle',
+        url: 'apps/result/add'
+      }
+    ]
+  },
+  
   // Apps & Pages
   {
     id: 'apps',
@@ -464,39 +539,6 @@ export const menu: CoreMenu[] = [
           }
         ]
       },
-      {
-        id: 'students',
-        title: 'Student',
-        translate: 'MENU.APPS.STUDENT.COLLAPSIBLE',
-        type: 'collapsible',
-        icon: 'user',
-        children: [
-          {
-            id: 'list',
-            title: 'List',
-            translate: 'MENU.APPS.STUDENT.LIST',
-            type: 'item',
-            icon: 'circle',
-            url: 'apps/student/student-list'
-          },
-          {
-            id: 'view',
-            title: 'View',
-            translate: 'MENU.APPS.STUDENT.VIEW',
-            type: 'item',
-            icon: 'circle',
-            url: 'apps/student/student-view'
-          },
-          {
-            id: 'edit',
-            title: 'Edit',
-            translate: 'MENU.APPS.STUDENT.EDIT',
-            type: 'item',
-            icon: 'circle',
-            url: 'apps/student/student-edit'
-          }
-        ]
-      }
     ]
   },
   // User Interface

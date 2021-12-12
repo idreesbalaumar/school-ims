@@ -21,6 +21,13 @@ export const locale = {
           EDIT: 'Edit',
           ADD: 'Add'
         },
+        RESULT: {
+          COLLAPSIBLE: 'Result',
+          LIST: 'List',
+          PREVIEW: 'Preview',
+          EDIT: 'Edit',
+          ADD: 'Add'
+        },
         ECOMMERCE: {
           COLLAPSIBLE: 'eCommerce',
           SHOP: 'Shop',
@@ -39,7 +46,7 @@ export const locale = {
           LIST: 'List',
           VIEW: 'View',
           EDIT: 'Edit'
-        }
+        },
       },
       PAGES: {
         SECTION: 'Pages',

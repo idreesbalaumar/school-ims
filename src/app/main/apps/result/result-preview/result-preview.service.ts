@@ -5,9 +5,9 @@ import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/r
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
-export class StudentEditService implements Resolve<any> {
-  public apiData: any;
-  public onStudentEditChanged: BehaviorSubject<any>;
+export class ResultPreviewService implements Resolve<any> {
+  apiData: any;
+  onInvoicPreviewChanged: BehaviorSubject<any>;
 
   /**
    * Constructor
@@ -16,7 +16,7 @@ export class StudentEditService implements Resolve<any> {
    */
   constructor(private _httpClient: HttpClient) {
     // Set the defaults
-    this.onStudentEditChanged = new BehaviorSubject({});
+    this.onInvoicPreviewChanged = new BehaviorSubject({});
   }
 
   /**
@@ -27,8 +27,9 @@ export class StudentEditService implements Resolve<any> {
    * @returns {Observable<any> | Promise<any> | any}
    */
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
+    let currentId = Number(route.paramMap.get('id'));
     return new Promise<void>((resolve, reject) => {
-      Promise.all([this.getApiData()]).then(() => {
+      Promise.all([this.getApiData(currentId)]).then(() => {
         resolve();
       }, reject);
     });
@@ -37,11 +38,13 @@ export class StudentEditService implements Resolve<any> {
   /**
    * Get API Data
    */
-  getApiData(): Promise<any[]> {
+  getApiData(id: number): Promise<any[]> {
+    const url = `api/result-data/${id}`;
+
     return new Promise((resolve, reject) => {
-      this._httpClient.get('api/students-data').subscribe((response: any) => {
+      this._httpClient.get(url).subscribe((response: any) => {
         this.apiData = response;
-        this.onStudentEditChanged.next(this.apiData);
+        this.onInvoicPreviewChanged.next(this.apiData);
         resolve(this.apiData);
       }, reject);
     });

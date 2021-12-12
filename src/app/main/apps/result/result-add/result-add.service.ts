@@ -5,9 +5,9 @@ import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/r
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
-export class StudentEditService implements Resolve<any> {
+export class ResultAddService implements Resolve<any> {
   public apiData: any;
-  public onStudentEditChanged: BehaviorSubject<any>;
+  public onInvoicAddChanged: BehaviorSubject<any>;
 
   /**
    * Constructor
@@ -16,7 +16,7 @@ export class StudentEditService implements Resolve<any> {
    */
   constructor(private _httpClient: HttpClient) {
     // Set the defaults
-    this.onStudentEditChanged = new BehaviorSubject({});
+    this.onInvoicAddChanged = new BehaviorSubject({});
   }
 
   /**
@@ -38,10 +38,12 @@ export class StudentEditService implements Resolve<any> {
    * Get API Data
    */
   getApiData(): Promise<any[]> {
+    const url = `api/result-data`;
+
     return new Promise((resolve, reject) => {
-      this._httpClient.get('api/students-data').subscribe((response: any) => {
+      this._httpClient.get(url).subscribe((response: any) => {
         this.apiData = response;
-        this.onStudentEditChanged.next(this.apiData);
+        this.onInvoicAddChanged.next(this.apiData);
         resolve(this.apiData);
       }, reject);
     });

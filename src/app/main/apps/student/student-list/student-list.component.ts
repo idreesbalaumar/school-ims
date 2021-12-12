@@ -8,6 +8,7 @@ import { CoreConfigService } from '@core/services/config.service';
 import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
 
 import { StudentListService } from 'app/main/apps/student/student-list/student-list.service';
+import { StudentsFakeData } from '@fake-db/students.data';
 
 @Component({
   selector: 'app-student-list',
@@ -22,36 +23,40 @@ export class StudentListComponent implements OnInit {
   public selectedOption = 10;
   public ColumnMode = ColumnMode;
   public temp = [];
-  public previousRoleFilter = '';
-  public previousPlanFilter = '';
+  public previousClassFilter = '';
+  public previousGenderFilter = '';
   public previousStatusFilter = '';
+  public exportCSVData;
 
-  public selectRole: any = [
+  students: StudentsFakeData[];
+
+  public contentHeader: object;
+
+  public selectClass: any = [
     { name: 'All', value: '' },
-    { name: 'Admin', value: 'Admin' },
-    { name: 'Author', value: 'Author' },
-    { name: 'Editor', value: 'Editor' },
-    { name: 'Maintainer', value: 'Maintainer' },
-    { name: 'Subscriber', value: 'Subscriber' }
+    { name: 'JSS-1', value: 'JSS-1' },
+    { name: 'JSS-2', value: 'JSS-2' },
+    { name: 'JSS-3', value: 'JSS-3' },
+    { name: 'SS-1', value: 'SS-1' },
+    { name: 'SS-2', value: 'SS-2' },
+    { name: 'SS-3', value: 'SS-3' }
   ];
 
-  public selectPlan: any = [
+  public selectGender: any = [
     { name: 'All', value: '' },
-    { name: 'Basic', value: 'Basic' },
-    { name: 'Company', value: 'Company' },
-    { name: 'Enterprise', value: 'Enterprise' },
-    { name: 'Team', value: 'Team' }
+    { name: 'Male', value: 'Male' },
+    { name: 'Female', value: 'Female' }
   ];
 
   public selectStatus: any = [
     { name: 'All', value: '' },
-    { name: 'Pending', value: 'Pending' },
+    // { name: 'Pending', value: 'Pending' },
     { name: 'Active', value: 'Active' },
     { name: 'Inactive', value: 'Inactive' }
   ];
 
-  public selectedRole = [];
-  public selectedPlan = [];
+  public selectedClass = [];
+  public selectedGender = [];
   public selectedStatus = [];
   public searchValue = '';
 
@@ -75,6 +80,8 @@ export class StudentListComponent implements OnInit {
     private _coreConfigService: CoreConfigService
   ) {
     this._unsubscribeAll = new Subject();
+    this.loadProfile = this.loadProfile.bind(this);
+    this.loadItem = this.loadItem.bind(this);
   }
 
   // Public Methods
@@ -85,17 +92,26 @@ export class StudentListComponent implements OnInit {
    *
    * @param event
    */
+
+  loadProfile(event) {
+    window.open('/apps/student/student-view/' + event.row.data.id, '_blank')
+  }
+
+  loadItem(event) {
+    window.open('/apps/student/student-view/' + event.row.data.id, '_blank')
+  }
+
   filterUpdate(event) {
     // Reset ng-select on search
-    this.selectedRole = this.selectRole[0];
-    this.selectedPlan = this.selectPlan[0];
+    this.selectedClass = this.selectClass[0];
+    this.selectedGender = this.selectGender[0];
     this.selectedStatus = this.selectStatus[0];
 
     const val = event.target.value.toLowerCase();
 
     // Filter Our Data
     const temp = this.tempData.filter(function (d) {
-      return d.fullName.toLowerCase().indexOf(val) !== -1 || !val;
+      return d.first_name.toLowerCase().indexOf(val) !== -1 || !val;
     });
 
     // Update The Rows
@@ -114,26 +130,26 @@ export class StudentListComponent implements OnInit {
   }
 
   /**
-   * Filter By Roles
+   * Filter By Classes
    *
    * @param event
    */
-  filterByRole(event) {
+  filterByClass(event) {
     const filter = event ? event.value : '';
-    this.previousRoleFilter = filter;
-    this.temp = this.filterRows(filter, this.previousPlanFilter, this.previousStatusFilter);
+    this.previousClassFilter = filter;
+    this.temp = this.filterRows(filter, this.previousGenderFilter, this.previousStatusFilter);
     this.rows = this.temp;
   }
 
   /**
-   * Filter By Plan
+   * Filter By Gender
    *
    * @param event
    */
-  filterByPlan(event) {
+  filterByGender(event) {
     const filter = event ? event.value : '';
-    this.previousPlanFilter = filter;
-    this.temp = this.filterRows(this.previousRoleFilter, filter, this.previousStatusFilter);
+    this.previousGenderFilter = filter;
+    this.temp = this.filterRows(this.previousClassFilter, filter, this.previousStatusFilter);
     this.rows = this.temp;
   }
 
@@ -145,28 +161,28 @@ export class StudentListComponent implements OnInit {
   filterByStatus(event) {
     const filter = event ? event.value : '';
     this.previousStatusFilter = filter;
-    this.temp = this.filterRows(this.previousRoleFilter, this.previousPlanFilter, filter);
+    this.temp = this.filterRows(this.previousClassFilter, this.previousGenderFilter, filter);
     this.rows = this.temp;
   }
 
   /**
    * Filter Rows
    *
-   * @param roleFilter
-   * @param planFilter
+   * @param classFilter
+   * @param genderFilter
    * @param statusFilter
    */
-  filterRows(roleFilter, planFilter, statusFilter): any[] {
+  filterRows(classFilter, genderFilter, statusFilter): any[] {
     // Reset search on select change
     this.searchValue = '';
 
-    roleFilter = roleFilter.toLowerCase();
-    planFilter = planFilter.toLowerCase();
+    classFilter = classFilter.toLowerCase();
+    genderFilter = genderFilter.toLowerCase();
     statusFilter = statusFilter.toLowerCase();
 
     return this.tempData.filter(row => {
-      const isPartialNameMatch = row.role.toLowerCase().indexOf(roleFilter) !== -1 || !roleFilter;
-      const isPartialGenderMatch = row.currentPlan.toLowerCase().indexOf(planFilter) !== -1 || !planFilter;
+      const isPartialNameMatch = row.classs.toLowerCase().indexOf(classFilter) !== -1 || !classFilter;
+      const isPartialGenderMatch = row.gender.toLowerCase().indexOf(genderFilter) !== -1 || !genderFilter;
       const isPartialStatusMatch = row.status.toLowerCase().indexOf(statusFilter) !== -1 || !statusFilter;
       return isPartialNameMatch && isPartialGenderMatch && isPartialStatusMatch;
     });
@@ -192,7 +208,29 @@ export class StudentListComponent implements OnInit {
         this._studentListService.onStudentListChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(response => {
           this.rows = response;
           this.tempData = this.rows;
+          this.exportCSVData = this.rows;
         });
+
+        // content header
+        this.contentHeader = {
+          headerTitle: 'Students',
+          actionButton: true,
+          breadcrumb: {
+            type: '',
+            links: [
+              {
+                name: 'Dashboard',
+                isLink: true,
+                link: '/dashboard/school'
+              },
+              {
+                name: 'Students List',
+                isLink: false
+              }
+            ]
+          }
+        };
+
       }
     });
   }

@@ -13,8 +13,8 @@ import { CoreDirectivesModule } from '@core/directives/directives';
 import { CorePipesModule } from '@core/pipes/pipes.module';
 import { CoreSidebarModule } from '@core/components';
 
-import { InvoiceListService } from 'app/main/apps/invoice/invoice-list/invoice-list.service';
-import { InvoiceModule } from 'app/main/apps/invoice/invoice.module';
+// import { InvoiceListService } from 'app/main/apps/invoice/invoice-list/invoice-list.service';
+// import { InvoiceModule } from 'app/main/apps/invoice/invoice.module';
 
 import { StudentEditComponent } from 'app/main/apps/student/student-edit/student-edit.component';
 import { StudentEditService } from 'app/main/apps/student/student-edit/student-edit.service';
@@ -25,6 +25,9 @@ import { StudentListService } from 'app/main/apps/student/student-list/student-l
 import { StudentViewComponent } from 'app/main/apps/student/student-view/student-view.component';
 import { StudentViewService } from 'app/main/apps/student/student-view/student-view.service';
 import { NewStudentSidebarComponent } from 'app/main/apps/student/student-list/new-student-sidebar/new-student-sidebar.component';
+import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
+import { ResultListService } from '../result/result-list/result-list.service';
+import { ResultModule } from '../result/result.module';
 
 // routing
 const routes: Routes = [
@@ -41,7 +44,7 @@ const routes: Routes = [
     component: StudentViewComponent,
     resolve: {
       data: StudentViewService,
-      InvoiceListService
+      ResultListService
     },
     data: { path: 'view/:id', animation: 'StudentViewComponent' }
   },
@@ -76,8 +79,9 @@ const routes: Routes = [
     NgxDatatableModule,
     CorePipesModule,
     CoreDirectivesModule,
-    InvoiceModule,
-    CoreSidebarModule
+    ResultModule,
+    CoreSidebarModule,
+    ContentHeaderModule
   ],
   providers: [StudentListService, StudentViewService, StudentEditService]
 })

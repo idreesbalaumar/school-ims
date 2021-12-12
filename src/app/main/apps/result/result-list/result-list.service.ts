@@ -5,9 +5,9 @@ import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/r
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
-export class StudentEditService implements Resolve<any> {
-  public apiData: any;
-  public onStudentEditChanged: BehaviorSubject<any>;
+export class ResultListService implements Resolve<any> {
+  rows: any;
+  onResultListChanged: BehaviorSubject<any>;
 
   /**
    * Constructor
@@ -16,7 +16,7 @@ export class StudentEditService implements Resolve<any> {
    */
   constructor(private _httpClient: HttpClient) {
     // Set the defaults
-    this.onStudentEditChanged = new BehaviorSubject({});
+    this.onResultListChanged = new BehaviorSubject({});
   }
 
   /**
@@ -28,21 +28,21 @@ export class StudentEditService implements Resolve<any> {
    */
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
     return new Promise<void>((resolve, reject) => {
-      Promise.all([this.getApiData()]).then(() => {
+      Promise.all([this.getDataTableRows()]).then(() => {
         resolve();
       }, reject);
     });
   }
 
   /**
-   * Get API Data
+   * Get rows
    */
-  getApiData(): Promise<any[]> {
+  getDataTableRows(): Promise<any[]> {
     return new Promise((resolve, reject) => {
-      this._httpClient.get('api/students-data').subscribe((response: any) => {
-        this.apiData = response;
-        this.onStudentEditChanged.next(this.apiData);
-        resolve(this.apiData);
+      this._httpClient.get('api/result-data').subscribe((response: any) => {
+        this.rows = response;
+        this.onResultListChanged.next(this.rows);
+        resolve(this.rows);
       }, reject);
     });
   }
