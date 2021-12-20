@@ -9,6 +9,7 @@ export class StudentViewService implements Resolve<any> {
   public rows: any;
   public onStudentViewChanged: BehaviorSubject<any>;
   public id;
+  onResultListChanged: BehaviorSubject<any>;
 
   /**
    * Constructor
@@ -18,6 +19,7 @@ export class StudentViewService implements Resolve<any> {
   constructor(private _httpClient: HttpClient) {
     // Set the defaults
     this.onStudentViewChanged = new BehaviorSubject({});
+    this.onResultListChanged = new BehaviorSubject({});
   }
 
   /**
@@ -33,6 +35,9 @@ export class StudentViewService implements Resolve<any> {
       Promise.all([this.getApiData(currentId)]).then(() => {
         resolve();
       }, reject);
+      Promise.all([this.getDataTableRows()]).then(() => {
+        resolve();
+      }, reject);
     });
   }
 
@@ -46,6 +51,16 @@ export class StudentViewService implements Resolve<any> {
       this._httpClient.get(url).subscribe((response: any) => {
         this.rows = response;
         this.onStudentViewChanged.next(this.rows);
+        resolve(this.rows);
+      }, reject);
+    });
+  }
+
+  getDataTableRows(): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      this._httpClient.get('api/result-data').subscribe((response: any) => {
+        this.rows = response;
+        this.onResultListChanged.next(this.rows);
         resolve(this.rows);
       }, reject);
     });

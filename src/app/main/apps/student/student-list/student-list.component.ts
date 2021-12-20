@@ -10,6 +10,8 @@ import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.s
 import { StudentListService } from 'app/main/apps/student/student-list/student-list.service';
 import { StudentsFakeData } from '@fake-db/students.data';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import Swal from 'sweetalert2';
+import { BeforeOpenEvent } from '@sweetalert2/ngx-sweetalert2';
 
 @Component({
   selector: 'app-student-list',
@@ -67,6 +69,7 @@ export class StudentListComponent implements OnInit {
   // Private
   private tempData = [];
   private _unsubscribeAll: Subject<any>;
+  private timerInterval: any;
 
   /**
    * Constructor
@@ -106,6 +109,68 @@ export class StudentListComponent implements OnInit {
   modalOpenVC(modalVC) {
     this.modalService.open(modalVC, {
       centered: true
+    });
+  }
+
+  autoCloseBeforeOpen(event: BeforeOpenEvent) {
+    Swal.showLoading();
+
+    this.timerInterval = setInterval(function () {
+      let timeLeft: HTMLElement = event.modalElement.querySelector('strong');
+      timeLeft.textContent = <any>Swal.getTimerLeft();
+    }, 100);
+  }
+
+  // deleteItem(id) {
+  //     swal.fire({
+  //         title: 'Delete',
+  //         text: 'Are you sure you want to delete this item?',
+  //         type: 'warning',
+  //         showCancelButton: true,
+  //         confirmButtonText: 'Yes',
+  //         cancelButtonText: 'No'
+  //     }).then(result => {
+  //         if (result.value) {
+  //             this.appraisalSystemsService.delete(id.row.data.id).subscribe(
+  //                 _ => {
+  //                     this.appraisalSystems = this.appraisalSystems.filter(
+  //                         e => e.id !== id.row.data.id
+  //                     );
+  //                     this.alert.success('Record deleted');
+  //                 },
+  //                 error => {
+  //                     this.alert.error(
+  //                         error
+  //                     );
+  //                 }
+  //             );
+  //         } else if (result.dismiss === swal.DismissReason.cancel) {
+  //         }
+  //     });
+  // }
+
+  deleteItem() {
+    Swal.fire({
+      title: 'Delete',
+      text: "Are you sure you want to delete this item?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      customClass: {
+        confirmButton: 'btn btn-primary',
+        cancelButton: 'btn btn-danger ml-1'
+      }
+    }).then(function (result) {
+      if (result.value) {
+        Swal.fire({
+          title: 'Deleted!',
+          text: 'Record has been deleted.',
+          icon: 'success',
+          customClass: {
+            confirmButton: 'btn btn-success'
+          }
+        });
+      }
     });
   }
 
@@ -232,7 +297,7 @@ export class StudentListComponent implements OnInit {
                 link: '/dashboard/school'
               },
               {
-                name: 'Students List',
+                name: 'Student List',
                 isLink: false
               }
             ]

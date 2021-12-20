@@ -165,7 +165,7 @@
                   <a routerLink="/apps/student/student-view/{{ row.id }}" ngbDropdownItem><span
                       [data-feather]="'file-text'" [size]="16" [class]="'mr-50'"></span> Details</a><a
                     routerLink="/apps/student/student-edit/{{ row.id }}" ngbDropdownItem><span [data-feather]="'edit'"
-                      [size]="16" [class]="'mr-50'"></span> Edit</a><a (click)="modalOpenVC(modalVC)"
+                      [size]="16" [class]="'mr-50'"></span> Edit</a><a (click)="deleteItem()"
                     ngbDropdownItem><span [data-feather]="'trash'" [size]="16" [class]="'mr-50'"></span> Delete</a>
                 </div>
               </div>

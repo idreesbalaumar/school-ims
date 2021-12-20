@@ -1,5 +1,7 @@
 <div class="content-wrapper container-xxl p-0">
   <div class="content-body">
+    <!-- content-header component -->
+    <app-content-header [contentHeader]="contentHeader" *ngIf="loadHeader"></app-content-header>
     <!-- Result List -->
     <section class="invoice-list-wrapper">
       <div class="card">
@@ -128,7 +130,7 @@
                   </button>
                   <div ngbDropdownMenu>
                     <a routerLink="/apps/result/edit/{{ row.id }}" ngbDropdownItem><i
-                        data-feather="edit" class="mr-1"></i>Edit</a><a href="javascript:void(0)" ngbDropdownItem><i
+                        data-feather="edit" class="mr-1"></i>Edit</a><a (click)="deleteItem()" ngbDropdownItem><i
                         data-feather="trash" class="mr-1"></i>Delete</a>
                   </div>
                 </div>

@@ -30,6 +30,7 @@ import { ResultListService } from '../result/result-list/result-list.service';
 import { ResultModule } from '../result/result.module';
 import { StudentAddComponent } from './student-add/student-add.component';
 import { StudentAddService } from './student-add/student-add.service';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 // routing
 const routes: Routes = [
@@ -91,7 +92,8 @@ const routes: Routes = [
     CoreDirectivesModule,
     ResultModule,
     CoreSidebarModule,
-    ContentHeaderModule
+    ContentHeaderModule,
+    SweetAlert2Module.forRoot()
   ],
   providers: [StudentListService, StudentViewService, StudentEditService, StudentAddService]
 })

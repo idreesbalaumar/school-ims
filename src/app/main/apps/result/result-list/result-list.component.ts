@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ViewEncapsulation, Input } from '@angular/core';
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -6,6 +6,7 @@ import { ColumnMode, DatatableComponent } from '@swimlane/ngx-datatable';
 
 import { CoreConfigService } from '@core/services/config.service';
 import { ResultListService } from './result-list.service';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -25,6 +26,10 @@ export class ResultListComponent implements OnInit, OnDestroy {
     { name: '2nd', value: '2nd' },
     { name: '3rd', value: '3rd' }
   ];
+
+  @Input("loadHeader") loadHeader : boolean = true;
+
+  public contentHeader: object;
 
   public selectedTerm = [];
   public searchValue = '';
@@ -87,6 +92,31 @@ export class ResultListComponent implements OnInit, OnDestroy {
     this.rows = this.tempFilterData;
   }
 
+  deleteItem() {
+    Swal.fire({
+      title: 'Delete',
+      text: "Are you sure you want to delete this item?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      customClass: {
+        confirmButton: 'btn btn-primary',
+        cancelButton: 'btn btn-danger ml-1'
+      }
+    }).then(function (result) {
+      if (result.value) {
+        Swal.fire({
+          title: 'Deleted!',
+          text: 'Record has been deleted.',
+          icon: 'success',
+          customClass: {
+            confirmButton: 'btn btn-success'
+          }
+        });
+      }
+    });
+  }
+
   /**
    * Filter Rows
    *
@@ -131,7 +161,29 @@ export class ResultListComponent implements OnInit, OnDestroy {
         });
       }
     });
+
+    // content header
+    this.contentHeader = {
+      headerTitle: 'Result',
+      actionButton: true,
+      breadcrumb: {
+        type: '',
+        links: [
+          {
+            name: 'Dashboard',
+            isLink: true,
+            link: '/dashboard/school'
+          },
+          {
+            name: 'Result List',
+            isLink: false
+          }
+        ]
+      }
+    };
   }
+
+
 
   /**
    * On destroy

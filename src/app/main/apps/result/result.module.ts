@@ -29,6 +29,7 @@ import { ResultPreviewComponent } from 'app/main/apps/result/result-preview/resu
 import { ResultPreviewService } from 'app/main/apps/result/result-preview/result-preview.service';
 import { AddPaymentSidebarPreviewComponent } from 'app/main/apps/result/result-preview/sidebar/add-payment-sidebar-preview/add-payment-sidebar-preview.component';
 import { SendResultSidebarPreviewComponent } from './result-preview/sidebar/send-reult-sidebar-preview/send-result-sidebar-preview.component';
+import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
 
 // routing
 const routes: Routes = [
@@ -97,7 +98,8 @@ const routes: Routes = [
     CorePipesModule,
     NgbModule,
     NgSelectModule,
-    CoreSidebarModule
+    CoreSidebarModule,
+    ContentHeaderModule
   ],
   providers: [ResultListService, ResultPreviewService, ResultEditService, ResultAddService],
   exports: [ResultListComponent]

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subject } from 'rxjs';
@@ -7,6 +7,10 @@ import { takeUntil } from 'rxjs/operators';
 import { StudentViewService } from 'app/main/apps/student/student-view/student-view.service';
 import { Student } from '@fake-db/students.data';
 import { StudentListService } from '../student-list/student-list.service';
+import Swal from 'sweetalert2';
+import { ColumnMode, DatatableComponent } from '@swimlane/ngx-datatable';
+import { CoreConfigService } from '@core/services/config.service';
+import { ResultListService } from '../../result/result-list/result-list.service';
 // import { id } from '@fake-db/students.data';
 
 @Component({
@@ -17,9 +21,34 @@ import { StudentListService } from '../student-list/student-list.service';
 })
 export class StudentViewComponent implements OnInit, OnDestroy {
   // public
+  public data: any;
+  public selectedOption = 10;
+  public ColumnMode = ColumnMode;
+  public selectTerm: any = [
+    { name: 'All', value: '' },
+    { name: '1st', value: '1st' },
+    { name: '2nd', value: '2nd' },
+    { name: '3rd', value: '3rd' }
+  ];
+
+  public selectedTerm = [];
+  public searchValue = '';
+
+  // decorator
+  @ViewChild(DatatableComponent) table: DatatableComponent;
+
+  // private
+  private tempData = [];
+  private _unsubscribeAll: Subject<any>;
+  public rows;
+  public tempFilterData;
+  public previousTermFilter = '';
+
+  
+  // public
   public url = this.router.url;
   public lastValue;
-  public data;
+  // public data;
   public id;
   // data = [];
   stuId: any;
@@ -52,16 +81,19 @@ export class StudentViewComponent implements OnInit, OnDestroy {
 
   public contentHeader: object;
 
-  // private
-  private _unsubscribeAll: Subject<any>;
+  
 
   /**
    * Constructor
    *
    * @param {Router} router
    * @param {StudentViewService} _studentViewService
+   * @param {CoreConfigService} _coreConfigService
+   * @param {CalendarService} _calendarService
+   * @param {ResultListService} _resultListService
    */
-  constructor(private router: Router, private _studentViewService: StudentViewService, private route: ActivatedRoute, private _studentsListServe: StudentListService) {
+  constructor(private router: Router, private _studentViewService: StudentViewService, private route: ActivatedRoute, private _studentsListServe: StudentListService,private _resultListService: ResultListService, private _coreConfigService: CoreConfigService) {
+    this._unsubscribeAll = new Subject();
     // get empId from url
     this.stuId = this.route.snapshot.params.id;
     console.log(this.students);
@@ -72,6 +104,85 @@ export class StudentViewComponent implements OnInit, OnDestroy {
 
   loadItem(id) {
     this.obj = this.data.find(item => item.id === id.row.data.id);
+  }
+
+  deleteItem() {
+    Swal.fire({
+      title: 'Delete',
+      text: "Are you sure you want to delete this item?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      customClass: {
+        confirmButton: 'btn btn-primary',
+        cancelButton: 'btn btn-danger ml-1'
+      }
+    }).then(function (result) {
+      if (result.value) {
+        Swal.fire({
+          title: 'Deleted!',
+          text: 'Record has been deleted.',
+          icon: 'success',
+          customClass: {
+            confirmButton: 'btn btn-success'
+          }
+        });
+      }
+    });
+  }
+
+  // Public Methods
+  // -----------------------------------------------------------------------------------------------------
+
+  /**
+   * filterUpdate
+   *
+   * @param event
+   */
+   filterUpdate(event) {
+    // Reset ng-select on search
+    this.selectedTerm = this.selectTerm[0];
+
+    const val = event.target.value.toLowerCase();
+
+    // filter our data
+    const temp = this.tempData.filter(function (d) {
+      return d.form_master.name.toLowerCase().indexOf(val) !== -1 || !val;
+    });
+
+    // update the rows
+    this.rows = temp;
+    // Whenever the filter changes, always go back to the first page
+    this.table.offset = 0;
+  }
+
+  /**
+   * Filter By Roles
+   *
+   * @param event
+   */
+  filterByTerm(event) {
+    const filter = event ? event.value : '';
+    this.previousTermFilter = filter;
+    this.tempFilterData = this.filterRows(filter);
+    this.rows = this.tempFilterData;
+  }
+
+  /**
+   * Filter Rows
+   *
+   * @param statusFilter
+   */
+  filterRows(statusFilter): any[] {
+    // Reset search on select change
+    this.searchValue = '';
+
+    statusFilter = statusFilter.toLowerCase();
+
+    return this.tempData.filter(row => {
+      const isPartialNameMatch = row.resultTerm.toLowerCase().indexOf(statusFilter) !== -1 || !statusFilter;
+      return isPartialNameMatch;
+    });
   }
 
   // Lifecycle Hooks
