@@ -3,6 +3,9 @@
     <!-- Result List -->
     <section class="invoice-list-wrapper">
       <div class="card">
+        <div class="card-header">
+          <h4 class="card-title text-primary">Result List</h4>
+        </div>
         <!-- Result List Header -->
         <div class="row">
           <div class="col-md-6 col-12">
@@ -48,7 +51,7 @@
         <!-- Invoice List Table -->
         <ngx-datatable [rows]="rows" [rowHeight]="50" class="bootstrap core-bootstrap" [limit]="selectedOption"
           [columnMode]="ColumnMode.force" [headerHeight]="50" [footerHeight]="50" [scrollbarH]="true">
-          <ngx-datatable-column name="#" prop="id" [width]="50">
+          <ngx-datatable-column name="ID" prop="id" [width]="50">
             <ng-template let-id="value" ngx-datatable-cell-template>
               <a routerLink="/apps/result/preview/{{ id }}" class="font-weight-bold">#{{ id }}</a>
             </ng-template>
@@ -95,7 +98,7 @@
               </div>
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="form_master" prop="form_master.name" [width]="250">
+          <ngx-datatable-column name="Form Master" prop="form_master.name" [width]="250">
             <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
               <div class="d-flex align-items-center">
                 <div *ngIf="row.avatar.length > 0; else customAvatar">

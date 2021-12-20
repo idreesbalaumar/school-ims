@@ -9,6 +9,7 @@ import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.s
 
 import { StudentListService } from 'app/main/apps/student/student-list/student-list.service';
 import { StudentsFakeData } from '@fake-db/students.data';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-student-list',
@@ -77,7 +78,8 @@ export class StudentListComponent implements OnInit {
   constructor(
     private _studentListService: StudentListService,
     private _coreSidebarService: CoreSidebarService,
-    private _coreConfigService: CoreConfigService
+    private _coreConfigService: CoreConfigService,
+    private modalService: NgbModal
   ) {
     this._unsubscribeAll = new Subject();
     this.loadProfile = this.loadProfile.bind(this);
@@ -99,6 +101,12 @@ export class StudentListComponent implements OnInit {
 
   loadItem(event) {
     window.open('/apps/student/student-view/' + event.row.data.id, '_blank')
+  }
+
+  modalOpenVC(modalVC) {
+    this.modalService.open(modalVC, {
+      centered: true
+    });
   }
 
   filterUpdate(event) {
@@ -181,10 +189,10 @@ export class StudentListComponent implements OnInit {
     statusFilter = statusFilter.toLowerCase();
 
     return this.tempData.filter(row => {
-      const isPartialNameMatch = row.classs.toLowerCase().indexOf(classFilter) !== -1 || !classFilter;
+      const isPartialClassMatch = row.classs.toLowerCase().indexOf(classFilter) !== -1 || !classFilter;
       const isPartialGenderMatch = row.gender.toLowerCase().indexOf(genderFilter) !== -1 || !genderFilter;
       const isPartialStatusMatch = row.status.toLowerCase().indexOf(statusFilter) !== -1 || !statusFilter;
-      return isPartialNameMatch && isPartialGenderMatch && isPartialStatusMatch;
+      return isPartialClassMatch && isPartialGenderMatch && isPartialStatusMatch && isPartialStatusMatch;
     });
   }
 

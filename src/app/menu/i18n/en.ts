@@ -6,7 +6,7 @@ export const locale = {
         COLLAPSIBLE: 'Dashboards',
         BADGE: '2',
         ANALYTICS: 'Analytics',
-        ECOMMERCE: 'eCommerce'
+        ECOMMERCE: 'School Dashoard'
       },
       APPS: {
         SECTION: 'Apps & Pages',
@@ -43,6 +43,7 @@ export const locale = {
         },
         STUDENT: {
           COLLAPSIBLE: 'Student',
+          ADD: 'Add',
           LIST: 'List',
           VIEW: 'View',
           EDIT: 'Edit'

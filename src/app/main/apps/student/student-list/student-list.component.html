@@ -5,6 +5,33 @@
     <!-- Student List -->
     <section class="users-list-wrapper">
       <!-- students filter start -->
+      <!-- Button trigger modal -->
+      <!-- <button type="button" class="btn btn-outline-primary" (click)="modalOpenVC(modalVC)" rippleEffect>
+        Vertically Centered
+      </button> -->
+
+      <!-- Modal -->
+      <ng-template #modalVC let-modal>
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle">Delete</h5>
+          <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body text-center" tabindex="0" ngbAutofocus>
+          <p>
+            Are you sure you want to delete this item?
+          </p>
+        </div>
+        <div class="modal-footer text-center">
+          <!-- <button type="button" class="btn btn-primary" (click)="modal.close('Accept click')" rippleEffect>
+            Accept
+          </button> -->
+          <button type="button" class="btn btn-outline-warning" (click)="modal.close('Accept click')" rippleEffect>Cancel</button>
+          <button type="button" class="btn btn-danger" rippleEffect>Yes</button>
+        </div>
+      </ng-template>
+      <!-- / Modal -->
       <div class="card">
         <h5 class="card-header">Search Filter</h5>
         <div class="card-body">
@@ -59,7 +86,7 @@
                 <i data-feather="plus" class="d-sm-none d-inline-block mr-0 mr-sm-1"></i><span
                   class="d-none d-sm-inline-block">Add New Student</span>
               </button> -->
-              <button class="btn btn-primary ml-1" rippleEffect (click)="toggleSidebar('new-student-sidebar')">
+              <button class="btn btn-primary ml-1" rippleEffect routerLink="/apps/student/student-add">
                 <i data-feather="user-plus" class="mr-0 mr-sm-1"></i><span class="d-none d-sm-inline-block">Add New
                   Record</span>
               </button>
@@ -79,8 +106,8 @@
                 </div>
                 <ng-template #customAvatar>
                   <div class="avatar mr-1 ml-0" [ngClass]="{
-                      'bg-light-success': row.status == 'active',
-                      'bg-light-secondary': row.status == 'inactive'
+                      'bg-light-success': row.status == 'Active',
+                      'bg-light-secondary': row.status == 'Inactive'
                     }">
                     <div class="avatar-content">{{ name | initials }}</div>
                   </div>
@@ -138,8 +165,8 @@
                   <a routerLink="/apps/student/student-view/{{ row.id }}" ngbDropdownItem><span
                       [data-feather]="'file-text'" [size]="16" [class]="'mr-50'"></span> Details</a><a
                     routerLink="/apps/student/student-edit/{{ row.id }}" ngbDropdownItem><span [data-feather]="'edit'"
-                      [size]="16" [class]="'mr-50'"></span> Edit</a><a href="javascript:;" ngbDropdownItem><span
-                      [data-feather]="'trash'" [size]="16" [class]="'mr-50'"></span> Delete</a>
+                      [size]="16" [class]="'mr-50'"></span> Edit</a><a (click)="modalOpenVC(modalVC)"
+                    ngbDropdownItem><span [data-feather]="'trash'" [size]="16" [class]="'mr-50'"></span> Delete</a>
                 </div>
               </div>
             </ng-template>

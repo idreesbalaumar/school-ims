@@ -28,6 +28,8 @@ import { NewStudentSidebarComponent } from 'app/main/apps/student/student-list/n
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
 import { ResultListService } from '../result/result-list/result-list.service';
 import { ResultModule } from '../result/result.module';
+import { StudentAddComponent } from './student-add/student-add.component';
+import { StudentAddService } from './student-add/student-add.service';
 
 // routing
 const routes: Routes = [
@@ -38,6 +40,14 @@ const routes: Routes = [
       uls: StudentListService
     },
     data: { animation: 'StudentListComponent' }
+  },
+  {
+    path: 'student-add',
+    component: StudentAddComponent,
+    resolve: {
+      uls: StudentAddService
+    },
+    data: { animation: 'StudentAddComponent' }
   },
   {
     path: 'student-view/:id',
@@ -67,7 +77,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [StudentListComponent, StudentViewComponent, StudentEditComponent, NewStudentSidebarComponent],
+  declarations: [StudentListComponent, StudentViewComponent, StudentEditComponent, NewStudentSidebarComponent, StudentAddComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
@@ -83,6 +93,6 @@ const routes: Routes = [
     CoreSidebarModule,
     ContentHeaderModule
   ],
-  providers: [StudentListService, StudentViewService, StudentEditService]
+  providers: [StudentListService, StudentViewService, StudentEditService, StudentAddService]
 })
 export class StudentModule {}

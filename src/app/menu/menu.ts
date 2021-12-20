@@ -63,6 +63,14 @@ export const menu: CoreMenu[] = [
         icon: 'circle',
         url: 'apps/student/student-list'
       },
+      {
+        id: 'add',
+        title: 'Add',
+        translate: 'MENU.APPS.STUDENT.ADD',
+        type: 'item',
+        icon: 'circle',
+        url: 'apps/student/student-add'
+      },
       // {
       //   id: 'view',
       //   title: 'View',

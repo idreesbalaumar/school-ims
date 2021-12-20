@@ -18,15 +18,9 @@
                         <img class="img-fluid rounded" [src]="data.avatar" height="104" width="104" alt="User avatar" />
                       </div>
                       <ng-template #customAvatar>
-                        <div class="mr-1 ml-0 border border-primary border-1 rounded bg-light">
-                          <div
-                            
-                            class="rounded p-3"
-                          >
-                            <h2
-                              
-                              class="m-0"
-                            >
+                        <div class="mr-1 ml-0 border border-secondary border-1 rounded bg-light">
+                          <div class="rounded p-3">
+                            <h2 class="m-0">
                               {{ data.first_name | initials }}
                             </h2>
                           </div>
@@ -38,25 +32,45 @@
                           <span class="card-text">{{ data.surname }} {{data.other_name}}</span>
                         </div>
                         <div class="d-flex flex-wrap">
-                          <a routerLink="/apps/student/student-edit/{{ data.id }}" class="btn btn-primary" rippleEffect
-                            >Edit</a
-                          >
+                          <a routerLink="/apps/student/student-edit/{{ data.id }}" class="btn btn-primary"
+                            rippleEffect>Edit</a>
                           <button class="btn btn-outline-danger ml-1" rippleEffect>Delete</button>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="d-flex align-items-center user-total-numbers">
+
+                  <div>
+
+                    <div class="mt-1 d-flex align-items-center user-total-numbers">
+                      <div class="d-flex align-items-center mr-2">
+                        <div class="color-box bg-light-primary">
+                          <i [data-feather]="'link'" [class]="'text-primary'"></i>
+                        </div>
+                        <a routerLink="/apps/student/student-view/{{ data.id }}" placement="right"
+                          ngbTooltip="Click link to view parents information">
+                          <div class="ml-1">
+                            <h5 class="mb-0">Parent/Guadian Info</h5>
+                            <small><strong>LINK : </strong>{{data.parent_first_name}} {{data.parent_surname}}
+                              {{data.parent_other_name}}</small>
+                          </div>
+                        </a>
+                      </div>
+                      <div class="d-flex align-items-center">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-1 d-flex align-items-center user-total-numbers">
                     <div class="d-flex align-items-center mr-2">
                       <div class="color-box bg-light-primary">
                         <i [data-feather]="'home'" [class]="'text-primary'"></i>
                       </div>
                       <div class="ml-1">
-                        <h5 class="mb-0">{{data.house}} House</h5>
-                        <small>{{data.house_name}}</small>
+                        <h5 class="mb-0"><strong class="text-primary">HOUSE COLOR : </strong>{{data.house}}</h5>
+                        <small><strong class="text-primary">HOUSE NAME : </strong>{{data.house_name}}</small>
                       </div>
                     </div>
-                    <div class="d-flex align-items-center">
+                    <!-- <div class="d-flex align-items-center">
                       <div class="color-box bg-light-success">
                         <i [data-feather]="'trending-up'" [class]="'text-success'"></i>
                       </div>
@@ -64,53 +78,74 @@
                         <h5 class="mb-0">$99.87K</h5>
                         <small>Annual Profit</small>
                       </div>
-                    </div>
+                    </div> -->
                   </div>
+
                 </div>
                 <div class="col-xl-6 col-lg-12 mt-2 mt-xl-0">
                   <div class="user-info-wrapper">
+
                     <div class="d-flex flex-wrap">
                       <div class="user-info-title">
-                        <i data-feather="folder" class="mr-1"></i>
+                        <i [class]="'text-primary'" data-feather="folder" class="mr-1"></i>
                         <span class="card-text user-info-title font-weight-bold mb-0">Students ID</span>
                       </div>
                       <p class="card-text mb-0">: {{ data.id }}</p>
                     </div>
                     <div class="d-flex flex-wrap my-50">
                       <div class="user-info-title">
-                        <i data-feather="user-check" class="mr-1"></i>
-                        <span class="card-text user-info-title font-weight-bold mb-0">Status</span>
-                      </div>
-                      <p class="card-text mb-0 badge badge-pill" [ngClass]="{
-                        'badge-light-success': data.status == 'Active',
-                        'badge-light-secondary': data.status == 'Inactive'
-                      }">: {{ data.status }}</p>
-                    </div>
-                    <div class="d-flex flex-wrap my-50">
-                      <div class="user-info-title">
-                        <i data-feather="home" class="mr-1"></i>
-                        <span class="card-text user-info-title font-weight-bold mb-0">Class</span>
-                      </div>
-                      <p class="card-text mb-0">: {{ data.classs }}{{data.classs_name}}</p>
-                    </div>
-                    <div class="d-flex flex-wrap my-50">
-                      <div class="user-info-title">
-                        <i data-feather="hexagon" class="mr-1"></i>
+                        <i [class]="'text-primary'" data-feather="hexagon" class="mr-1"></i>
                         <span class="card-text user-info-title font-weight-bold mb-0">Gender</span>
                       </div>
                       <p class="card-text mb-0">: {{data.gender}}</p>
                     </div>
+                    <div class="d-flex flex-wrap my-50">
+                      <div class="user-info-title">
+                        <i [class]="'text-primary'" data-feather="map" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">State of Origin</span>
+                      </div>
+                      <p class="card-text mb-0">: {{data.state_of_origin}}</p>
+                    </div>
+                    <div class="d-flex flex-wrap my-50">
+                      <div class="user-info-title">
+                        <i [class]="'text-primary'" data-feather="maximize" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">LGA</span>
+                      </div>
+                      <p class="card-text mb-0">: {{data.lga}}</p>
+                    </div>
+                    <div class="d-flex flex-wrap my-50">
+                      <div class="user-info-title">
+                        <i [class]="'text-primary'" data-feather="calendar" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">Date of Birth</span>
+                      </div>
+                      <p class="card-text mb-0">: {{data.date_of_birth}}</p>
+                    </div>
+
+                    <div class="d-flex flex-wrap my-50">
+                      <div class="user-info-title">
+                        <i [class]="'text-primary'" data-feather="home" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">Current Class</span>
+                      </div>
+                      <p class="card-text mb-0">: {{ data.classs }}{{data.classs_name}}</p>
+                    </div>
+
+                    <div class="d-flex flex-wrap my-50">
+                      <div class="user-info-title">
+                        <i [class]="'text-primary'" data-feather="user-check" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">Status</span>
+                      </div>
+                      :&nbsp;<p class="card-text mb-0 badge badge-pill px-2" [ngClass]="{
+                        'badge-light-success': data.status == 'Active',
+                        'badge-light-secondary': data.status == 'Inactive'
+                      }">{{ data.status }}</p>
+                    </div>
                     <div class="d-flex flex-wrap">
                       <div class="user-info-title">
-                        <i data-feather="map-pin" class="mr-1"></i>
-                        <span class="card-text user-info-title font-weight-bold mb-0">Parent Info</span>
+                        <i [class]="'text-primary'" data-feather="calendar" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">Registration Date</span>
                       </div>
-                      <p class="card-text mb-0">
-                        <a routerLink="/apps/student/student-view/{{ data.id }}" class="font-medium-1 d-block"><span
-                          class="font-weight-bold">: {{data.parent_first_name}} {{data.parent_surname}} {{data.parent_other_name}} </span></a>
-                      </p>
+                      <p class="card-text mb-0">: July 22, 2020</p>
                     </div>
-                    
                   </div>
                 </div>
               </div>
@@ -122,37 +157,57 @@
         <!-- Plan Card starts-->
         <div class="col-xl-3 col-lg-4 col-md-5">
           <div class="card plan-card border-primary">
-            <div class="card-header d-flex justify-content-between align-items-center pt-75 pb-1">
-              <h5 class="mb-0">Entry Date</h5>
-              <span class="badge badge-light-secondary" data-toggle="tooltip" data-placement="top" title="Expiry Date"
-                >July 22, 2020 <span class="nextYear"></span>
-              </span>
+
+            <div style="margin-bottom: -12px;"
+              class="card-header d-flex justify-content-between align-items-center pt-75 pb-1">
+              <span class="align-middle badge badge-primary"><strong><i data-feather="check-square"
+                    class="mr-1"></i>Elective
+                  Subjects</strong></span>
+              <!-- <div class="badge badge-light-primary">Elective Subjects</div> -->
+
+              <!-- <h5 class="mb-0">Entry Date:</h5>
+              <span class="badge badge-light-success" data-toggle="tooltip" data-placement="top"
+                title="Entry Date">July 22, 2020
+              </span> -->
             </div>
+
             <div class="card-body">
-              <div class="badge badge-light-primary">Elective Subjects</div>
-              <ul class="list-unstyled my-1">
-                <li>
-                  <span class="align-middle">Physics</span>
-                </li>
-                <li class="my-25">
-                  <span class="align-middle">Technical Drawing</span>
-                </li>
-                <li>
-                  <span class="align-middle">Fine Art</span>
-                </li>
-              </ul>
-              <!-- <button class="btn btn-primary text-center btn-block" rippleEffect>Upgrade Plan</button> -->
-              <div class="d-flex align-items-center user-total-numbers">
-                <div class="d-flex align-items-center mr-1">
-                  <div class="color-box bg-light-primary">
-                    <i [data-feather]="'home'" [class]="'text-primary'"></i>
-                  </div>
-                  <div class="ml-1">
-                    <h5 class="mb-0">{{data.house}} House</h5>
-                    <small>{{data.house_name}}</small>
-                  </div>
-                </div>
-              </div>
+              <small>
+                <ul class="list-styled pl-2">
+                  <!-- <li>
+                  <span class="align-middle"><strong>Elective Subjects</strong></span>
+                </li> -->
+                  <li>
+                    <span class="align-middle">Cretive Craft Practice</span>
+                  </li>
+                  <li>
+                    <span class="align-middle">Auto Mechanic Work</span>
+                  </li>
+                  <li>
+                    <span class="align-middle">Dyeing & Bleaching</span>
+                  </li>
+                  <li>
+                    <span class="align-middle">Agricultural Science</span>
+                  </li>
+                  <li>
+                    <span class="align-middle">Economics</span>
+                  </li>
+                  <li>
+                    <span class="align-middle">Technical Drawing</span>
+                  </li>
+                  <li>
+                    <span class="align-middle">Geography</span>
+                  </li>
+                  <li>
+                    <span class="align-middle">Physical Education</span>
+                  </li>
+                  <li>
+                    <span class="align-middle">Food & Nutrition</span>
+                  </li>
+                </ul>
+              </small>
+              <a style="margin-top: -8px;" class="btn btn-outline-primary d-print-none text-center btn-block" href="javascript:window.print();" rippleEffect>Print Page</a>
+
             </div>
           </div>
         </div>
@@ -163,7 +218,7 @@
       <!-- User Timeline & Permissions Starts -->
       <div class="row">
         <!-- information starts -->
-        
+
         <!-- information Ends -->
 
         <!-- User Permissions Starts -->
@@ -330,7 +385,7 @@
       <!-- User Timeline & Permissions Ends -->
 
       <!-- User Invoice Starts-->
-      <div class="row invoice-list-wrapper">
+      <div class="row invoice-list-wrapper d-print-none">
         <div class="col-12">
           <div class="card">
             <app-result-list></app-result-list>
