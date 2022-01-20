@@ -38,7 +38,7 @@ export class InvoiceAddService implements Resolve<any> {
    * Get API Data
    */
   getApiData(): Promise<any[]> {
-    const url = `api/invoice-data`;
+    const url = `api/result-data`;
 
     return new Promise((resolve, reject) => {
       this._httpClient.get(url).subscribe((response: any) => {

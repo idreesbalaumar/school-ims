@@ -33,14 +33,14 @@ export class AuthLoginV1Component implements OnInit {
    * @param {CoreConfigService} _coreConfigService
    * @param {FormBuilder} _formBuilder
    */
-  constructor( 
+  constructor(
     private _coreConfigService: CoreConfigService,
     private _formBuilder: FormBuilder,
     private _route: ActivatedRoute,
     private _router: Router,
     private _authenticationService: AuthenticationService
-    ) {
-      // redirect to home if already logged in
+  ) {
+    // redirect to home if already logged in
     if (this._authenticationService.currentUserValue) {
       this._router.navigate(['/']);
     }
@@ -79,7 +79,7 @@ export class AuthLoginV1Component implements OnInit {
   /**
    * On Submit
    */
-   onSubmit() {
+  onSubmit() {
     this.submitted = true;
 
     // stop here if form is invalid
@@ -103,7 +103,7 @@ export class AuthLoginV1Component implements OnInit {
       );
   }
 
-  
+
 
   // Lifecycle Hooks
   // -----------------------------------------------------------------------------------------------------
@@ -112,13 +112,13 @@ export class AuthLoginV1Component implements OnInit {
    * On init
    */
 
-    ngOnInit(): void {
-      this.loginForm = this._formBuilder.group({
-        email: ['admin@demo.com', [Validators.required, Validators.email]],
-        password: ['admin', Validators.required]
-      });
+  ngOnInit(): void {
+    this.loginForm = this._formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required]
+    });
 
-      // get return url from route parameters or default to '/'
+    // get return url from route parameters or default to '/'
     this.returnUrl = this._route.snapshot.queryParams['returnUrl'] || '/';
 
     // Subscribe to config changes

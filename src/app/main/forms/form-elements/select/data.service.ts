@@ -15,6 +15,11 @@ export interface Person {
   phone: string;
   disabled?: boolean;
 }
+export interface Subeject {
+  id: string;
+  name: string;
+  isArt: boolean;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -49,6 +54,14 @@ export class DataService {
 
   getPeople(term: string = null): Observable<Person[]> {
     let items = getMockPeople();
+    if (term) {
+      items = items.filter(x => x.name.toLocaleLowerCase().indexOf(term.toLocaleLowerCase()) > -1);
+    }
+    return of(items).pipe(delay(50));
+  }
+
+  getArtElectiveSubject(term: string = null): Observable<Subeject[]> {
+    let items = getArtSubject();
     if (term) {
       items = items.filter(x => x.name.toLocaleLowerCase().indexOf(term.toLocaleLowerCase()) > -1);
     }
@@ -251,6 +264,50 @@ function getMockPeople() {
       company: 'LYRIA',
       email: 'diannbooker@lyria.com',
       phone: '+1 (830) 555-3209'
+    }
+  ];
+}
+function getArtSubject() {
+  return [
+    {
+      id: '5a15b13c36e7a7f00cf0d7cb',
+      name: 'Literature',
+      isArt: true
+    },
+    {
+      id: '5a15b13c36e7a7f00csf0d7cb',
+      name: 'Food & Nutrition',
+      isArt: true
+    },
+    {
+      id: '5a15b13c36e7a53400cf0d7cb',
+      name: 'Physical Education',
+      isArt: true
+    },
+    {
+      id: '5a15b13c36e75y5f00cf0d7cb',
+      name: 'Economics',
+      isArt: true
+    },
+    {
+      id: '5a15b13c36e7a7f00cf0d7cbs',
+      name: 'Cretive Craft Practice',
+      isArt: true
+    },
+    {
+      id: '5a15b13c36e7a7f00csf0d7cbxc',
+      name: 'Auto Mechanic Work',
+      isArt: true
+    },
+    {
+      id: '5a15b13c36e7a53400cf0d7xxcb',
+      name: 'Dyeing & Bleaching',
+      isArt: true
+    },
+    {
+      id: '5a15b13c36e75y5f00cf0d7xcb',
+      name: 'Agricultural Science',
+      isArt: true
     }
   ];
 }

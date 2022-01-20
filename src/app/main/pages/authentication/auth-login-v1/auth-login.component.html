@@ -4,7 +4,7 @@
     <div class="card mb-0">
       <div class="card-body">
         <a style="margin-bottom: 2px;" href="javascript:void(0);" class="brand-logo">
-          <img src="../../../../../assets/images/logo/pyakasaloginlogo.png" alt="brand-logo" height="120" />
+          <img class="border border-primary rounded-circle border-5 shadow-sm mb-1" src="../../../../../assets/images/logo/pyakasaloginlogo.png" alt="brand-logo" height="120" />
           <!-- <img src="{{ coreConfig.app.appLogoImage }}" alt="brand-logo" height="28" /> -->
           <!-- <h2 class="brand-text text-primary ml-1">Vuexy</h2> -->
         </a>
@@ -12,6 +12,12 @@
 
         <!-- <h4 class="card-title mb-1">Welcome</h4> -->
         <!-- <p class="card-text mb-2">Please sign-in to your account </p> -->
+
+        <ngb-alert [type]="'danger'" [dismissible]="false" *ngIf="error">
+          <div class="alert-body">
+            <p>{{ error }}</p>
+          </div>
+        </ngb-alert>
 
         <form class="auth-login-form mt-2" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <div class="form-group">
