@@ -34,7 +34,7 @@
               "highlight.js",
               "ng2-flatpickr"
             ],
-            "outputPath": "docs",
+            "outputPath": "dist/pyakasa",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -158,7 +158,7 @@
       }
     }
   },
-  "defaultProject": "pyaksa",
+  "defaultProject": "pyakasa",
   "cli": {
     "analytics": false
   }
