@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { environment } from 'environments/environment';
 import { User, Role } from 'app/auth/models';
 import { ToastrService } from 'ngx-toastr';
+import { AuthLoginResponse } from '../models/login.response';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -45,6 +46,27 @@ export class AuthenticationService {
   }
 
   /**
+   *  Confirms if user is form master
+   */
+  get isFormMaster() {
+    return this.currentUser && this.currentUserSubject.value.role === Role.FormMaster;
+  }
+
+  /**
+   *  Confirms if user is parent
+   */
+  get isParent() {
+    return this.currentUser && this.currentUserSubject.value.role === Role.Parent;
+  }
+
+  /**
+   *  Confirms if user is user
+   */
+  get isUser() {
+    return this.currentUser && this.currentUserSubject.value.role === Role.User;
+  }
+
+  /**
    * User login
    *
    * @param email
@@ -53,28 +75,28 @@ export class AuthenticationService {
    */
   login(email: string, password: string) {
     return this._http
-      .post<any>(`${environment.apiUrl}/auth/login`, { email, password })
+      .post<AuthLoginResponse>(`${environment.apiUrl}/auth/login`, { email, password })
       .pipe(
-        map(({data}) => {
+        map((data) => {
           console.log(data)
           // login successful if there's a jwt token in the response
-          if (data && data.token) {
+          if (data && data.accessToken) {
             // store data details and jwt token in local storage to keep data logged in between page refreshes
-            localStorage.setItem('currentUser', JSON.stringify(data));
+            localStorage.setItem('currentUser', JSON.stringify({ ...data.user, accessToken: data.accessToken, avatar: 'avatar-s-3.jpg' }));
 
             // Display welcome toast!
             setTimeout(() => {
               this._toastrService.success(
                 'You have successfully logged in as an ' +
-                  data.role +
+                  data.user.role +
                   ' user to School-IMS.',
-                '👋 Welcome, ' + data.name + '!',
+                '👋 Welcome, ' + data.user.firstName + '!',
                 { toastClass: 'toast ngx-toastr', closeButton: true }
               );
             }, 2500);
 
             // notify
-            this.currentUserSubject.next(data);
+            this.currentUserSubject.next(data.user);
           }
 
           return data;
