@@ -25,29 +25,32 @@ const users: User[] = [
   {
     id: 1,
     email: 'admin@demo.com',
-    password: 'admin',
+    passwordHash: 'admin',
     firstName: 'John',
     lastName: 'Doe',
     avatar: 'avatar-s-11.jpg',
-    role: Role.Admin
+    role: Role.Admin,
+    token: 'aaaa-bbbb',
   },
   {
     id: 2,
     email: 'client@demo.com',
-    password: 'client',
+    passwordHash: 'client',
     firstName: 'Nataly',
     lastName: 'Doe',
     avatar: 'avatar-s-2.jpg',
-    role: Role.Client
+    role: Role.Client,
+    token: 'bbbb-cccc',
   },
   {
     id: 3,
     email: 'user@demo.com',
-    password: 'user',
+    passwordHash: 'user',
     firstName: 'Rose',
     lastName: 'Doe',
     avatar: 'avatar-s-3.jpg',
-    role: Role.User
+    role: Role.User,
+    token: 'cccc-dddd',
   }
 ];
 
@@ -80,7 +83,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function authenticate() {
       const { email, password } = body;
-      const user = users.find(x => x.email === email && x.password === password);
+      const user = users.find(x => x.email === email && x.passwordHash === password);
       if (!user) return error('Username or password is incorrect');
       return ok({
         id: user.id,

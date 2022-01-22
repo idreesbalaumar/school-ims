@@ -3,10 +3,11 @@
 export class User {
   id: number;
   email: string;
-  password: string;
+  passwordHash: string;
   firstName: string;
   lastName: string;
-  avatar: string;
+  avatar?: string = 'avatar-s-3.jpg';
   role: Role;
-  token?: string;
+  token: string;
+  accessToken?: string;
 }

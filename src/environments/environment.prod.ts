@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
   hmr: false,
-  apiUrl: 'http://localhost:8000/api'
+  apiUrl: 'https://school-ims-backend.herokuapp.com/api'
 };
