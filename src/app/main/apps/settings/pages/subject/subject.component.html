@@ -1,0 +1,137 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- content-header component -->
+        <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+        <!-- / Subject Form section start -->
+        <div class="card" *ngIf="displayForm">
+            <div class="card-body">
+                <section id="multiple-column-form">
+                    <div class="row match-height">
+                        <div class="col-12">
+                            <h4 class="card-title">{{operation}} Record</h4>
+                            <div class="card-body">
+
+                                <form class="form form-vertical" #form="ngForm" (ngSubmit)="processForm()">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label for="first-name-icon">First Name</label>
+                                                <div class="input-group input-group-merge">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><span
+                                                                [data-feather]="'user'"></span></span>
+                                                    </div>
+                                                    <input type="text" id="first-name-icon" class="form-control"
+                                                        name="fname-icon" placeholder="First Name" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label for="email-id-icon">Email</label>
+                                                <div class="input-group input-group-merge">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><span
+                                                                [data-feather]="'mail'"></span></span>
+                                                    </div>
+                                                    <input type="email" id="email-id-icon" class="form-control"
+                                                        name="email-id-icon" placeholder="Email" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label for="contact-info-icon">Mobile</label>
+                                                <div class="input-group input-group-merge">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><span
+                                                                [data-feather]="'smartphone'"></span></span>
+                                                    </div>
+                                                    <input type="number" id="contact-info-icon" class="form-control"
+                                                        name="contact-icon" placeholder="Mobile" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label for="password-icon">Password</label>
+                                                <div class="input-group input-group-merge">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><span
+                                                                [data-feather]="'lock'"></span></span>
+                                                    </div>
+                                                    <input type="password" id="password-icon" class="form-control"
+                                                        name="contact-icon" placeholder="Password" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input"
+                                                        id="customCheck4" />
+                                                    <label class="custom-control-label" for="customCheck4">Remember
+                                                        me</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <!-- <hr> -->
+                                            <button type="submit" rippleEffect
+                                                class="btn btn-primary mr-1">{{operation}}</button>
+                                            <button type="reset" rippleEffect class="btn btn-outline-secondary"
+                                                (click)="hideForm()">Cancel</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <!-- Subject Form section end -->
+
+        <div class="card">
+            <div class="card-header">
+                <h4 class="float-left mb-0 font-weight-bolder">
+                    <strong>List of {{title}}</strong>
+                </h4>
+                <div class="float-right rounded border-radius-lg">
+                    <button class="btn btn-primary ml-1" rippleEffect (click)="addItem()"><span
+                            class="fa fa-plus mr-1"></span>
+                        <span class="d-none d-sm-inline-block">Add New
+                            Record</span>
+                    </button>
+                </div>
+
+            </div>
+            <!-- /.box-header -->
+            <div class="card-content collapse show">
+                <div class="card-body">
+                    <div class="table-responsive">
+
+                        <dx-data-grid class="dx-card wide-card" [showBorders]="true"
+                            keyExpr="id" [focusedRowEnabled]="true" [focusedRowIndex]="0" [columnAutoWidth]="true"
+                            [columnHidingEnabled]=false>
+                            <dxo-paging [pageSize]="10"></dxo-paging>
+                            <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
+                            <dxo-filter-row [visible]="true"></dxo-filter-row>
+                            <dxi-column dataField="name" caption="Subject Name"></dxi-column>
+                            <dxi-column dataField="subject_type" caption="Subject Type"> </dxi-column>
+                            <dxi-column dataField="is_compulsory" caption="Is-Compulasy"></dxi-column>
+                            <dxi-column type="buttons" fixed=true>
+                                <dxi-button icon="edit" text="Edit" ></dxi-button>
+                                <dxi-button icon="fas fa-close" text="Delete" [onClick]="deleteItem">
+                                </dxi-button>
+                            </dxi-column>
+                        </dx-data-grid>
+                    </div>
+                </div>
+            </div>
+            <!-- end box-body -->
+        </div>
+
+    </div>
+</div>

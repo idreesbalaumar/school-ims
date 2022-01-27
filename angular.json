@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "vuexy": {
+    "school-ims": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -41,6 +41,7 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
+              "node_modules/devextreme/dist/css/dx.light.css",
               "src/styles.scss",
               "node_modules/highlight.js/scss/atom-one-dark.scss",
               "src/assets/fonts/feather/iconfont.css",
@@ -54,7 +55,7 @@
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,
-            "sourceMap": true,
+            "sourceMap": false,
             "optimization": false,
             "namedChunks": true
           },
@@ -106,22 +107,22 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "vuexy:build"
+            "browserTarget": "school-ims:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "vuexy:build:production"
+              "browserTarget": "school-ims:build:production"
             },
             "hmr": {
               "hmr": true,
-              "browserTarget": "vuexy:build:hmr"
+              "browserTarget": "school-ims:build:hmr"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "vuexy:build"
+            "browserTarget": "school-ims:build"
           }
         },
         "test": {
@@ -131,14 +132,17 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
-            "styles": ["src/styles.scss"],
+            "styles": [
+              "node_modules/devextreme/dist/css/dx.light.css",
+              "src/styles.scss"
+            ],
             "scripts": ["node_modules/apexcharts/dist/apexcharts.min.js"],
             "assets": ["src/favicon.ico", "src/assets"]
           }
         }
       }
     },
-    "vuexy-e2e": {
+    "school-ims-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "prefix": "",
@@ -147,11 +151,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "vuexy:serve"
+            "devServerTarget": "school-ims:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "vuexy:serve:production"
+              "devServerTarget": "school-ims:serve:production"
             }
           }
         }

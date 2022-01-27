@@ -1,6 +1,6 @@
 import { CoreMenu } from '@core/types';
 
-//? DOC: http://localhost:7777/demo/vuexy-angular-admin-dashboard-template/documentation/guide/development/navigation-menus.html#interface
+//? DOC: http://localhost:7777/demo/school-ims-angular-admin-dashboard-template/documentation/guide/development/navigation-menus.html#interface
 
 export const menu: CoreMenu[] = [
   // Dashboard
@@ -20,45 +20,29 @@ export const menu: CoreMenu[] = [
     // If role is not assigned will be display to all
     id: 'school',
     title: 'School Dashboard',
-    translate: 'MENU.DASHBOARD.ECOMMERCE',
+    // translate: 'MENU.DASHBOARD.ECOMMERCE',
     type: 'item',
-    role: ['Admin'], //? To set multiple role: ['Admin', 'Client']
+    // role: ['Admin'], //? To set multiple role: ['Admin', 'Client']
     icon: 'home',
-    url: 'dashboard/school'
-    ,
-    children: [
-      {
-        id: 'analytics',
-        title: 'Analytics',
-        translate: 'MENU.DASHBOARD.ANALYTICS',
-        type: 'item',
-        role: ['Admin'], //? To set multiple role: ['Admin', 'Client']
-        icon: 'circle',
-        url: 'dashboard/analytics'
-      },
-      {
-        // If role is not assigned will be display to all
-        id: 'school',
-        title: 'School Dashboard',
-        translate: 'MENU.DASHBOARD.ECOMMERCE',
-        type: 'item',
-        role: ['Admin'], //? To set multiple role: ['Admin', 'Client']
-        icon: 'home',
-        url: 'dashboard/school'
-      }
-    ]
+    url: 'dashboard/school',
+    classes: 'in-active',
+  },
+  // main nav
+  {
+    id: 'main-nav',
+    type: 'section',
+    title: 'Main Navigations',
+    icon: 'package',
   },
   {
     id: 'students',
-    title: 'Student',
-    translate: 'MENU.APPS.STUDENT.COLLAPSIBLE',
+    title: 'Students',
     type: 'collapsible',
-    icon: 'user',
+    icon: 'smile',
     children: [
       {
         id: 'list',
         title: 'List',
-        translate: 'MENU.APPS.STUDENT.LIST',
         type: 'item',
         icon: 'circle',
         url: 'apps/student/student-list'
@@ -66,56 +50,28 @@ export const menu: CoreMenu[] = [
       {
         id: 'add',
         title: 'Add',
-        translate: 'MENU.APPS.STUDENT.ADD',
         type: 'item',
         icon: 'circle',
         url: 'apps/student/student-add'
       },
-      // {
-      //   id: 'view',
-      //   title: 'View',
-      //   translate: 'MENU.APPS.STUDENT.VIEW',
-      //   type: 'item',
-      //   icon: 'circle',
-      //   url: 'apps/student/student-view'
-      // },
-      // {
-      //   id: 'edit',
-      //   title: 'Edit',
-      //   translate: 'MENU.APPS.STUDENT.EDIT',
-      //   type: 'item',
-      //   icon: 'circle',
-      //   url: 'apps/student/student-edit'
-      // }
     ]
   },
   {
     id: 'result',
-    title: 'Result',
-    translate: 'MENU.APPS.RESULT.COLLAPSIBLE',
+    title: 'Results',
     type: 'collapsible',
     icon: 'file-text',
     children: [
       {
         id: 'result-list',
         title: 'List',
-        translate: 'MENU.APPS.RESULT.LIST',
         type: 'item',
         icon: 'circle',
         url: 'apps/result/list'
       },
-      // {
-      //   id: 'resultPreview',
-      //   title: 'Preview',
-      //   translate: 'MENU.APPS.RESULT.PREVIEW',
-      //   type: 'item',
-      //   icon: 'circle',
-      //   url: 'apps/result/preview'
-      // },
       {
         id: 'resultEdit',
         title: 'Edit',
-        translate: 'MENU.APPS.RESULT.EDIT',
         type: 'item',
         icon: 'circle',
         url: 'apps/result/edit'
@@ -123,13 +79,125 @@ export const menu: CoreMenu[] = [
       {
         id: 'resultAdd',
         title: 'Add',
-        translate: 'MENU.APPS.RESULT.ADD',
         type: 'item',
         icon: 'circle',
         url: 'apps/result/add'
-      }
+      },
+      
     ]
   },
+  //Teacher 
+  {
+    id: 'teachers',
+    title: 'Teachers',
+    type: 'collapsible',
+    icon: 'pen-tool',
+    children: [
+      {
+        id: 'teachers-list',
+        title: 'List',
+        type: 'item',
+        icon: 'circle',
+        url: 'apps/teacher/teacher-list'
+      },
+      {
+        id: 'teachers-add',
+        title: 'Add',
+        type: 'item',
+        icon: 'circle',
+        url: 'apps/teacher/teacher-add'
+      },
+    ]
+  },
+  //Parent 
+  {
+    id: 'parents',
+    title: 'Parents',
+    type: 'collapsible',
+    icon: 'users',
+    children: [
+      {
+        id: 'parents-list',
+        title: 'List',
+        type: 'item',
+        icon: 'circle',
+        url: 'apps/parent/parent-list'
+      },
+      {
+        id: 'parents-add',
+        title: 'Add',
+        type: 'item',
+        icon: 'circle',
+        url: 'apps/parent/parent-add'
+      },
+    ]
+  },
+  // 
+  {
+    id: 'settings',
+    type: 'section',
+    title: 'SETTINGS',
+    icon: 'package',
+  },
+  {
+    id: 'settings-module',
+    title: 'Settings',
+    type: 'collapsible',
+    icon: 'settings'
+    ,
+    children: [
+      {
+        id: 'general-settings',
+        title: 'General Settings',
+        type: 'item',
+        icon: 'circle',
+        url: 'settings/general-settings'
+      },
+      {
+        id: 'academic-session',
+        title: 'Academic Session',
+        type: 'item',
+        icon: 'circle',
+        url: 'settings/academic-session'
+      },
+      {
+        id: 'academic-term',
+        title: 'Academic Term',
+        type: 'item',
+        icon: 'circle',
+        url: 'settings/academic-term'
+      },
+      {
+        id: 'grade-system',
+        title: 'Grade System',
+        type: 'item',
+        icon: 'circle',
+        url: 'settings/grade-system'
+      },
+      {
+        id: 'subject',
+        title: 'Subjects',
+        type: 'item',
+        icon: 'circle',
+        url: 'settings/subject'
+      },
+      {
+        id: 'classes',
+        title: 'Classes',
+        type: 'item',
+        icon: 'circle',
+        url: 'settings/classes'
+      },
+      {
+        id: 'house',
+        title: 'Houses',
+        type: 'item',
+        icon: 'circle',
+        url: 'settings/house'
+      },
+      
+    ]
+  }
   
   // Apps & Pages
   // {
@@ -336,7 +404,7 @@ export const menu: CoreMenu[] = [
   //               title: 'Welcome',
   //               translate: 'MENU.PAGES.MAIL.WELCOME',
   //               type: 'item',
-  //               url: 'https://pixinvent.com/demo/vuexy-mail-template/mail-welcome.html',
+  //               url: 'https://pixinvent.com/demo/school-ims-mail-template/mail-welcome.html',
   //               externalUrl: true,
   //               openInNewTab: true
   //             },
@@ -345,7 +413,7 @@ export const menu: CoreMenu[] = [
   //               title: 'Reset Password',
   //               translate: 'MENU.PAGES.MAIL.RESET',
   //               type: 'item',
-  //               url: 'https://pixinvent.com/demo/vuexy-mail-template/mail-reset-password.html',
+  //               url: 'https://pixinvent.com/demo/school-ims-mail-template/mail-reset-password.html',
   //               externalUrl: true,
   //               openInNewTab: true
   //             },
@@ -354,7 +422,7 @@ export const menu: CoreMenu[] = [
   //               title: 'Verify',
   //               translate: 'MENU.PAGES.MAIL.VERIFY',
   //               type: 'item',
-  //               url: 'https://pixinvent.com/demo/vuexy-mail-template/mail-verify-email.html',
+  //               url: 'https://pixinvent.com/demo/school-ims-mail-template/mail-verify-email.html',
   //               externalUrl: true,
   //               openInNewTab: true
   //             },
@@ -363,7 +431,7 @@ export const menu: CoreMenu[] = [
   //               title: 'Deactivate',
   //               translate: 'MENU.PAGES.MAIL.DEACTIVATE',
   //               type: 'item',
-  //               url: 'https://pixinvent.com/demo/vuexy-mail-template/mail-deactivate-account.html',
+  //               url: 'https://pixinvent.com/demo/school-ims-mail-template/mail-deactivate-account.html',
   //               externalUrl: true,
   //               openInNewTab: true
   //             },
@@ -372,7 +440,7 @@ export const menu: CoreMenu[] = [
   //               title: 'Invoice',
   //               translate: 'MENU.PAGES.MAIL.INVOICE',
   //               type: 'item',
-  //               url: 'https://pixinvent.com/demo/vuexy-mail-template/mail-invoice.html',
+  //               url: 'https://pixinvent.com/demo/school-ims-mail-template/mail-invoice.html',
   //               externalUrl: true,
   //               openInNewTab: true
   //             },
@@ -381,7 +449,7 @@ export const menu: CoreMenu[] = [
   //               title: 'Promotional',
   //               translate: 'MENU.PAGES.MAIL.PROMOTIONAL',
   //               type: 'item',
-  //               url: 'https://pixinvent.com/demo/vuexy-mail-template/mail-promotional.html',
+  //               url: 'https://pixinvent.com/demo/school-ims-mail-template/mail-promotional.html',
   //               externalUrl: true,
   //               openInNewTab: true
   //             }
@@ -1274,7 +1342,7 @@ export const menu: CoreMenu[] = [
   //       translate: 'MENU.OTHERS.DOCUMENTATION',
   //       icon: 'file-text',
   //       type: 'item',
-  //       url: 'https://pixinvent.com/demo/vuexy-angular-admin-dashboard-template/documentation',
+  //       url: 'https://pixinvent.com/demo/school-ims-angular-admin-dashboard-template/documentation',
   //       externalUrl: true,
   //       openInNewTab: true
   //     },
