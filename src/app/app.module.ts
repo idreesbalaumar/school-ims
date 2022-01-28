@@ -70,6 +70,50 @@ const appRoutes: Routes = [
     loadChildren: () => import('./main/tables/tables.module').then(m => m.TablesModule),
     canActivate: [AuthGuard]
   },
+  {
+    path: 'email',
+    loadChildren: () => import('./main/apps/email/email.module').then(m => m.EmailModule)
+  },
+  {
+    path: 'chat',
+    loadChildren: () => import('./main/apps/chat/chat.module').then(m => m.ChatModule)
+  },
+  {
+    path: 'todo',
+    loadChildren: () => import('./main/apps/todo/todo.module').then(m => m.TodoModule)
+  },
+  {
+    path: 'calendar',
+    loadChildren: () => import('./main/apps/calendar/calendar.module').then(m => m.CalendarModule)
+  },
+  {
+    path: 'invoice',
+    loadChildren: () => import('./main/apps/invoice/invoice.module').then(m => m.InvoiceModule)
+  },
+  {
+    path: 'result',
+    loadChildren: () => import('./main/apps/result/result.module').then(m => m.ResultModule)
+  },
+  {
+    path: 'e-commerce',
+    loadChildren: () => import('./main/apps/ecommerce/ecommerce.module').then(m => m.EcommerceModule)
+  },
+  {
+    path: 'user',
+    loadChildren: () => import('./main/apps/user/user.module').then(m => m.UserModule)
+  },
+  {
+    path: 'student',
+    loadChildren: () => import('./main/apps/student/student.module').then(m => m.StudentModule)
+  },
+  {
+    path: 'teacher',
+    loadChildren: () => import('./main/apps/teacher/teacher.module').then(m => m.TeacherModule)
+  },
+  {
+    path: 'settings',
+    loadChildren: () => import('./main/apps/settings/settings.module').then(m => m.SettingsModule)
+  },
   // {
   //   path: 'charts-and-maps',
   //   loadChildren: () => import('./main/charts-and-maps/charts-and-maps.module').then(m => m.ChartsAndMapsModule),

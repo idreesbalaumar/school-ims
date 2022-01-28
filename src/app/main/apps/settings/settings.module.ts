@@ -20,6 +20,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { DxSelectBoxModule, DxTextAreaModule, DxDateBoxModule, DxFormModule, DxDataGridModule, DxSpeedDialActionModule } from 'devextreme-angular';
 import { CoreCommonModule } from '@core/common.module';
 import { CardSnippetModule } from '@core/components/card-snippet/card-snippet.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 const routes: Routes = [
   { path: '', component: SettingsComponent }
@@ -45,6 +46,7 @@ const routes: Routes = [
     DatatablesModule,
     TableModule,
     NgxDatatableModule,
+    NgbModule,
     DxSelectBoxModule,
     DxTextAreaModule,
     DxDateBoxModule,

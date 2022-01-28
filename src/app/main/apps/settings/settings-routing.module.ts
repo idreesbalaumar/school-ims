@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
 import { AcademicSessionComponent } from './pages/academic-session/academic-session.component';
 import { AcademicTermComponent } from './pages/academic-term/academic-term.component';
 import { ClassesComponent } from './pages/classes/classes.component';
@@ -20,7 +21,10 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  imports: [
+    RouterModule.forChild(routes),
+    ContentHeaderModule,
+  ],
   exports: [RouterModule]
 })
 export class SettingsRoutingModule { }
