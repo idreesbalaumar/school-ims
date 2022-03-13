@@ -1,0 +1,588 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+    <!-- Horizontal Wizard -->
+    <section class="vertical-wizard">
+      <div id="stepper1" class="bs-stepper vertical vertical-wizard-example">
+        <div class="bs-stepper-header">
+          <div class="step" data-target="#account-details">
+            <button class="step-trigger">
+              <span class="bs-stepper-box">
+                <i data-feather="user-plus" class="font-medium-3"></i>
+              </span>
+              <span class="bs-stepper-label">
+                <span class="bs-stepper-title">Student Details</span>
+                <span class="bs-stepper-subtitle">Add Basic Information</span>
+              </span>
+            </button>
+          </div>
+          <div class="line"><i data-feather="chevron-right" class="font-medium-2"></i></div>
+          <div class="step" data-target="#acedemic-info">
+            <button class="step-trigger">
+              <span class="bs-stepper-box">
+                <i data-feather="book" class="font-medium-3"></i>
+              </span>
+              <span class="bs-stepper-label">
+                <span class="bs-stepper-title">Acedemic Details</span>
+                <span class="bs-stepper-subtitle">Add Acedamic Information</span>
+              </span>
+            </button>
+          </div>
+          <div class="line"><i data-feather="chevron-right" class="font-medium-2"></i></div>
+          <div class="step" data-target="#address">
+            <button class="step-trigger">
+              <span class="bs-stepper-box">
+                <i data-feather="user" class="font-medium-3"></i>
+              </span>
+              <span class="bs-stepper-label">
+                <span class="bs-stepper-title">Parent/Guadian Details</span>
+                <span class="bs-stepper-subtitle">Add Parent Guadian Information</span>
+              </span>
+            </button>
+          </div>
+          <!-- <div class="line"><i data-feather="chevron-right" class="font-medium-2"></i></div>
+          <div class="step" data-target="#social-links">
+            <button class="step-trigger">
+              <span class="bs-stepper-box">
+                <i data-feather="mail" class="font-medium-3"></i>
+              </span>
+              <span class="bs-stepper-label">
+                <span class="bs-stepper-title">Contact</span>
+                <span class="bs-stepper-subtitle">Add Contact Details</span>
+              </span>
+            </button>
+          </div> -->
+        </div>
+        <div class="bs-stepper-content">
+          <form (ngSubmit)="(AddStudentForm.form.valid)" #AddStudentForm="ngForm">
+            <div id="account-details" class="content">
+              <form #studentDetailsForm="ngForm">
+                <div class="content-header">
+                  <h5 class="mb-0">Student Details</h5>
+                  <small class="text-muted">Enter Student Basic Information</small>
+                </div>
+
+                <!-- header media -->
+                <div class="media mb-1">
+                  <a href="javascript:void(0);" class="mr-25">
+                    <img [src]="avatarImage" class="rounded border border-secondary border-1 rounded bg-light mr-50"
+                      alt="profile image" height="100" width="100" />
+                  </a>
+                  <!-- upload and reset button -->
+                  <div class="media-body mt-75 ml-1">
+                    <button (click)="file.click()" for="student-photo-upload" class="btn btn-sm btn-primary mb-75 mr-75"
+                      rippleEffect>
+                      Upload Photo
+                    </button>
+                    <input [(ngModel)]="StudentPhotoUpload" #TDPhotoRef="ngModel" required type="file" #file
+                      name="StudentPhotoUpload" id="StudentPhotoUpload" class="form-control" hidden accept="image/*"
+                      (change)="uploadImage($event)" />
+                    <!-- <button class="btn btn-sm btn-outline-secondary mb-75" rippleEffect>Reset</button> -->
+                    <span *ngIf="studentDetailsForm.submitted && TDPhotoRef.invalid" class="invalid-form">
+                      <small class="form-text text-danger" *ngIf="TDPhotoRef.errors.required">Student photo is
+                        required!</small>
+                    </span>
+                    <p><small>Allowed JPG, GIF or PNG. Max size of 800kB</small></p>
+                  </div>
+                  <!--/ upload and reset button -->
+                </div>
+                <!--/ header media -->
+
+                <div class="row">
+                  <div class="form-group col-md-6">
+
+                    <label class="form-label" for="FirstName"
+                      [class.text-danger]="!FirstNameRef.valid && studentDetailsForm.submitted">First Name<i
+                        class="text-danger">*</i></label>
+                    <input [(ngModel)]="FirstName" #FirstNameRef="ngModel" required type="text" name="FirstName"
+                      id="FirstName" class="form-control"
+                      [class.error]="!FirstNameRef.valid && studentDetailsForm.submitted"
+                      placeholder="Enter first name . . ." />
+                    <span *ngIf="studentDetailsForm.submitted && FirstNameRef.invalid" class="invalid-form">
+                      <small class="form-text text-danger" *ngIf="FirstNameRef.errors.required">First name is
+                        required!</small>
+                    </span>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label class="form-label" for="Surname"
+                      [class.text-danger]="!SurnameRef.valid && studentDetailsForm.submitted">Surname<i
+                        class="text-danger">*</i></label>
+                    <input [(ngModel)]="Surname" #SurnameRef="ngModel" required type="text" name="Surname" id="Surname"
+                      class="form-control" [class.error]="!SurnameRef.valid && studentDetailsForm.submitted"
+                      placeholder="Enter surname . . ." />
+                    <span *ngIf="studentDetailsForm.submitted && SurnameRef.invalid" class="invalid-form">
+                      <small class="form-text text-danger" *ngIf="SurnameRef.errors.required">Surname is
+                        required!</small>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label class="form-label" for="OtherName">Other name (Optional)</label>
+                    <input [(ngModel)]="OtherName" #OtherNameRef="ngModel" type="text" name="OtherName" id="OtherName"
+                      class="form-control" placeholder="Enter Other name . . ." />
+                  </div>
+
+                  <div class="form-group col-md-6">
+                    <label class="form-label" for="DateOfBirth"
+                      [class.text-danger]="!DateOfBirthRef.valid && studentDetailsForm.submitted">Date of birth<i
+                        class="text-danger">*</i></label>
+                    <div class="input-group">
+                      <input class="form-control" [class.error]="!DateOfBirthRef.valid && studentDetailsForm.submitted"
+                        #DateOfBirthRef="ngModel" required placeholder="Enter date of birth . . ." name="DateOfBirth"
+                        [(ngModel)]="DateOfBirth" ngbDatepicker #MinMaxDP="ngbDatepicker"
+                        [maxDate]="{year: year, month: month, day: day}">
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-secondary feather icon-calendar" (click)="MinMaxDP.toggle()"
+                          type="button" rippleEffect></button>
+                      </div>
+                    </div>
+                    <span *ngIf="studentDetailsForm.submitted && DateOfBirthRef.invalid" class="invalid-form">
+                      <small class="form-text text-danger" *ngIf="DateOfBirthRef.errors.required">Date of birth is
+                        required!</small>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label class="form-label" for="selectGender"
+                      [class.text-danger]="!GenderRef.valid && studentDetailsForm.submitted">Gender<i
+                        class="text-danger">*</i></label>
+                    <ng-select [class.error]="!GenderRef.valid && studentDetailsForm.submitted" #GenderRef="ngModel"
+                      required [items]="selectGender" [closeOnSelect]="true" [searchable]="true" bindLabel="name"
+                      name="selectGender" id="selectGender" placeholder="Select gender . . ."
+                      [(ngModel)]="selectGenderSelected">
+                      <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                        <span class="ng-value-label"> {{ item.name }}</span>
+                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                      </ng-template>
+                    </ng-select>
+                    <span *ngIf="studentDetailsForm.submitted && GenderRef.invalid" class="invalid-form">
+                      <small class="form-text text-danger" *ngIf="GenderRef.errors.required">Gender is
+                        required!</small>
+                    </span>
+                  </div>
+
+                  <div class="form-group col-md-6">
+                    <label class="form-label" for="selectStateOfOrigin"
+                      [class.text-danger]="!StateOfOriginRef.valid && studentDetailsForm.submitted">State of origin<i
+                        class="text-danger">*</i></label>
+                    <ng-select [class.error]="!StateOfOriginRef.valid && studentDetailsForm.submitted"
+                      #StateOfOriginRef="ngModel" required [items]="selectStateOfOrigin" [closeOnSelect]="true"
+                      [searchable]="true" bindLabel="name" name="selectStateOfOrigin" id="selectStateOfOrigin"
+                      placeholder="Select state of origin . . ." [(ngModel)]="selectStateOfOriginSelected">
+                      <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                        <span class="ng-value-label"> {{ item.name }}</span>
+                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                      </ng-template>
+                    </ng-select>
+                    <span *ngIf="studentDetailsForm.submitted && StateOfOriginRef.invalid" class="invalid-form">
+                      <small class="form-text text-danger" *ngIf="StateOfOriginRef.errors.required">State of origin is
+                        required!</small>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="row">
+
+                  <div class="form-group col-md-6">
+                    <label class="form-label" for="selectLGA"
+                      [class.text-danger]="!LGARef.valid && studentDetailsForm.submitted">Local Government Area<i
+                        class="text-danger">*</i></label>
+                    <ng-select [class.error]="!LGARef.valid && studentDetailsForm.submitted" #LGARef="ngModel" required
+                      [items]="selectLGA" [closeOnSelect]="true" [searchable]="true" bindLabel="name" name="selectLGA"
+                      id="selectLGA" placeholder="Select local government area . . ." [(ngModel)]="selectLGASelected">
+                      <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                        <span class="ng-value-label"> {{ item.name }}</span>
+                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                      </ng-template>
+                    </ng-select>
+                    <span *ngIf="studentDetailsForm.submitted && LGARef.invalid" class="invalid-form">
+                      <small class="form-text text-danger" *ngIf="LGARef.errors.required">Local government area is
+                        required!</small>
+                    </span>
+                  </div>
+
+                  <div class="form-group col-md-6">
+                    <!-- <label class="form-label" for="language"
+                    [class.text-danger]="!LGARef.valid && studentDetailsForm.submitted">Local Government Area<i class="text-danger">*</i></label>
+                    <ng-select [class.error]="!LGARef.valid && studentDetailsForm.submitted" #LGARef="ngModel"
+                      required [items]="selectLGA" [closeOnSelect]="true" [searchable]="true" bindLabel="name"
+                      name="selectLGA" placeholder="Select Local Government Area . . ." [(ngModel)]="selectLGASelected">
+                      <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                        <span class="ng-value-label"> {{ item.name }}</span>
+                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                      </ng-template>
+                    </ng-select>
+                    <span *ngIf="studentDetailsForm.submitted && LGARef.invalid" class="invalid-form">
+                      <small class="form-text text-danger" *ngIf="LGARef.errors.required">Local Government Area is
+                        required!</small>
+                    </span> -->
+                  </div>
+                </div>
+                <!-- <div class="row">
+                  <div class="form-group form-password-toggle col-md-6">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" name="password" id="password" class="form-control"
+                      [class.error]="!TDPasswordOnlyRef.valid && studentDetailsForm.submitted"
+                      placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" ngModel
+                      #TDPasswordOnlyRef="ngModel" required minlength="6"
+                      pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" />
+                    <div *ngIf="TDPasswordOnlyRef.invalid && studentDetailsForm.submitted"
+                      class="form-text text-danger">
+                      <small *ngIf="TDPasswordOnlyRef.errors.required"> Password is required. </small>
+                      <small *ngIf="TDPasswordOnlyRef.errors.pattern">
+                        Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more
+                        characters.</small>
+                    </div>
+                  </div>
+                  <div class="form-group form-password-toggle col-md-6">
+                    <label class="form-label" for="confirm-password">Confirm Password</label>
+                    <input type="password" name="confirm-password" id="confirm-password" class="form-control"
+                      [class.error]="!TDRepeatPasswordRef.valid && studentDetailsForm.submitted"
+                      placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" required
+                      ngModel #TDRepeatPasswordRef="ngModel" pattern="{{ TDPasswordOnlyRef.value }}" minlength="6" />
+                    <div *ngIf="TDRepeatPasswordRef.invalid && studentDetailsForm.submitted"
+                      class="form-text text-danger">
+                      <small *ngIf="TDRepeatPasswordRef.errors.required"> Confirm password is required. </small>
+                      <small *ngIf="TDRepeatPasswordRef.errors.pattern">
+                        Password & Confirm Password does not match.</small>
+                    </div>
+                  </div>
+                </div> -->
+
+                <div class="d-flex justify-content-between">
+                  <button (click)="horizontalWizardStepperPrevious()" class="btn btn-outline-secondary btn-prev"
+                    disabled rippleEffect>
+                    <i data-feather="arrow-left" class="align-middle mr-sm-25 mr-0"></i>
+                    <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                  </button>
+                  <button (click)="horizontalWizardStepperNext(studentDetailsForm)" type="submit"
+                    class="btn btn-primary btn-next" rippleEffect>
+                    <span class="align-middle d-sm-inline-block d-none">Next</span>
+                    <i data-feather="arrow-right" class="align-middle ml-sm-25 ml-0"></i>
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div id="acedemic-info" class="content">
+              <form #acedemicInfoForm="ngForm">
+                <div class="content-header">
+                  <h5 class="mb-0">Acedemic Details</h5>
+                  <small>Enter Student Acedemic Information</small>
+                </div>
+
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label class="form-label" for="selectArtOrScience"
+                      [class.text-danger]="!ArtOrScience.valid && acedemicInfoForm.submitted">Assign Art or Science<i
+                        class="text-danger">*</i></label>
+                    <ng-select [class.error]="!ArtOrScience.valid && acedemicInfoForm.submitted" #ArtOrScience="ngModel"
+                      required [items]="selectArtOrScience" [closeOnSelect]="true" [searchable]="true" bindLabel="name"
+                      name="selectArtOrScience" id="selectArtOrScience" placeholder="Select Art or Science . . ."
+                      [(ngModel)]="selectArtOrScienceSelected">
+                      <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                        <span class="ng-value-label"> {{ item.name }}</span>
+                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                      </ng-template>
+                    </ng-select>
+                    <span *ngIf="acedemicInfoForm.submitted && ArtOrScience.invalid" class="invalid-form">
+                      <small class="form-text text-danger" *ngIf="ArtOrScience.errors.required">Art or Science is
+                        required!</small>
+                    </span>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>Select Elective Subjects</label>
+
+                    <div class="form-group">
+                      <!-- Multi select with limited number of selections -->
+                      <ngb-alert [type]="'warning'" [dismissible]="false" class="mb-2"
+                        *ngIf="selectMultiLimitedSelected.length === 3">
+                        <div class="alert-body">
+                          <small>Max selection reached</small>
+                        </div>
+                      </ngb-alert>
+
+                      <ng-select #selectMultiLimited [items]="selectMulti | async" [multiple]="true"
+                        [maxSelectedItems]="10" bindLabel="name" [(ngModel)]="selectMultiLimitedSelected"
+                        placeholder="Select Elective Subjects">
+                        <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                          <span class="ng-value-label"> {{ item.name }}</span>
+                          <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                        </ng-template>
+                      </ng-select>
+                      <!-- Multi select with limited number of selections -->
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label class="form-label" for="selectClasss"
+                      [class.text-danger]="!Classs.valid && acedemicInfoForm.submitted">Assign Class<i
+                        class="text-danger">*</i></label>
+                    <ng-select [class.error]="!Classs.valid && acedemicInfoForm.submitted" #Classs="ngModel" required
+                      [items]="selectClasss" [closeOnSelect]="true" [searchable]="true" bindLabel="name"
+                      name="selectClasss" id="selectClasss" placeholder="Select class . . ."
+                      [(ngModel)]="selectClasssSelected">
+                      <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                        <span class="ng-value-label"> {{ item.name }}</span>
+                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                      </ng-template>
+                    </ng-select>
+                    <span *ngIf="acedemicInfoForm.submitted && Classs.invalid" class="invalid-form">
+                      <small class="form-text text-danger" *ngIf="Classs.errors.required">Class is
+                        required!</small>
+                    </span>
+                  </div>
+
+                  <div class="form-group col-md-6">
+                    <label class="form-label" for="selectHouse"
+                      [class.text-danger]="!House.valid && acedemicInfoForm.submitted">Assign House<i
+                        class="text-danger">*</i></label>
+                    <ng-select [class.error]="!House.valid && acedemicInfoForm.submitted" #House="ngModel" required
+                      [items]="selectHouse" [closeOnSelect]="true" [searchable]="true" bindLabel="name"
+                      name="selectHouse" id="selectHouse" placeholder="Select house . . ."
+                      [(ngModel)]="selectHouseSelected">
+                      <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                        <span class="ng-value-label"> {{ item.name }}</span>
+                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                      </ng-template>
+                    </ng-select>
+                    <span *ngIf="acedemicInfoForm.submitted && House.invalid" class="invalid-form">
+                      <small class="form-text text-danger" *ngIf="House.errors.required">House is
+                        required!</small>
+                    </span>
+                  </div>
+
+                </div>
+
+
+                <div class="d-flex justify-content-between">
+                  <button type="button" (click)="horizontalWizardStepperPrevious()" class="btn btn-primary btn-prev"
+                    rippleEffect>
+                    <i data-feather="arrow-left" class="align-middle mr-sm-25 mr-0"></i>
+                    <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                  </button>
+                  <button (click)="horizontalWizardStepperNext(acedemicInfoForm)" class="btn btn-primary btn-next"
+                    rippleEffect>
+                    <span class="align-middle d-sm-inline-block d-none">Next</span>
+                    <i data-feather="arrow-right" class="align-middle ml-sm-25 ml-0"></i>
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div id="address" class="content">
+              <form #parentDetailsForm="ngForm">
+                <div class="content-header">
+                  <h5 class="mb-0">Parent/Guardian Details</h5>
+                  <small>Enter Parent/Guardian Information</small>
+                </div>
+
+                <div class="row">
+                  <div class="form-group col-md-6">
+
+                    <label class="form-label" for="ParentFirstName"
+                      [class.text-danger]="!ParentFirstNameRef.valid && parentDetailsForm.submitted">Parent First Name<i
+                        class="text-danger">*</i></label>
+                    <input [(ngModel)]="ParentFirstName" #ParentFirstNameRef="ngModel" required type="text"
+                      name="ParentFirstName" id="ParentFirstName" class="form-control"
+                      [class.error]="!ParentFirstNameRef.valid && parentDetailsForm.submitted"
+                      placeholder="Enter Parent First Name . . ." />
+                    <span *ngIf="parentDetailsForm.submitted && ParentFirstNameRef.invalid" class="invalid-form">
+                      <small class="form-text text-danger" *ngIf="ParentFirstNameRef.errors.required">Parent First Name
+                        is
+                        required!</small>
+                    </span>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label class="form-label" for="ParentSurname"
+                      [class.text-danger]="!ParentSurnameRef.valid && parentDetailsForm.submitted">Parent Surname<i
+                        class="text-danger">*</i></label>
+                    <input [(ngModel)]="ParentSurname" #ParentSurnameRef="ngModel" required type="text"
+                      name="ParentSurname" id="ParentSurname" class="form-control"
+                      [class.error]="!ParentSurnameRef.valid && parentDetailsForm.submitted"
+                      placeholder="Enter Parent Surname . . ." />
+                    <span *ngIf="parentDetailsForm.submitted && ParentSurnameRef.invalid" class="invalid-form">
+                      <small class="form-text text-danger" *ngIf="ParentSurnameRef.errors.required">Parent Surname is
+                        required!</small>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label class="form-label" for="ParentOtherName">Parent Other Name (Optional)</label>
+                    <input [(ngModel)]="ParentOtherName" #ParentOtherNameRef="ngModel" type="text"
+                      name="ParentOtherName" id="ParentOtherName" class="form-control"
+                      placeholder="Enter Parent Other Name . . ." />
+                  </div>
+
+                  <div class="form-group col-md-6">
+                    <label class="form-label" for="selectGender"
+                      [class.text-danger]="!GenderRef.valid && parentDetailsForm.submitted">Gender<i
+                        class="text-danger">*</i></label>
+                    <ng-select [class.error]="!GenderRef.valid && parentDetailsForm.submitted" #GenderRef="ngModel"
+                      required [items]="[{ name: 'Male' }, { name: 'Female' }]" [closeOnSelect]="true" [searchable]="true" bindLabel="name"
+                      name="selectGender" id="selectGender" placeholder="Select gender . . ."
+                      [(ngModel)]="selectParentGenderSelected">
+                      <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                        <span class="ng-value-label"> {{ item.name }}</span>
+                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                      </ng-template>
+                    </ng-select>
+                    <span *ngIf="parentDetailsForm.submitted && GenderRef.invalid" class="invalid-form">
+                      <small class="form-text text-danger" *ngIf="GenderRef.errors.required">Gender is
+                        required!</small>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label class="form-label" for="selectGender"
+                      [class.text-danger]="!ParentaddressRef.valid && parentDetailsForm.submitted">Address<i
+                        class="text-danger">*</i></label>
+                    <input [(ngModel)]="Parentaddress" #ParentaddressRef="ngModel" required type="text"
+                      id="Parentaddress" name="Parentaddress" class="form-control"
+                      [class.error]="parentDetailsForm.submitted && ParentaddressRef.invalid"
+                      placeholder="98  Borough bridge Road, Birmingham" />
+                    <span *ngIf="parentDetailsForm.submitted && ParentaddressRef.invalid" class="invalid-form">
+                      <small class="form-text text-danger" *ngIf="ParentaddressRef.errors.required">Address is
+                        required!</small>
+                    </span>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label class="form-control-label" for="TDRegex">Phone Number</label>
+                    <input type="number" name="TDRegex" class="form-control"
+                      [class.error]="TDRegexRef.invalid && parentDetailsForm.submitted" pattern="^([0-9]+)$"
+                      id="TDRegex" placeholder="Enter Parent Phone Number . . ." minlength="11" required ngModel
+                      #TDRegexRef="ngModel" />
+                    <small class="form-text text-danger" *ngIf="TDRegexRef.invalid && parentDetailsForm.submitted">Phone
+                      number format is invalid!</small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col">
+                    <label class="form-label" for="city1">Select Parent from Record</label>
+                    <!-- Button trigger modal -->
+                    <button type="button" (click)="modalSelectOpen(modalSelect)"
+                      class="btn btn-outline-primary btn-block" rippleEffect>
+                      Click to Select Parent
+                    </button>
+                    <!-- Modal -->
+                    <ng-template #modalSelect let-modal>
+                      <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel1">Select Parent</h4>
+                        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body" tabindex="0" ngbAutofocus>
+                        <p>Select from Parent record</p>
+                        <!-- <p>This is <code>ng-select</code> example in Modal.</p> -->
+                        <ng-select [items]="selectParent" placeholder="Select parent . . ." bindLabel="name" [loading]="selectBasicLoading"> </ng-select>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" (click)="modal.close('Accept click')"
+                          rippleEffect>
+                          Accept
+                        </button>
+                      </div>
+                    </ng-template>
+                    <!-- / Modal -->
+                  </div>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                  <button type="button" (click)="horizontalWizardStepperPrevious()" class="btn btn-primary btn-prev"
+                    rippleEffect>
+                    <i data-feather="arrow-left" class="align-middle mr-sm-25 mr-0"></i>
+                    <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                  </button>
+                  <!-- <button (click)="horizontalWizardStepperNext(parentDetailsForm)" class="btn btn-primary btn-next"
+                    rippleEffect>
+                    <span class="align-middle d-sm-inline-block d-none">Next</span>
+                    <i data-feather="arrow-right" class="align-middle ml-sm-25 ml-0"></i>
+                  </button> -->
+                  <button class="btn btn-success btn-submit" rippleEffect (click)="onSubmit()">Submit</button>
+                </div>
+              </form>
+            </div>
+            <!-- <div id="social-links" class="content">
+              <form #socialLinkForm="ngForm">
+                <div class="content-header">
+                  <h5 class="mb-0">Social Links</h5>
+                  <small>Enter Your Social Links.</small>
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label class="form-label" for="twitter">Twitter</label>
+                    <input [(ngModel)]="twitterVar" #twitterkRef="ngModel" required type="text" id="twitter"
+                      name="twitter" class="form-control"
+                      [class.error]="socialLinkForm.submitted && twitterkRef.invalid"
+                      placeholder="https://twitter.com/abc" />
+                    <span *ngIf="socialLinkForm.submitted && twitterkRef.invalid" class="invalid-form">
+                      <small class="form-text text-danger" *ngIf="twitterkRef.errors.required">This field is
+                        required!</small>
+                    </span>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label class="form-label" for="facebook">Facebook</label>
+                    <input [(ngModel)]="facebookVar" #facebookRef="ngModel" required type="text" id="facebook"
+                      name="facebook" class="form-control"
+                      [class.error]="socialLinkForm.submitted && facebookRef.invalid"
+                      placeholder="https://facebook.com/abc" />
+                    <span *ngIf="socialLinkForm.submitted && facebookRef.invalid" class="invalid-form">
+                      <small class="form-text text-danger" *ngIf="facebookRef.errors.required">This field is
+                        required!</small>
+                    </span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label class="form-label" for="google">Google+</label>
+                    <input [(ngModel)]="googleVar" #googleRef="ngModel" required type="text" id="google" name="google"
+                      class="form-control" [class.error]="socialLinkForm.submitted && googleRef.invalid"
+                      placeholder="https://plus.google.com/abc" />
+                    <span *ngIf="socialLinkForm.submitted && googleRef.invalid" class="invalid-form">
+                      <small class="form-text text-danger" *ngIf="googleRef.errors.required">This field is
+                        required!</small>
+                    </span>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label class="form-label" for="linkedin">Linkedin</label>
+                    <input [(ngModel)]="linkedinVar" #linkedinRef="ngModel" required type="text" id="linkedin"
+                      name="linkedin" class="form-control"
+                      [class.error]="socialLinkForm.submitted && linkedinRef.invalid"
+                      placeholder="https://linkedin.com/abc" />
+                    <span *ngIf="socialLinkForm.submitted && linkedinRef.invalid" class="invalid-form">
+                      <small class="form-text text-danger" *ngIf="linkedinRef.errors.required">This field is
+                        required!</small>
+                    </span>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <button type="button" (click)="horizontalWizardStepperPrevious()" class="btn btn-primary btn-prev"
+                    rippleEffect>
+                    <i data-feather="arrow-left" class="align-middle mr-sm-25 mr-0"></i>
+                    <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                  </button>
+                  <button class="btn btn-success btn-submit" rippleEffect (click)="onSubmit()">Submit</button>
+                </div>
+              </form>
+            </div> -->
+          </form>
+        </div>
+      </div>
+    </section>
+    <!--/ Horizontal Wizard -->
+
+
+
+
+  </div>
+</div>

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkschool_ims=self.webpackChunkschool_ims||[]).push([[7],{51007:function(c,_,s){s.r(_),s.d(_,{TablesModule:function(){return u}});var o=s(75134),n=s(96285),t=s(38373),a=s(19622),u=function(){var l=function e(){(0,o.Z)(this,e)};return l.\u0275fac=function(d){return new(d||l)},l.\u0275mod=a.oAB({type:l}),l.\u0275inj=a.cJS({imports:[[t.M,n.U]]}),l}()}}]);

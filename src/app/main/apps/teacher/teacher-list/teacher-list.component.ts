@@ -1,0 +1,319 @@
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ColumnMode, DatatableComponent } from '@swimlane/ngx-datatable';
+
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+import { CoreConfigService } from '@core/services/config.service';
+import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
+
+import { TeacherListService } from 'app/main/apps/teacher/teacher-list/teacher-list.service';
+import { TeachersFakeData } from '@fake-db/teachers.data';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import Swal from 'sweetalert2';
+import { BeforeOpenEvent } from '@sweetalert2/ngx-sweetalert2';
+
+@Component({
+  selector: 'app-teacher-list',
+  templateUrl: './teacher-list.component.html',
+  styleUrls: ['./teacher-list.component.scss'],
+  encapsulation: ViewEncapsulation.None
+})
+export class TeacherListComponent implements OnInit {
+  // Public
+  public sidebarToggleRef = false;
+  public rows;
+  public selectedOption = 10;
+  public ColumnMode = ColumnMode;
+  public temp = [];
+  public previousClassFilter = '';
+  public previousGenderFilter = '';
+  public previousStatusFilter = '';
+  public exportCSVData;
+
+  teachers: TeachersFakeData[];
+
+  public contentHeader: object;
+
+  public selectClass: any = [
+    { name: 'All', value: '' },
+    { name: 'JSS-1', value: 'JSS-1' },
+    { name: 'JSS-2', value: 'JSS-2' },
+    { name: 'JSS-3', value: 'JSS-3' },
+    { name: 'SS-1', value: 'SS-1' },
+    { name: 'SS-2', value: 'SS-2' },
+    { name: 'SS-3', value: 'SS-3' }
+  ];
+
+  public selectGender: any = [
+    { name: 'All', value: '' },
+    { name: 'Male', value: 'Male' },
+    { name: 'Female', value: 'Female' }
+  ];
+
+  public selectStatus: any = [
+    { name: 'All', value: '' },
+    // { name: 'Pending', value: 'Pending' },
+    { name: 'Active', value: 'Active' },
+    { name: 'Inactive', value: 'Inactive' }
+  ];
+
+  public selectedClass = [];
+  public selectedGender = [];
+  public selectedStatus = [];
+  public searchValue = '';
+
+  // Decorator
+  @ViewChild(DatatableComponent) table: DatatableComponent;
+
+  // Private
+  private tempData = [];
+  private _unsubscribeAll: Subject<any>;
+  private timerInterval: any;
+
+  /**
+   * Constructor
+   *
+   * @param {CoreConfigService} _coreConfigService
+   * @param {TeacherListService} _teacherListService
+   * @param {CoreSidebarService} _coreSidebarService
+   */
+  constructor(
+    private _teacherListService: TeacherListService,
+    private _coreSidebarService: CoreSidebarService,
+    private _coreConfigService: CoreConfigService,
+    private modalService: NgbModal
+  ) {
+    this._unsubscribeAll = new Subject();
+    this.loadProfile = this.loadProfile.bind(this);
+    this.loadItem = this.loadItem.bind(this);
+  }
+
+  // Public Methods
+  // -----------------------------------------------------------------------------------------------------
+
+  /**
+   * filterUpdate
+   *
+   * @param event
+   */
+
+  loadProfile(event) {
+    window.open('/apps/teacher/teacher-view/' + event.row.data.id, '_blank')
+  }
+
+  loadItem(event) {
+    window.open('/apps/teacher/teacher-view/' + event.row.data.id, '_blank')
+  }
+
+  modalOpenVC(modalVC) {
+    this.modalService.open(modalVC, {
+      centered: true
+    });
+  }
+
+  autoCloseBeforeOpen(event: BeforeOpenEvent) {
+    Swal.showLoading();
+
+    this.timerInterval = setInterval(function () {
+      let timeLeft: HTMLElement = event.modalElement.querySelector('strong');
+      timeLeft.textContent = <any>Swal.getTimerLeft();
+    }, 100);
+  }
+
+  // deleteItem(id) {
+  //     swal.fire({
+  //         title: 'Delete',
+  //         text: 'Are you sure you want to delete this item?',
+  //         type: 'warning',
+  //         showCancelButton: true,
+  //         confirmButtonText: 'Yes',
+  //         cancelButtonText: 'No'
+  //     }).then(result => {
+  //         if (result.value) {
+  //             this.appraisalSystemsService.delete(id.row.data.id).subscribe(
+  //                 _ => {
+  //                     this.appraisalSystems = this.appraisalSystems.filter(
+  //                         e => e.id !== id.row.data.id
+  //                     );
+  //                     this.alert.success('Record deleted');
+  //                 },
+  //                 error => {
+  //                     this.alert.error(
+  //                         error
+  //                     );
+  //                 }
+  //             );
+  //         } else if (result.dismiss === swal.DismissReason.cancel) {
+  //         }
+  //     });
+  // }
+
+  deleteItem() {
+    Swal.fire({
+      title: 'Delete',
+      text: "Are you sure you want to delete this item?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      customClass: {
+        confirmButton: 'btn btn-primary',
+        cancelButton: 'btn btn-danger ml-1'
+      }
+    }).then(function (result) {
+      if (result.value) {
+        Swal.fire({
+          title: 'Deleted!',
+          text: 'Record has been deleted.',
+          icon: 'success',
+          customClass: {
+            confirmButton: 'btn btn-success'
+          }
+        });
+      }
+    });
+  }
+
+  filterUpdate(event) {
+    // Reset ng-select on search
+    this.selectedClass = this.selectClass[0];
+    this.selectedGender = this.selectGender[0];
+    this.selectedStatus = this.selectStatus[0];
+
+    const val = event.target.value.toLowerCase();
+
+    // Filter Our Data
+    const temp = this.tempData.filter(function (d) {
+      return d.first_name.toLowerCase().indexOf(val) !== -1 || !val;
+    });
+
+    // Update The Rows
+    this.rows = temp;
+    // Whenever The Filter Changes, Always Go Back To The First Page
+    this.table.offset = 0;
+  }
+
+  /**
+   * Toggle the sidebar
+   *
+   * @param name
+   */
+  toggleSidebar(name): void {
+    this._coreSidebarService.getSidebarRegistry(name).toggleOpen();
+  }
+
+  /**
+   * Filter By Classes
+   *
+   * @param event
+   */
+  filterByClass(event) {
+    const filter = event ? event.value : '';
+    this.previousClassFilter = filter;
+    this.temp = this.filterRows(filter, this.previousGenderFilter, this.previousStatusFilter);
+    this.rows = this.temp;
+  }
+
+  /**
+   * Filter By Gender
+   *
+   * @param event
+   */
+  filterByGender(event) {
+    const filter = event ? event.value : '';
+    this.previousGenderFilter = filter;
+    this.temp = this.filterRows(this.previousClassFilter, filter, this.previousStatusFilter);
+    this.rows = this.temp;
+  }
+
+  /**
+   * Filter By Status
+   *
+   * @param event
+   */
+  filterByStatus(event) {
+    const filter = event ? event.value : '';
+    this.previousStatusFilter = filter;
+    this.temp = this.filterRows(this.previousClassFilter, this.previousGenderFilter, filter);
+    this.rows = this.temp;
+  }
+
+  /**
+   * Filter Rows
+   *
+   * @param classFilter
+   * @param genderFilter
+   * @param statusFilter
+   */
+  filterRows(classFilter, genderFilter, statusFilter): any[] {
+    // Reset search on select change
+    this.searchValue = '';
+
+    classFilter = classFilter.toLowerCase();
+    genderFilter = genderFilter.toLowerCase();
+    statusFilter = statusFilter.toLowerCase();
+
+    return this.tempData.filter(row => {
+      const isPartialClassMatch = row.classs.toLowerCase().indexOf(classFilter) !== -1 || !classFilter;
+      const isPartialGenderMatch = row.gender.toLowerCase().indexOf(genderFilter) !== -1 || !genderFilter;
+      const isPartialStatusMatch = row.status.toLowerCase().indexOf(statusFilter) !== -1 || !statusFilter;
+      return isPartialClassMatch && isPartialGenderMatch && isPartialStatusMatch && isPartialStatusMatch;
+    });
+  }
+
+  // Lifecycle Hooks
+  // -----------------------------------------------------------------------------------------------------
+  /**
+   * On init
+   */
+  ngOnInit(): void {
+    // Subscribe config change
+    this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
+      //! If we have zoomIn route Transition then load datatable after 450ms(Transition will finish in 400ms)
+      if (config.layout.animation === 'zoomIn') {
+        setTimeout(() => {
+          this._teacherListService.onTeacherListChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(response => {
+            this.rows = response;
+            this.tempData = this.rows;
+          });
+        }, 450);
+      } else {
+        this._teacherListService.onTeacherListChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(response => {
+          this.rows = response;
+          this.tempData = this.rows;
+          this.exportCSVData = this.rows;
+        });
+
+        // content header
+        this.contentHeader = {
+          headerTitle: 'Teachers',
+          actionButton: true,
+          breadcrumb: {
+            type: '',
+            links: [
+              {
+                name: 'Dashboard',
+                isLink: true,
+                link: '/dashboard/school'
+              },
+              {
+                name: 'Teacher List',
+                isLink: false
+              }
+            ]
+          }
+        };
+
+      }
+    });
+  }
+
+  /**
+   * On destroy
+   */
+  ngOnDestroy(): void {
+    // Unsubscribe from all subscriptions
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
+  }
+}
