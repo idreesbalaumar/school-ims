@@ -12,10 +12,13 @@ import { StudentsFakeData } from '@fake-db/students.data';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import { BeforeOpenEvent } from '@sweetalert2/ngx-sweetalert2';
+<<<<<<< HEAD
 import { StudentService } from '../student.service';
 import { Student } from '../student.model';
 import { environment } from 'environments/environment';
 // import { environment } from 'environments/environment';
+=======
+>>>>>>> f14124f17431ceee40ab3a0f724bb4229440077d
 
 @Component({
   selector: 'app-student-list',

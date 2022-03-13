@@ -21,6 +21,7 @@ import { DashboardService } from 'app/main/dashboard/dashboard.service';
 import { AnalyticsComponent } from 'app/main/dashboard/analytics/analytics.component';
 import { SchoolDashboardComponent } from 'app/main/dashboard/school/school-dashboard.component';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
+import { EcommerceComponent } from './ecommerce/ecommerce.component';
 
 const routes = [
   {
@@ -58,6 +59,6 @@ const routes = [
     ContentHeaderModule,
   ],
   providers: [DashboardService, InvoiceListService],
-  exports: [SchoolDashboardComponent]
+  exports: [SchoolDashboardComponent,EcommerceComponent]
 })
 export class DashboardModule {}

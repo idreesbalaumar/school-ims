@@ -280,8 +280,12 @@ export class AppComponent implements OnInit, OnDestroy {
       }
 
       // Skin Class (Adding to body as it requires highest priority)
+<<<<<<< HEAD
       // if (this.coreConfig.layout.skin !== '' && this.coreConfig.layout.skin !== undefined) {
       if (this.coreConfig.layout.skin !== undefined) {
+=======
+      if (this.coreConfig.layout.skin !== '' && this.coreConfig.layout.skin !== undefined) {
+>>>>>>> f14124f17431ceee40ab3a0f724bb4229440077d
         this.document.body.classList.remove('default-layout', 'bordered-layout', 'dark-layout', 'semi-dark-layout');
         this.document.body.classList.add(this.coreConfig.layout.skin + '-layout');
       }
