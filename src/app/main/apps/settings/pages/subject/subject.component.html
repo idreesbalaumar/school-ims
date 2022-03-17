@@ -12,77 +12,32 @@
                             <h4 class="card-title">{{operation}} Record</h4>
                             <div class="card-body">
 
-                                <form class="form form-vertical" #form="ngForm" (ngSubmit)="processForm()">
+                                <form class="form" role="form" #form="ngForm" (ngSubmit)="processForm()">
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label for="first-name-icon">First Name</label>
-                                                <div class="input-group input-group-merge">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text"><span
-                                                                [data-feather]="'user'"></span></span>
-                                                    </div>
-                                                    <input type="text" id="first-name-icon" class="form-control"
-                                                        name="fname-icon" placeholder="First Name" />
+                                                <label for="subject_title"
+                                                    [class.text-danger]="subject_title.invalid && subject_title.touched">Subject Title</label><i class="text-danger">*</i>
+                                                <input type="text" id="subject_title" name="subject_title"
+                                                    #subject_title="ngModel" [(ngModel)]="apiModel.attributes.name"
+                                                    [class.is-invalid]="subject_title.invalid && subject_title.touched"
+                                                    class="form-control" placeholder="Enter Subject Title..." required>
+                                                <div *ngIf="subject_title.invalid && subject_title.touched">
+                                                    <small *ngIf="subject_title.errors?.required"
+                                                        class="text-danger">Subject Title is
+                                                        Required</small>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label for="email-id-icon">Email</label>
-                                                <div class="input-group input-group-merge">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text"><span
-                                                                [data-feather]="'mail'"></span></span>
-                                                    </div>
-                                                    <input type="email" id="email-id-icon" class="form-control"
-                                                        name="email-id-icon" placeholder="Email" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label for="contact-info-icon">Mobile</label>
-                                                <div class="input-group input-group-merge">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text"><span
-                                                                [data-feather]="'smartphone'"></span></span>
-                                                    </div>
-                                                    <input type="number" id="contact-info-icon" class="form-control"
-                                                        name="contact-icon" placeholder="Mobile" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label for="password-icon">Password</label>
-                                                <div class="input-group input-group-merge">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text"><span
-                                                                [data-feather]="'lock'"></span></span>
-                                                    </div>
-                                                    <input type="password" id="password-icon" class="form-control"
-                                                        name="contact-icon" placeholder="Password" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input"
-                                                        id="customCheck4" />
-                                                    <label class="custom-control-label" for="customCheck4">Remember
-                                                        me</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <!-- <hr> -->
-                                            <button type="submit" rippleEffect
-                                                class="btn btn-primary mr-1">{{operation}}</button>
-                                            <button type="reset" rippleEffect class="btn btn-outline-secondary"
-                                                (click)="hideForm()">Cancel</button>
-                                        </div>
+
+                                    </div>
+                                    <div class="form-actions right">
+                                        <button type="button" class="btn btn-warning mr-1" (click)="hideForm()">
+                                            Cancel
+                                        </button>
+                                        <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+                                            {{operation}}
+                                        </button>
                                     </div>
                                 </form>
                             </div>
@@ -111,19 +66,19 @@
             <div class="card-content collapse show">
                 <div class="card-body">
                     <div class="table-responsive">
-
-                        <dx-data-grid class="dx-card wide-card" [showBorders]="true"
-                            keyExpr="id" [focusedRowEnabled]="true" [focusedRowIndex]="0" [columnAutoWidth]="true"
-                            [columnHidingEnabled]=false>
+                        <dx-data-grid class="dx-card wide-card" [dataSource]="subjects" [showBorders]="true"
+                            [visible]="true" placeholder="Search..." [showColumnLines]="true" [showRowLines]="true"
+                            [rowAlternationEnabled]="true" keyExpr="id" [focusedRowEnabled]="true" [focusedRowIndex]="0"
+                            [columnAutoWidth]="true" [allowColumnReordering]="true" [allowColumnResizing]="true"
+                            [columnAutoWidth]="true" [columnHidingEnabled]=false>
                             <dxo-paging [pageSize]="10"></dxo-paging>
                             <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
                             <dxo-filter-row [visible]="true"></dxo-filter-row>
-                            <dxi-column dataField="name" caption="Subject Name"></dxi-column>
-                            <dxi-column dataField="subject_type" caption="Subject Type"> </dxi-column>
-                            <dxi-column dataField="is_compulsory" caption="Is-Compulasy"></dxi-column>
+                            <!-- <dxi-column dataField="id" caption="Suject ID"></dxi-column> -->
+                            <dxi-column dataField="attributes.name" caption="Suject Title"></dxi-column>
                             <dxi-column type="buttons" fixed=true>
-                                <dxi-button icon="edit" text="Edit" ></dxi-button>
-                                <dxi-button icon="fas fa-close" text="Delete" [onClick]="deleteItem">
+                                <dxi-button icon="edit" text="Edit" [onClick]="loadItem"></dxi-button>
+                                <dxi-button icon="trash" text="Delete" [onClick]="deleteItem">
                                 </dxi-button>
                             </dxi-column>
                         </dx-data-grid>

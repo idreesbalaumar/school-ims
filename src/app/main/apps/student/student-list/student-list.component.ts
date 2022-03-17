@@ -12,13 +12,11 @@ import { StudentsFakeData } from '@fake-db/students.data';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import { BeforeOpenEvent } from '@sweetalert2/ngx-sweetalert2';
-<<<<<<< HEAD
 import { StudentService } from '../student.service';
 import { Student } from '../student.model';
 import { environment } from 'environments/environment';
+import { Router } from '@angular/router';
 // import { environment } from 'environments/environment';
-=======
->>>>>>> f14124f17431ceee40ab3a0f724bb4229440077d
 
 @Component({
   selector: 'app-student-list',
@@ -90,6 +88,7 @@ export class StudentListComponent implements OnInit {
    * @param {CoreSidebarService} _coreSidebarService
    */
   constructor(
+    private router: Router,
     private readonly studentService: StudentService,
     private _studentListService: StudentListService,
     private _coreSidebarService: CoreSidebarService,
@@ -115,8 +114,12 @@ export class StudentListComponent implements OnInit {
     window.open('/apps/student/student-view/' + event.row.data.id, '_blank')
   }
 
-  loadItem(event) {
-    window.open('/apps/student/student-view/' + event.row.data.id, '_blank')
+  loadItem(id) {
+    this.router.navigate(['/apps/student/student-view/', id.row.data.id])
+  }
+
+  studentAdd() {
+    this.router.navigate(['/apps/student/student-add'])
   }
 
   modalOpenVC(modalVC) {

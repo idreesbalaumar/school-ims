@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
@@ -32,6 +31,7 @@ import { StudentAddComponent } from './student-add/student-add.component';
 import { StudentAddService } from './student-add/student-add.service';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { DxDataGridModule } from 'devextreme-angular';
+import { CommonModule } from '@angular/common';
 
 // routing
 const routes: Routes = [

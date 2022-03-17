@@ -54,7 +54,7 @@
           </div> -->
         </div>
         <div class="bs-stepper-content">
-          <form (ngSubmit)="(AddStudentForm.form.valid)" #AddStudentForm="ngForm">
+          <form role="form" #form="ngForm" (ngSubmit)="processForm()">
             <div id="account-details" class="content">
               <form #studentDetailsForm="ngForm">
                 <div class="content-header">
@@ -147,15 +147,15 @@
 
                 <div class="row">
                   <div class="form-group col-md-6">
-                    <label class="form-label" for="selectGender"
+                    <label class="form-label" for="gender_id"
                       [class.text-danger]="!GenderRef.valid && studentDetailsForm.submitted">Gender<i
                         class="text-danger">*</i></label>
                     <ng-select [class.error]="!GenderRef.valid && studentDetailsForm.submitted" #GenderRef="ngModel"
-                      required [items]="selectGender" [closeOnSelect]="true" [searchable]="true" bindLabel="name"
-                      name="selectGender" id="selectGender" placeholder="Select gender . . ."
-                      [(ngModel)]="selectGenderSelected">
+                      required [items]="genders" [closeOnSelect]="true" [searchable]="true" bindLabel="attributes.name"
+                      name="gender_id" id="gender_id" bindValue="id" placeholder="Select gender . . ."
+                      [(ngModel)]="gender_id">
                       <ng-template ng-label-tmp let-item="item" let-clear="clear">
-                        <span class="ng-value-label"> {{ item.name }}</span>
+                        <span class="ng-value-label"> {{ item.attributes.name }}</span>
                         <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                       </ng-template>
                     </ng-select>
@@ -166,15 +166,15 @@
                   </div>
 
                   <div class="form-group col-md-6">
-                    <label class="form-label" for="selectStateOfOrigin"
+                    <label class="form-label" for="states"
                       [class.text-danger]="!StateOfOriginRef.valid && studentDetailsForm.submitted">State of origin<i
                         class="text-danger">*</i></label>
                     <ng-select [class.error]="!StateOfOriginRef.valid && studentDetailsForm.submitted"
-                      #StateOfOriginRef="ngModel" required [items]="selectStateOfOrigin" [closeOnSelect]="true"
-                      [searchable]="true" bindLabel="name" name="selectStateOfOrigin" id="selectStateOfOrigin"
-                      placeholder="Select state of origin . . ." [(ngModel)]="selectStateOfOriginSelected">
+                      #StateOfOriginRef="ngModel" required [items]="states" [closeOnSelect]="true" [searchable]="true"
+                      bindLabel="attributes.name" name="states" id="states" bindValue="id"
+                      placeholder="Select state of origin . . ." [(ngModel)]="state_id">
                       <ng-template ng-label-tmp let-item="item" let-clear="clear">
-                        <span class="ng-value-label"> {{ item.name }}</span>
+                        <span class="ng-value-label"> {{ item.attributes.name }}</span>
                         <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                       </ng-template>
                     </ng-select>
@@ -188,14 +188,14 @@
                 <div class="row">
 
                   <div class="form-group col-md-6">
-                    <label class="form-label" for="selectLGA"
+                    <label class="form-label" for="lga"
                       [class.text-danger]="!LGARef.valid && studentDetailsForm.submitted">Local Government Area<i
                         class="text-danger">*</i></label>
                     <ng-select [class.error]="!LGARef.valid && studentDetailsForm.submitted" #LGARef="ngModel" required
-                      [items]="selectLGA" [closeOnSelect]="true" [searchable]="true" bindLabel="name" name="selectLGA"
-                      id="selectLGA" placeholder="Select local government area . . ." [(ngModel)]="selectLGASelected">
+                      [items]="lgas" [closeOnSelect]="true" [searchable]="true" bindLabel="attributes.name" name="lga"
+                      id="lga" bindValue="id" placeholder="Select local government area . . ." [(ngModel)]="lga_id">
                       <ng-template ng-label-tmp let-item="item" let-clear="clear">
-                        <span class="ng-value-label"> {{ item.name }}</span>
+                        <span class="ng-value-label"> {{ item.attributes.name }}</span>
                         <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                       </ng-template>
                     </ng-select>
@@ -252,7 +252,7 @@
                     </div>
                   </div>
                 </div> -->
-
+                <hr>
                 <div class="d-flex justify-content-between">
                   <button (click)="horizontalWizardStepperPrevious()" class="btn btn-outline-secondary btn-prev"
                     disabled rippleEffect>
@@ -276,8 +276,64 @@
 
                 <div class="row">
                   <div class="form-group col-md-6">
+                    <label class="form-label" for="classcategory"
+                      [class.text-danger]="!ArtOrScience.valid && acedemicInfoForm.submitted">Assign Class Category<i
+                        class="text-danger">*</i></label>
+                    <ng-select [class.error]="!ArtOrScience.valid && acedemicInfoForm.submitted" #ArtOrScience="ngModel"
+                      required [items]="classcategorys" [closeOnSelect]="true" [searchable]="true"
+                      bindLabel="attributes.name" name="classcategory" id="classcategory" bindValue="id"
+                      placeholder="Select Class Category . . ." [(ngModel)]="classcategory_id">
+                      <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                        <span class="ng-value-label"> {{ item.attributes.name }}</span>
+                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                      </ng-template>
+                    </ng-select>
+                    <span *ngIf="acedemicInfoForm.submitted && ArtOrScience.invalid" class="invalid-form">
+                      <small class="form-text text-danger" *ngIf="ArtOrScience.errors.required">Class Category is
+                        required!</small>
+                    </span>
+                  </div>
+
+                  <div class="form-group col-md-6">
+                    <label class="form-label" for="class"
+                      [class.text-danger]="!ArtOrScience.valid && acedemicInfoForm.submitted">Assign Class<i
+                        class="text-danger">*</i></label>
+                    <ng-select [class.error]="!ArtOrScience.valid && acedemicInfoForm.submitted" #ArtOrScience="ngModel"
+                      required [items]="classs" [closeOnSelect]="true" [searchable]="true" bindLabel="attributes.name"
+                      name="class" id="class" bindValue="id" placeholder="Select Class . . ." [(ngModel)]="class_id">
+                      <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                        <span class="ng-value-label"> {{ item.attributes.name }}</span>
+                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                      </ng-template>
+                    </ng-select>
+                    <span *ngIf="acedemicInfoForm.submitted && ArtOrScience.invalid" class="invalid-form">
+                      <small class="form-text text-danger" *ngIf="ArtOrScience.errors.required">Class is
+                        required!</small>
+                    </span>
+                  </div>
+
+                  <div class="form-group col-md-6">
+                    <label class="form-label" for="classrooms"
+                      [class.text-danger]="!ArtOrScience.valid && acedemicInfoForm.submitted">Assign Class Room<i
+                        class="text-danger">*</i></label>
+                    <ng-select [class.error]="!ArtOrScience.valid && acedemicInfoForm.submitted" #ArtOrScience="ngModel"
+                      required [items]="classrooms" [closeOnSelect]="true" [searchable]="true"
+                      bindLabel="attributes.name" name="classrooms" id="classrooms" bindValue="id"
+                      placeholder="Select Class . . ." [(ngModel)]="class_id">
+                      <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                        <span class="ng-value-label"> {{ item.attributes.name }}</span>
+                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                      </ng-template>
+                    </ng-select>
+                    <span *ngIf="acedemicInfoForm.submitted && ArtOrScience.invalid" class="invalid-form">
+                      <small class="form-text text-danger" *ngIf="ArtOrScience.errors.required">Class room is
+                        required!</small>
+                    </span>
+                  </div>
+
+                  <div class="form-group col-md-6">
                     <label class="form-label" for="selectArtOrScience"
-                      [class.text-danger]="!ArtOrScience.valid && acedemicInfoForm.submitted">Assign Art or Science<i
+                      [class.text-danger]="!ArtOrScience.valid && acedemicInfoForm.submitted">Art or Science<i
                         class="text-danger">*</i></label>
                     <ng-select [class.error]="!ArtOrScience.valid && acedemicInfoForm.submitted" #ArtOrScience="ngModel"
                       required [items]="selectArtOrScience" [closeOnSelect]="true" [searchable]="true" bindLabel="name"
@@ -293,6 +349,7 @@
                         required!</small>
                     </span>
                   </div>
+
                   <div class="form-group col-md-6">
                     <label>Select Elective Subjects</label>
 
@@ -315,40 +372,17 @@
                       </ng-select>
                       <!-- Multi select with limited number of selections -->
                     </div>
-
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="form-group col-md-6">
-                    <label class="form-label" for="selectClasss"
-                      [class.text-danger]="!Classs.valid && acedemicInfoForm.submitted">Assign Class<i
-                        class="text-danger">*</i></label>
-                    <ng-select [class.error]="!Classs.valid && acedemicInfoForm.submitted" #Classs="ngModel" required
-                      [items]="selectClasss" [closeOnSelect]="true" [searchable]="true" bindLabel="name"
-                      name="selectClasss" id="selectClasss" placeholder="Select class . . ."
-                      [(ngModel)]="selectClasssSelected">
-                      <ng-template ng-label-tmp let-item="item" let-clear="clear">
-                        <span class="ng-value-label"> {{ item.name }}</span>
-                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
-                      </ng-template>
-                    </ng-select>
-                    <span *ngIf="acedemicInfoForm.submitted && Classs.invalid" class="invalid-form">
-                      <small class="form-text text-danger" *ngIf="Classs.errors.required">Class is
-                        required!</small>
-                    </span>
                   </div>
 
                   <div class="form-group col-md-6">
-                    <label class="form-label" for="selectHouse"
+                    <label class="form-label" for="houses"
                       [class.text-danger]="!House.valid && acedemicInfoForm.submitted">Assign House<i
                         class="text-danger">*</i></label>
                     <ng-select [class.error]="!House.valid && acedemicInfoForm.submitted" #House="ngModel" required
-                      [items]="selectHouse" [closeOnSelect]="true" [searchable]="true" bindLabel="name"
-                      name="selectHouse" id="selectHouse" placeholder="Select house . . ."
-                      [(ngModel)]="selectHouseSelected">
+                      [items]="houses" [closeOnSelect]="true" [searchable]="true" bindLabel="attributes.name"
+                      name="houses" id="houses" placeholder="Select house . . ." [(ngModel)]="house_id">
                       <ng-template ng-label-tmp let-item="item" let-clear="clear">
-                        <span class="ng-value-label"> {{ item.name }}</span>
+                        <span class="ng-value-label"> {{ item.attributes.name }}</span>
                         <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                       </ng-template>
                     </ng-select>
@@ -360,7 +394,7 @@
 
                 </div>
 
-
+                <hr>
                 <div class="d-flex justify-content-between">
                   <button type="button" (click)="horizontalWizardStepperPrevious()" class="btn btn-primary btn-prev"
                     rippleEffect>
@@ -426,11 +460,11 @@
                       [class.text-danger]="!GenderRef.valid && parentDetailsForm.submitted">Gender<i
                         class="text-danger">*</i></label>
                     <ng-select [class.error]="!GenderRef.valid && parentDetailsForm.submitted" #GenderRef="ngModel"
-                      required [items]="[{ name: 'Male' }, { name: 'Female' }]" [closeOnSelect]="true" [searchable]="true" bindLabel="name"
-                      name="selectGender" id="selectGender" placeholder="Select gender . . ."
-                      [(ngModel)]="selectParentGenderSelected">
+                      required [items]="genders" [closeOnSelect]="true"
+                      [searchable]="true" bindLabel="attributes.name" name="selectGender" id="selectGender"
+                      placeholder="Select gender . . ." [(ngModel)]="parent_id">
                       <ng-template ng-label-tmp let-item="item" let-clear="clear">
-                        <span class="ng-value-label"> {{ item.name }}</span>
+                        <span class="ng-value-label"> {{ item.attributes.name }}</span>
                         <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                       </ng-template>
                     </ng-select>
@@ -465,6 +499,9 @@
                       number format is invalid!</small>
                   </div>
                 </div>
+                <div class="divider">
+                  <div class="divider-text">OR</div>
+                </div>
                 <div class="row">
                   <div class="form-group col">
                     <label class="form-label" for="city1">Select Parent from Record</label>
@@ -484,7 +521,8 @@
                       <div class="modal-body" tabindex="0" ngbAutofocus>
                         <p>Select from Parent record</p>
                         <!-- <p>This is <code>ng-select</code> example in Modal.</p> -->
-                        <ng-select [items]="selectParent" placeholder="Select parent . . ." bindLabel="name" [loading]="selectBasicLoading"> </ng-select>
+                        <ng-select [items]="parents" placeholder="Select parent . . ." bindLabel="attributes.full_name"
+                          [loading]="selectBasicLoading"> </ng-select>
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-primary" (click)="modal.close('Accept click')"
@@ -497,6 +535,7 @@
                   </div>
                 </div>
 
+                <hr>
                 <div class="d-flex justify-content-between">
                   <button type="button" (click)="horizontalWizardStepperPrevious()" class="btn btn-primary btn-prev"
                     rippleEffect>
@@ -508,7 +547,7 @@
                     <span class="align-middle d-sm-inline-block d-none">Next</span>
                     <i data-feather="arrow-right" class="align-middle ml-sm-25 ml-0"></i>
                   </button> -->
-                  <button class="btn btn-success btn-submit" rippleEffect (click)="onSubmit()">Submit</button>
+                  <button class="btn btn-success btn-submit" rippleEffect (ngSubmit)="processForm()">Submit</button>
                 </div>
               </form>
             </div>
