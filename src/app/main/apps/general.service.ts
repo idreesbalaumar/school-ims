@@ -3,6 +3,7 @@ import { HttpService } from 'app/services/http.service';
 import { generalUrl } from './general-url';
 import { SubjectData, SubjectPostModel } from './settings/pages/subject/subject.model';
 import { LGA } from './student/student.model';
+import * as qs from 'qs';
 
 @Injectable({
   providedIn: 'root'
@@ -48,9 +49,17 @@ export class GeneralService {
     return this.httpService.get(`${generalUrl.parent.list}`);
   }
   
-  // subjects
+  // subjects start
   getAllSubjects() {
-    return this.httpService.get(`${generalUrl.subject.list}`);
+    const query = qs.stringify({
+      pagination: {
+        start: 0,
+        limit: -1,
+      },
+    }, {
+      encodeValuesOnly: true,
+    });
+    return this.httpService.get(`${generalUrl.subject.list}?${query}`);
   }
 
   deleteSubject(id: number) {
@@ -62,14 +71,15 @@ export class GeneralService {
   updateSubject(subject: SubjectPostModel) {
     return this.httpService.put(
       `${generalUrl.subject.update}/${subject.SubjectID}`,
-      subject
+      { data: subject }
     );
   }
 
   addSubject(subject: SubjectPostModel) {
     return this.httpService.post(
       `${generalUrl.subject.add}`,
-      subject
+      { data: subject }
     );
   }
+  // subjects end
 }
