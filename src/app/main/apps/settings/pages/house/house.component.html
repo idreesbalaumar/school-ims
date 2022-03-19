@@ -1,1 +1,138 @@
-<p>house works!</p>
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- content-header component -->
+        <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+        <!-- / Subject Form section start -->
+        <div class="card" *ngIf="displayForm">
+            <div class="card-body">
+                <section id="multiple-column-form">
+                    <div class="row match-height">
+                        <div class="col-12">
+                            <h4 class="card-title">{{operation}} Record</h4>
+                            <div class="card-body">
+
+                                <form role="form" #form="ngForm" (ngSubmit)="processForm()">
+                                    <div class="row">
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="house_name"
+                                                    [class.text-danger]="house_name.invalid && house_name.touched">House
+                                                    Name</label><i class="text-danger">*</i>
+                                                <input type="text" id="house_name" name="house_name"
+                                                    #house_name="ngModel" [(ngModel)]="apiModel.name"
+                                                    [class.is-invalid]="house_name.invalid && house_name.touched"
+                                                    class="form-control" placeholder="Enter House Name..." required>
+                                                <div *ngIf="house_name.invalid && house_name.touched">
+                                                    <small *ngIf="house_name.errors?.required" class="text-danger">House
+                                                        Name is
+                                                        Required</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="house_color_code"
+                                                    [class.text-danger]="house_color_code.invalid && house_color_code.touched">House
+                                                    Color Code</label><i class="text-danger">*</i>
+                                                <input type="text" minlength="3" id="house_color_code"
+                                                    name="house_color_code" #house_color_code="ngModel"
+                                                    [(ngModel)]="apiModel.color"
+                                                    [class.is-invalid]="house_color_code.invalid && house_color_code.touched"
+                                                    class="form-control" placeholder="Enter House Color..."
+                                                    required>
+                                                <div *ngIf="house_color_code.invalid && house_color_code.touched">
+                                                    <small *ngIf="house_color_code.errors?.required"
+                                                        class="text-danger">House Color Code is
+                                                        Required</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 col-12">
+                                            <div class="form-group">
+                                                <label class="form-label" for="house_master"
+                                                    [class.text-danger]="house_master.invalid && house_master.touched">Assign House
+                                                    Master</label><i class="text-danger">*</i>
+                                                <ng-select
+                                                    [class.is-invalid]="house_master.invalid && house_master.touched"
+                                                    #house_master="ngModel" required [items]="houseMasters"
+                                                    [closeOnSelect]="true" [searchable]="true"
+                                                    bindValue="id" bindLabel="attributes.first_name" name="houseMasters" id="houseMasters"
+                                                    placeholder="Select house master . . ." [(ngModel)]="apiModel.house_master.id">
+                                                    <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                                        <span class="ng-value-label"> {{item.attributes.first_name}}</span>
+                                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                                            aria-hidden="true">×</span>
+                                                    </ng-template>
+                                                </ng-select>
+                                                <div *ngIf="house_master.invalid && house_master.touched">
+                                                    <small *ngIf="house_master.errors?.required"
+                                                        class="text-danger">House Master is
+                                                        Required</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-actions right">
+                                        <button type="button" class="btn btn-warning mr-1 btn-sm" (click)="hideForm()">
+                                            Cancel
+                                        </button>
+                                        <button type="submit" class="btn btn-primary btn-sm" [disabled]="form.invalid">
+                                            {{operation}}
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <!-- Subject Form section end -->
+
+        <div class="card">
+            <div class="card-header">
+                <h4 class="float-left mb-0 font-weight-bolder">
+                    <strong>List of Records</strong>
+                </h4>
+                <div class="float-right rounded border-radius-lg">
+                    <button class="btn btn-primary btn-sm" rippleEffect (click)="addItem()"><span
+                            class="fa fa-plus mr-1"></span>
+                        <span class="d-none d-sm-inline-block">Add New
+                            Record</span>
+                    </button>
+                </div>
+
+            </div>
+            <!-- /.box-header -->
+            <div class="card-content collapse show">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <dx-data-grid class="dx-card wide-card" [dataSource]="houses" [showBorders]="true"
+                            [visible]="true" placeholder="Search..." [showColumnLines]="true" [showRowLines]="true"
+                            [rowAlternationEnabled]="true" keyExpr="id" [focusedRowEnabled]="true" [focusedRowIndex]="0"
+                            [columnAutoWidth]="true" [allowColumnReordering]="true" [allowColumnResizing]="true"
+                            [columnAutoWidth]="true" [columnHidingEnabled]=false>
+                            <dxo-paging [pageSize]="20"></dxo-paging>
+                            <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
+                            <dxo-filter-row [visible]="true"></dxo-filter-row>
+                            <!-- <dxi-column dataField="id" caption="Suject ID"></dxi-column> -->
+                            <dxi-column dataField="attributes.name" caption="House"></dxi-column>
+                            <dxi-column dataField="attributes.color"
+                                caption="House Color Code"></dxi-column>
+                            <dxi-column dataField="attributes.house_master.data.attributes.first_name"
+                                caption="House Master"></dxi-column>
+                            <dxi-column type="buttons" fixed=true>
+                                <dxi-button icon="edit" text="Edit" [onClick]="loadItem"></dxi-button>
+                                <dxi-button icon="trash" text="Delete" [onClick]="deleteItem">
+                                </dxi-button>
+                            </dxi-column>
+                        </dx-data-grid>
+                    </div>
+                </div>
+            </div>
+            <!-- end box-body -->
+        </div>
+
+    </div>
+</div>

@@ -25,9 +25,9 @@ export let generalUrl = {
         list: API_URL + 'class-rooms',
     },
 
-    house: {
-        list: API_URL + 'houses',
-    },
+    // house: {
+    //     list: API_URL + 'houses',
+    // },
 
     parent: {
         list: API_URL + 'parents',
@@ -38,5 +38,19 @@ export let generalUrl = {
         delete: API_URL + 'subjects',
         add: API_URL + 'subjects',
 		update: API_URL + 'subjects',
+    },
+
+    house: {
+        list: API_URL + 'houses' +'?populate=*',
+        delete: API_URL + 'houses',
+        add: API_URL + 'houses'+'?populate=*',
+		update: API_URL + 'houses',
+    },
+
+    teacher: {
+        list: API_URL + 'teachers' +'?populate=*',
+        delete: API_URL + 'teachers',
+        add: API_URL + 'teachers',
+		update: API_URL + 'teachers',
     },
 }

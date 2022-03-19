@@ -26,11 +26,8 @@ export class SubjectComponent implements OnInit {
   displayForm = false;
   operation = 'Add';
   title = 'Subject';
-  DummyData: any;
-  dataRecord: any;
 
   constructor(
-    private alert: AlertService,
     private generalService: GeneralService,
   ) {
     this.apiModel = new SubjectPostModel();
@@ -188,15 +185,6 @@ export class SubjectComponent implements OnInit {
     this.generalService.getAllSubjects().subscribe(
       ({ data }) => {
         this.subjects = data;
-      },
-      err => {
-        console.log(err);
-      }
-    );
-
-    this.DummyData.getSubjects().subscribe(
-      res => {
-        this.dataRecord = res.data;
       },
       err => {
         console.log(err);
