@@ -6,6 +6,8 @@ import { LGA } from './student/student.model';
 import * as qs from 'qs';
 import { HousePostModel } from './settings/pages/house/house.model';
 import { TeacherPostModel } from './teacher/teacher.model';
+import { ClassRoomPostModel } from './settings/pages/classes/class-room.model';
+import { GradePostModel } from './settings/pages/grade-system/grade.model';
 
 @Injectable({
   providedIn: 'root'
@@ -39,9 +41,9 @@ export class GeneralService {
     return this.httpService.get(`${generalUrl.class.list}`);
   }
   
-  getAllClassRooms() {
-    return this.httpService.get(`${generalUrl.classroom.list}`);
-  }
+  // getAllClassRooms() {
+  //   return this.httpService.get(`${generalUrl.classroom.list}`);
+  // }
   
   // getAllHouses() {
   //   return this.httpService.get(`${generalUrl.house.list}`);
@@ -85,6 +87,40 @@ export class GeneralService {
   }
   // subjects end
 
+  // grade start
+  getAllGrades() {
+    const query = qs.stringify({
+      pagination: {
+        start: 0,
+        limit: -1,
+      },
+    }, {
+      encodeValuesOnly: true,
+    });
+    return this.httpService.get(`${generalUrl.grade.list}?${query}`);
+  }
+
+  deleteGrade(id: number) {
+    return this.httpService.delete(
+      `${generalUrl.grade.delete}/${id}`
+    );
+  }
+
+  updateGrade(grade: GradePostModel) {
+    return this.httpService.put(
+      `${generalUrl.grade.update}/${grade.GradeID}`,
+      { data: grade }
+    );
+  }
+
+  addGrade(grade: GradePostModel) {
+    return this.httpService.post(
+      `${generalUrl.grade.add}`,
+      { data: grade }
+    );
+  }
+  // grade end
+
   // houses start
   getAllHouses() {
     return this.httpService.get(`${generalUrl.house.list}`);
@@ -110,6 +146,32 @@ export class GeneralService {
     );
   }
   // houses end
+
+  // class-rooms start
+  getAllClassRooms() {
+    return this.httpService.get(`${generalUrl.classroom.list}`);
+  }
+
+  deleteClassRoom(id: number) {
+    return this.httpService.delete(
+      `${generalUrl.classroom.delete}/${id}`
+    );
+  }
+
+  updateClassRoom(classroom: ClassRoomPostModel) {
+    return this.httpService.put(
+      `${generalUrl.classroom.update}/${classroom.ClassRoomID}?populate=*`,
+      { data: classroom }
+    );
+  }
+
+  addClassRoom(classroom: ClassRoomPostModel) {
+    return this.httpService.post(
+      `${generalUrl.classroom.add}`,
+      { data: classroom }
+    );
+  }
+  // class-rooms end
 
   // teachers start
   getAllTeachers() {

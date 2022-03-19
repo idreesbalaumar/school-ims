@@ -197,7 +197,6 @@ export class HouseComponent implements OnInit {
     this.generalService.getAllTeachers().subscribe(
       ({ data }) => {
         this.houseMasters = data;
-        console.log("House Masters!");
         console.log(this.houseMasters);
       },
       err => {
