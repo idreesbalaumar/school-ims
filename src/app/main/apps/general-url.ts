@@ -33,6 +33,27 @@ export let generalUrl = {
         list: API_URL + 'parents',
     },
 
+    academicsession: {
+        list: API_URL + 'sessions',
+        delete: API_URL + 'sessions',
+        add: API_URL + 'sessions',
+		update: API_URL + 'sessions',
+    },
+
+    sessionterm: {
+        list: API_URL + 'session-terms',
+        delete: API_URL + 'session-terms',
+        add: API_URL + 'session-terms',
+		update: API_URL + 'session-terms',
+    },
+
+    term: {
+        list: API_URL + 'terms',
+        delete: API_URL + 'terms',
+        add: API_URL + 'terms',
+		update: API_URL + 'terms',
+    },
+
     subject: {
         list: API_URL + 'subjects',
         delete: API_URL + 'subjects',

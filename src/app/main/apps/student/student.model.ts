@@ -22,15 +22,17 @@ export class Attributes {
     first_name: string;
     surname: string;
     other_name: string;
+    date_of_birth: Date;
     state: State;
     photo: Photo;
     lga: LGA;
     gender: Gender;
     class: Class;
     classCategory: ClassCategory;
-    classRoom: ClassRoom;
+    class_room: ClassRoom;
     house: House;
     parent: Parent;
+    subject: Subject;
 }
 
 export class Photo {
@@ -125,6 +127,19 @@ export class ClassCategoryAttributes {
     name: string;
 }
 
+export class Subject {
+    data: SubjectData;
+}
+
+export class SubjectData {
+    id: number;
+    attributes: SubjectAttributes;
+}
+
+export class SubjectAttributes {
+    name: string;
+}
+
 export class House {
     data: HouseData;
 }
@@ -149,5 +164,8 @@ export class ParentData {
 
 export class ParentAttributes {
     full_name: string;
+    gender: Gender;
+    address: string;
+    phone: string;
 }
 

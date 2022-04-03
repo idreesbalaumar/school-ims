@@ -23,8 +23,6 @@ export class AvatarService {
   }
 
   findAvatarByUserId(userId: number, avatars: Avatar[]): Avatar {
-    console.log("List of Avatars:");
-    console.log(avatars);
     const avatar = avatars.find(item => {
       return item.user.data.id == userId;
     });

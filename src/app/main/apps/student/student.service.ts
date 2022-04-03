@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from 'app/services/http.service';
+import { NewStudentApiModel } from './student-add/student-add.model';
 import { studentUrl } from './student-url';
 import { Student } from './student.model';
 
@@ -23,7 +24,7 @@ export class StudentService {
     );
   }
 
-  add(student: Student) {
+  add(student: NewStudentApiModel) {
     return this.httpService.post(
       `${studentUrl.student.add}`,
       student

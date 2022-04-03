@@ -14,7 +14,7 @@
 
                                 <form role="form" #form="ngForm" (ngSubmit)="processForm()">
                                     <div class="row">
-                                        <div class="col-md-4 col-12">
+                                        <div class="col-md-6 col-12">
                                             <div class="form-group">
                                                 <label for="house_name"
                                                     [class.text-danger]="house_name.invalid && house_name.touched">House
@@ -30,7 +30,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-4 col-12">
+                                        <!-- <div class="col-md-4 col-12">
                                             <div class="form-group">
                                                 <label for="house_color_code"
                                                     [class.text-danger]="house_color_code.invalid && house_color_code.touched">House
@@ -47,8 +47,8 @@
                                                         Required</small>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-4 col-12">
+                                        </div> -->
+                                        <div class="col-md-6 col-12">
                                             <div class="form-group">
                                                 <label class="form-label" for="house_master"
                                                     [class.text-danger]="house_master.invalid && house_master.touched">Assign House
@@ -118,11 +118,11 @@
                             <dxo-filter-row [visible]="true"></dxo-filter-row>
                             <!-- <dxi-column dataField="id" caption="Suject ID"></dxi-column> -->
                             <dxi-column dataField="attributes.name" caption="House"></dxi-column>
-                            <dxi-column dataField="attributes.color"
-                                caption="House Color Code"></dxi-column>
+                            <!-- <dxi-column dataField="attributes.color"
+                                caption="House Color Code"></dxi-column> -->
                             <dxi-column dataField="attributes.house_master.data.attributes.first_name"
                                 caption="House Master"></dxi-column>
-                            <dxi-column type="buttons" fixed=true>
+                            <dxi-column type="buttons" fixed=true caption="Action(s)">
                                 <dxi-button icon="edit" text="Edit" [onClick]="loadItem"></dxi-button>
                                 <dxi-button icon="trash" text="Delete" [onClick]="deleteItem">
                                 </dxi-button>

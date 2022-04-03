@@ -95,13 +95,13 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.schoolInfo$.subscribe((info) => {
       this._coreConfigService.resetConfig();
-      console.log("School Info", info);
+      // console.log("School Info", info);
       this._coreConfigService.getConfig().subscribe(config => {
-        console.log("Config Info", config);
+        // console.log("Config Info", config);
         let newConfig = {...config};
         const imageLogo = info.data.attributes.logo.data.attributes.url;
         newConfig.app.appLogoImage = `${environment.apiUrl}${imageLogo}`;
-        console.log("New Config: ", newConfig);
+        // console.log("New Config: ", newConfig);
       });
       // const config = this._coreConfigService.config;
       // console.log("Config: ", config);

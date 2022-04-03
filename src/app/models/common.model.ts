@@ -15,3 +15,8 @@ export interface Avatar {
     user: StrapiSingleResponse<User>;
     // user: any;
 }
+
+export class Status {
+    id: number;
+    status: boolean;
+}

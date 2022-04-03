@@ -1,4 +1,6 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-date-struct';
 import { DataService } from 'app/main/forms/form-elements/select/data.service';
@@ -7,8 +9,9 @@ import Stepper from 'bs-stepper';
 import { Observable } from 'rxjs/internal/Observable';
 import Swal from 'sweetalert2';
 import { GeneralService } from '../../general.service';
-import { Class, ClassCategory, ClassRoom, Gender, House, LGA, Parent, State, Student } from '../student.model';
+import { Class, ClassCategory, ClassRoom, ClassRoomData, Gender, GenderData, House, LGA, Parent, State, Student, Subject, SubjectData } from '../student.model';
 import { StudentService } from '../student.service';
+import { NewStudentApiModel, RelationField } from './student-add.model';
 
 @Component({
   selector: 'app-student-add',
@@ -17,12 +20,16 @@ import { StudentService } from '../student.service';
   encapsulation: ViewEncapsulation.None
 })
 export class StudentAddComponent implements OnInit {
+  @ViewChild('form') form: NgForm;
 
   operation = 'Add';
 
+  photoUrl = "";
+
+  selectedSubjectIds: number[] = [];
   students: Student[];
-  apiModel: Student;
-  genders: Gender[] = [];
+  apiModel: NewStudentApiModel = new NewStudentApiModel();
+  genders: GenderData[] = [];
   gender: any;
   gender_id: number;
   states: State[] = [];
@@ -37,12 +44,15 @@ export class StudentAddComponent implements OnInit {
   classs: Class[] = [];
   class: any;
   class_id: number;
-  classrooms: ClassRoom[] = [];
+  classrooms: ClassRoomData[] = [];
   classroom: any;
   classroom_id: number;
   houses: House[] = [];
   house: any;
   house_id: number;
+  subjects: SubjectData[] = [];
+  subject: any;
+  subject_id: number;
   parents: Parent[] = [];
   parent: any;
   parent_id: number;
@@ -112,7 +122,7 @@ export class StudentAddComponent implements OnInit {
     if (data.form.valid === true) {
       // this.apiModel.attributes.gender = this.genders.find((gen) => gen.data.id == this.apiModel.attributes.gender.data.id);
       // this.apiModel.attributes.state = this.states.find((gen) => gen.data.id == this.apiModel.attributes.state.data.id);
-      this.horizontalWizardStepper.next();
+      this.save();
     }
   }
   /**
@@ -191,6 +201,7 @@ export class StudentAddComponent implements OnInit {
     private dataService: DataService,
     private modalService: NgbModal,
     private studentService: StudentService,
+    private router: Router,
   ) { }
 
   // Lifecycle Hooks
@@ -200,7 +211,6 @@ export class StudentAddComponent implements OnInit {
    * On Init
    */
   ngOnInit() {
-
     this.generalService.getAllGenders().subscribe(
       ({ data }) => {
         this.genders = data;
@@ -249,6 +259,7 @@ export class StudentAddComponent implements OnInit {
     this.generalService.getAllClassRooms().subscribe(
       ({ data }) => {
         this.classrooms = data;
+        console.log(data);
       },
       err => {
         console.log(err);
@@ -258,6 +269,15 @@ export class StudentAddComponent implements OnInit {
     this.generalService.getAllHouses().subscribe(
       ({ data }) => {
         this.houses = data;
+      },
+      err => {
+        console.log(err);
+      }
+    );
+
+    this.generalService.getAllSubjects().subscribe(
+      ({ data }) => {
+        this.subjects = data;
       },
       err => {
         console.log(err);
@@ -321,19 +341,35 @@ export class StudentAddComponent implements OnInit {
   }
 
   processForm() {
+    console.log("Process form...");
     this.save();
   }
 
+  populateSubjectsInApiModel() {
+    this.selectedSubjectIds.forEach((id) => {
+      const field = new RelationField();
+      field.id = id;
+      this.apiModel.data.subjects.push(field);
+    });
+  }
+
+  updateList(id, updatedStudent) {
+    this.students = this.students.filter(e => e.id !== id);
+    this.students.push(updatedStudent);
+    this.students.sort(function (a, b) {
+      return a.id - b.id;
+    });
+  }
+
   save() {
+    console.log("Save Student");
     Swal.showLoading();
-    let httpCall =
-      this.operation === 'Update'
-        ? this.studentService.update(this.apiModel)
-        : this.studentService.add(this.apiModel);
+    this.populateSubjectsInApiModel();
+    this.apiModel.data.photo.id = 1;
+    let httpCall = this.studentService.add(this.apiModel);
     httpCall.subscribe(
       success => {
         Swal.close();
-        console.log("Success Response: ", success.data)
         Swal.fire({
           icon: 'success',
           title: 'Success!',
@@ -342,8 +378,8 @@ export class StudentAddComponent implements OnInit {
             confirmButton: 'btn btn-success'
           }
         });
+        this.router.navigate(["/apps/student/student-list"]);
         this.resetForm();
-        this.horizontalWizardStepper.next();
       },
       error => {
         Swal.close();
@@ -361,7 +397,7 @@ export class StudentAddComponent implements OnInit {
   }
 
   resetForm(): void {
-    this.apiModel = new Student();
+    this.apiModel = new NewStudentApiModel();
   }
 
   // loadLGA() {

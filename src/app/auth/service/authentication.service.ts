@@ -91,14 +91,11 @@ export class AuthenticationService {
           if (data && data.jwt) {
             // get currentUser avatar
             this.avatarService.getAllUserAvatars().subscribe((response) => {
-              console.log("HTTP Response:");
-              console.log(response);
               const avatar = this.avatarService.findAvatarByUserId(data.user.id, response.data.map(entry => entry.attributes));
               const user = this.currentUserSubject.getValue();
               const avatarUrl = `${environment.apiUrl}${avatar.avatar.data.attributes.url}`;
               const newUser = {...user, avatar: avatarUrl };
               this.currentUserSubject.next(newUser);
-              console.log("Avatared User: ", newUser);
             });
 
             // store data details and jwt token in local storage to keep data logged in between page refreshes

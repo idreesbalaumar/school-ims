@@ -16,8 +16,6 @@ export class ClassesComponent implements OnInit {
 
   classRooms: ClassRoomData[] = [];
   apiModel: ClassRoomPostModel;
-  house: any;
-  house_id: number;
 
   formMasters: TeacherData[] = [];
   formMaster: any;
@@ -41,12 +39,9 @@ export class ClassesComponent implements OnInit {
   }
 
   loadItem(id) {
-    console.log("About to load item...", id);
     let room = this.classRooms.find(
       element => element.id === id.row.data.id
     );
-    console.log("API Model", this.apiModel);
-    console.log("ClassRomm Model", room);
     // Object.assign(this.apiModel, classRoom);
     this.apiModel.ClassRoomID = room.id;
     this.apiModel.name = room.attributes.name;
@@ -118,9 +113,6 @@ export class ClassesComponent implements OnInit {
       success => {
         Swal.close();
         this.updateList(success.data.id, success.data);
-        console.log("Success Response: ", success.data);
-        // this.alert.success('Operation successful.');
-        // this.toastr.success('Operation successful.');
         Swal.fire({
           icon: 'success',
           title: 'Success!',

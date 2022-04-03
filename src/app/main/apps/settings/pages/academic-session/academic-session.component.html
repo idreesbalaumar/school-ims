@@ -1,1 +1,153 @@
-<p>academic-session works!</p>
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- content-header component -->
+        <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+        <!-- / Subject Form section start -->
+        <div class="card" *ngIf="displayForm">
+            <div class="card-body">
+                <section id="multiple-column-form">
+                    <div class="row match-height">
+                        <div class="col-12">
+                            <h4 class="card-title">{{operation}} Record</h4>
+                            <div class="card-body">
+
+                                <form role="form" #form="ngForm" (ngSubmit)="processNewSession()">
+                                    <div class="row">
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="academic_session_name"
+                                                    [class.text-danger]="academic_session_name.invalid && academic_session_name.touched">Acedemic
+                                                    Session</label><i class="text-danger">*</i>
+                                                <input type="text" id="academic_session_name"
+                                                    name="academic_session_name" #academic_session_name="ngModel"
+                                                    [(ngModel)]="apiModelNewSession.name"
+                                                    [class.is-invalid]="academic_session_name.invalid && academic_session_name.touched"
+                                                    class="form-control" placeholder="Enter Acedemic Session..."
+                                                    required>
+                                                <div
+                                                    *ngIf="academic_session_name.invalid && academic_session_name.touched">
+                                                    <small *ngIf="academic_session_name.errors?.required"
+                                                        class="text-danger">Acedemic Session is Required</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="start_date"
+                                                    [class.text-danger]="start_date.invalid && start_date.touched">Start Date</label><i class="text-danger">*</i>
+                                                <input type="date" id="start_date"
+                                                    name="start_date" #start_date="ngModel"
+                                                    [(ngModel)]="apiModelNewSession.from"
+                                                    [class.is-invalid]="start_date.invalid && start_date.touched"
+                                                    class="form-control" placeholder="Enter Start Date..."
+                                                    required>
+                                                <div
+                                                    *ngIf="start_date.invalid && start_date.touched">
+                                                    <small *ngIf="start_date.errors?.required"
+                                                        class="text-danger">Start Date is Required</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="end_date"
+                                                    [class.text-danger]="end_date.invalid && end_date.touched">Start Date</label><i class="text-danger">*</i>
+                                                <input type="date" id="end_date"
+                                                    name="end_date" #end_date="ngModel"
+                                                    [(ngModel)]="apiModel.to"
+                                                    [class.is-invalid]="end_date.invalid && end_date.touched"
+                                                    class="form-control" placeholder="Enter Start Date..."
+                                                    required>
+                                                <div
+                                                    *ngIf="end_date.invalid && end_date.touched">
+                                                    <small *ngIf="end_date.errors?.required"
+                                                        class="text-danger">Start Date is Required</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label class="form-label" for="is_active"
+                                                    [class.text-danger]="is_active.invalid && is_active.touched">Assign
+                                                    Status</label><i class="text-danger">*</i>
+                                                <ng-select [class.is-invalid]="is_active.invalid && is_active.touched"
+                                                    #is_active="ngModel" required [items]="statuses" [closeOnSelect]="true"
+                                                    [searchable]="true" bindValue="value" bindLabel="label"
+                                                    name="statuses" id="statuses" placeholder="Select Status . . ."
+                                                    [(ngModel)]="apiModel.is_active">
+                                                    <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                                        <span class="ng-value-label"> {{item.label}}</span>
+                                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                                            aria-hidden="true">×</span>
+                                                    </ng-template>
+                                                </ng-select>
+                                                <div *ngIf="is_active.invalid && is_active.touched">
+                                                    <small *ngIf="is_active.errors?.required" class="text-danger">Status is
+                                                        Required</small>
+                                                </div>
+                                            </div>
+                                        </div> -->
+                                    </div>
+                                    <div class="form-actions right">
+                                        <button type="button" class="btn btn-warning mr-1 btn-sm" (click)="hideForm()">
+                                            Cancel
+                                        </button>
+                                        <button type="submit" class="btn btn-primary btn-sm" [disabled]="form.invalid">
+                                            {{operation}}
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <!-- Subject Form section end -->
+
+        <div class="card">
+            <div class="card-header">
+                <h4 class="float-left mb-0 font-weight-bolder">
+                    <strong>List of Records</strong>
+                </h4>
+                <div class="float-right rounded border-radius-lg">
+                    <button class="btn btn-primary btn-sm" rippleEffect (click)="addItem()"><span
+                            class="fa fa-plus mr-1"></span>
+                        <span class="d-none d-sm-inline-block">Add New
+                            Record</span>
+                    </button>
+                </div>
+
+            </div>
+            <!-- /.box-header -->
+            <div class="card-content collapse show">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <dx-data-grid class="dx-card wide-card" [dataSource]="academicSessions" [showBorders]="true"
+                            [visible]="true" placeholder="Search..." [showColumnLines]="true" [showRowLines]="true"
+                            [rowAlternationEnabled]="true" keyExpr="id" [focusedRowEnabled]="true" [focusedRowIndex]="0"
+                            [columnAutoWidth]="true" [allowColumnReordering]="true" [allowColumnResizing]="true"
+                            [columnAutoWidth]="true" [columnHidingEnabled]=false>
+                            <dxo-paging [pageSize]="20"></dxo-paging>
+                            <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
+                            <dxo-filter-row [visible]="true"></dxo-filter-row>
+                            <!-- <dxi-column dataField="id" caption="Suject ID"></dxi-column> -->
+                            <dxi-column dataField="attributes.name" caption="Academic Session"></dxi-column>
+                            <dxi-column dataField="attributes.from" dataType="date" format="MMM d, yyyy" caption="Start Date"></dxi-column>
+                            <dxi-column dataField="attributes.to" dataType="date" format="MMM d, yyyy" caption="End Date"></dxi-column>
+                            <dxi-column dataField="attributes.is_active" caption="Status"></dxi-column>
+                            <dxi-column type="buttons" fixed=true caption="Action(s)">
+                                <dxi-button icon="edit" text="Edit" [onClick]="loadItem"></dxi-button>
+                                <dxi-button icon="trash" text="Delete" [onClick]="deleteItem">
+                                </dxi-button>
+                            </dxi-column>
+                        </dx-data-grid>
+                    </div>
+                </div>
+            </div>
+            <!-- end box-body -->
+        </div>
+
+    </div>
+</div>
