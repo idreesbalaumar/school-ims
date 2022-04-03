@@ -12,6 +12,11 @@ import { StudentsFakeData } from '@fake-db/students.data';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import { BeforeOpenEvent } from '@sweetalert2/ngx-sweetalert2';
+import { StudentService } from '../student.service';
+import { Student } from '../student.model';
+import { environment } from 'environments/environment';
+import { Router } from '@angular/router';
+// import { environment } from 'environments/environment';
 
 @Component({
   selector: 'app-student-list',
@@ -31,7 +36,11 @@ export class StudentListComponent implements OnInit {
   public previousStatusFilter = '';
   public exportCSVData;
 
-  students: StudentsFakeData[];
+  students: Student[] = [];
+  apiModel: Student;
+  basePath = environment.apiUrl;
+
+  // students: StudentsFakeData[];
 
   public contentHeader: object;
 
@@ -79,6 +88,8 @@ export class StudentListComponent implements OnInit {
    * @param {CoreSidebarService} _coreSidebarService
    */
   constructor(
+    private router: Router,
+    private readonly studentService: StudentService,
     private _studentListService: StudentListService,
     private _coreSidebarService: CoreSidebarService,
     private _coreConfigService: CoreConfigService,
@@ -87,6 +98,7 @@ export class StudentListComponent implements OnInit {
     this._unsubscribeAll = new Subject();
     this.loadProfile = this.loadProfile.bind(this);
     this.loadItem = this.loadItem.bind(this);
+    this.apiModel = new Student();
   }
 
   // Public Methods
@@ -102,8 +114,12 @@ export class StudentListComponent implements OnInit {
     window.open('/apps/student/student-view/' + event.row.data.id, '_blank')
   }
 
-  loadItem(event) {
-    window.open('/apps/student/student-view/' + event.row.data.id, '_blank')
+  loadItem(id) {
+    this.router.navigate(['/apps/student/student-view/', id.row.data.id])
+  }
+
+  studentAdd() {
+    this.router.navigate(['/apps/student/student-add'])
   }
 
   modalOpenVC(modalVC) {
@@ -267,6 +283,21 @@ export class StudentListComponent implements OnInit {
    * On init
    */
   ngOnInit(): void {
+
+    // console.log(`basePath`+this.apiModel)
+    
+    this.studentService.getAll().subscribe(
+      ({ data }) => {
+        this.students = data;
+        this.students = this.students.map(student => {
+          return { ...student, url: this.basePath+student.attributes.photo.data.attributes.url }
+          // return { ...letter, reference_no: `NCDMB/DLS/${letter.reference_no.toUpperCase()}` , contract_sum: `₦${letter.contract_sum}`}
+        });
+      },
+      err => {
+        console.log(err);
+      }
+    );
     // Subscribe config change
     this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
       //! If we have zoomIn route Transition then load datatable after 450ms(Transition will finish in 400ms)

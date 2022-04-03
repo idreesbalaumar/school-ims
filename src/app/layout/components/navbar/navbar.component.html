@@ -69,10 +69,9 @@
         id="navbarUserDropdown" aria-haspopup="true" aria-expanded="false">
         <ng-container *ngIf="this.currentUser">
           <div class="user-nav d-sm-flex d-none">
-            <span class="user-name font-weight-bolder">{{ this.currentUser.firstName }} {{ this.currentUser.lastName
-              }}</span><span class="user-status">{{ this.currentUser.role }}</span>
+            <span class="user-name font-weight-bolder">{{ this.currentUser.username }}</span><span class="user-status">{{ this.currentUser.role }}</span>
           </div>
-          <span class="avatar"><img class="round" src="assets/images/portrait/small/{{ this.currentUser.avatar }}"
+          <span class="avatar"><img class="round" src="{{ this.currentUser.avatar }}"
               alt="avatar" height="40" width="40" /><span class="avatar-status-online"></span></span>
         </ng-container>
       </a>

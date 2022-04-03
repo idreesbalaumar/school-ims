@@ -1,1 +1,143 @@
-<p>classes works!</p>
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- content-header component -->
+        <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+        <!-- / Subject Form section start -->
+        <div class="card" *ngIf="displayForm">
+            <div class="card-body">
+                <section id="multiple-column-form">
+                    <div class="row match-height">
+                        <div class="col-12">
+                            <h4 class="card-title">{{operation}} Record</h4>
+                            <div class="card-body">
+
+                                <form role="form" #form="ngForm" (ngSubmit)="processForm()">
+                                    <div class="row">
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="class_room_name"
+                                                    [class.text-danger]="class_room_name.invalid && class_room_name.touched">Class Room
+                                                    Name</label><i class="text-danger">*</i>
+                                                <input type="text" id="class_room_name" name="class_room_name"
+                                                    #class_room_name="ngModel" [(ngModel)]="apiModel.name"
+                                                    [class.is-invalid]="class_room_name.invalid && class_room_name.touched"
+                                                    class="form-control" placeholder="Enter Class Room Name..." required>
+                                                <div *ngIf="class_room_name.invalid && class_room_name.touched">
+                                                    <small *ngIf="class_room_name.errors?.required" class="text-danger">Class Room
+                                                        Name is
+                                                        Required</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label class="form-label" for="classs"
+                                                    [class.text-danger]="classs.invalid && classs.touched">Assign Class</label><i class="text-danger">*</i>
+                                                <ng-select
+                                                    [class.is-invalid]="classs.invalid && classs.touched"
+                                                    #classs="ngModel" required [items]="classes"
+                                                    [closeOnSelect]="true" [searchable]="true"
+                                                    bindValue="id" bindLabel="attributes.name" name="classes" id="classes"
+                                                    placeholder="Select Class . . ." [(ngModel)]="apiModel.class.id">
+                                                    <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                                        <span class="ng-value-label"> {{item.attributes.name}}</span>
+                                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                                            aria-hidden="true">×</span>
+                                                    </ng-template>
+                                                </ng-select>
+                                                <div *ngIf="classs.invalid && classs.touched">
+                                                    <small *ngIf="classs.errors?.required"
+                                                        class="text-danger">Class  is
+                                                        Required</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label class="form-label" for="form_master"
+                                                    [class.text-danger]="form_master.invalid && form_master.touched">Assign Form
+                                                    Master</label><i class="text-danger">*</i>
+                                                <ng-select
+                                                    [class.is-invalid]="form_master.invalid && form_master.touched"
+                                                    #form_master="ngModel" required [items]="formMasters"
+                                                    [closeOnSelect]="true" [searchable]="true"
+                                                    bindValue="id" bindLabel="attributes.first_name" name="formMasters" id="formMasters"
+                                                    placeholder="Select Form master . . ." [(ngModel)]="apiModel.form_master.id">
+                                                    <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                                        <span class="ng-value-label"> {{item.attributes.first_name}}</span>
+                                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                                            aria-hidden="true">×</span>
+                                                    </ng-template>
+                                                </ng-select>
+                                                <div *ngIf="form_master.invalid && form_master.touched">
+                                                    <small *ngIf="form_master.errors?.required"
+                                                        class="text-danger">Form Master is
+                                                        Required</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-actions right">
+                                        <button type="button" class="btn btn-warning mr-1 btn-sm" (click)="hideForm()">
+                                            Cancel
+                                        </button>
+                                        <button type="submit" class="btn btn-primary btn-sm" [disabled]="form.invalid">
+                                            {{operation}}
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <!-- Subject Form section end -->
+
+        <div class="card">
+            <div class="card-header">
+                <h4 class="float-left mb-0 font-weight-bolder">
+                    <strong>List of Records</strong>
+                </h4>
+                <div class="float-right rounded border-radius-lg">
+                    <button class="btn btn-primary btn-sm" rippleEffect (click)="addItem()"><span
+                            class="fa fa-plus mr-1"></span>
+                        <span class="d-none d-sm-inline-block">Add New
+                            Record</span>
+                    </button>
+                </div>
+
+            </div>
+            <!-- /.box-header -->
+            <div class="card-content collapse show">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <dx-data-grid class="dx-card wide-card" [dataSource]="classRooms" [showBorders]="true"
+                            [visible]="true" placeholder="Search..." [showColumnLines]="true" [showRowLines]="true"
+                            [rowAlternationEnabled]="true" keyExpr="id" [focusedRowEnabled]="true" [focusedRowIndex]="0"
+                            [columnAutoWidth]="true" [allowColumnReordering]="true" [allowColumnResizing]="true"
+                            [columnAutoWidth]="true" [columnHidingEnabled]=false>
+                            <dxo-paging [pageSize]="20"></dxo-paging>
+                            <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
+                            <dxo-filter-row [visible]="true"></dxo-filter-row>
+                            <!-- <dxi-column dataField="id" caption="Suject ID"></dxi-column> -->
+                            <dxi-column dataField="attributes.name" caption="Class Room Name"></dxi-column>
+                            <dxi-column dataField="attributes.class.data.attributes.name"
+                                caption="Class"></dxi-column>
+                            <dxi-column dataField="attributes.form_master.data.attributes.first_name"
+                                caption="House Master"></dxi-column>
+                            <dxi-column type="buttons" fixed=true caption="Action(s)">
+                                <dxi-button icon="edit" text="Edit" [onClick]="loadItem"></dxi-button>
+                                <dxi-button icon="trash" text="Delete" [onClick]="deleteItem">
+                                </dxi-button>
+                            </dxi-column>
+                        </dx-data-grid>
+                    </div>
+                </div>
+            </div>
+            <!-- end box-body -->
+        </div>
+
+    </div>
+</div>

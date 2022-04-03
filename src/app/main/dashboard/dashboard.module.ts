@@ -19,7 +19,8 @@ import { InvoiceListService } from 'app/main/apps/invoice/invoice-list/invoice-l
 import { DashboardService } from 'app/main/dashboard/dashboard.service';
 
 import { AnalyticsComponent } from 'app/main/dashboard/analytics/analytics.component';
-import { EcommerceComponent } from 'app/main/dashboard/ecommerce/ecommerce.component';
+import { SchoolDashboardComponent } from 'app/main/dashboard/school/school-dashboard.component';
+import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
 
 const routes = [
   {
@@ -34,7 +35,7 @@ const routes = [
   },
   {
     path: 'school',
-    component: EcommerceComponent,
+    component: SchoolDashboardComponent,
     canActivate: [AuthGuard],
     resolve: {
       css: DashboardService
@@ -44,7 +45,7 @@ const routes = [
 ];
 
 @NgModule({
-  declarations: [AnalyticsComponent, EcommerceComponent],
+  declarations: [AnalyticsComponent, SchoolDashboardComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
@@ -53,9 +54,10 @@ const routes = [
     PerfectScrollbarModule,
     CoreCommonModule,
     NgApexchartsModule,
-    InvoiceModule
+    InvoiceModule,
+    ContentHeaderModule,
   ],
   providers: [DashboardService, InvoiceListService],
-  exports: [EcommerceComponent]
+  exports: [SchoolDashboardComponent]
 })
 export class DashboardModule {}

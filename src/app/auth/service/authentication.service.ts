@@ -4,9 +4,13 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { environment } from 'environments/environment';
-import { User, Role } from 'app/auth/models';
+import { User as OldUser, Role } from 'app/auth/models';
 import { ToastrService } from 'ngx-toastr';
 import { AuthLoginResponse } from '../models/login.response';
+import { StrapiAuthLoginResponse, User } from 'app/models/auth.model';
+import { AvatarService } from 'app/services/avatar.service';
+import { StrapiListResponse } from 'app/models/strapi-responses.model';
+import { Avatar } from 'app/models/common.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -21,7 +25,11 @@ export class AuthenticationService {
    * @param {HttpClient} _http
    * @param {ToastrService} _toastrService
    */
-  constructor(private _http: HttpClient, private _toastrService: ToastrService) {
+  constructor(
+    private avatarService: AvatarService,
+    private _http: HttpClient,
+    private _toastrService: ToastrService
+  ) {
     this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
   }
@@ -73,35 +81,50 @@ export class AuthenticationService {
    * @param password
    * @returns user
    */
-  login(email: string, password: string) {
+  login(identifier: string, password: string) {
     return this._http
-      .post<AuthLoginResponse>(`${environment.apiUrl}/auth/login`, { email, password })
+      .post<StrapiAuthLoginResponse>(`${environment.BASE_URL}/auth/local`, { identifier, password })
       .pipe(
         map((data) => {
           console.log(data)
           // login successful if there's a jwt token in the response
-          if (data && data.accessToken) {
+          if (data && data.jwt) {
+            // get currentUser avatar
+            this.avatarService.getAllUserAvatars().subscribe((response) => {
+              const avatar = this.avatarService.findAvatarByUserId(data.user.id, response.data.map(entry => entry.attributes));
+              const user = this.currentUserSubject.getValue();
+              const avatarUrl = `${environment.apiUrl}${avatar.avatar.data.attributes.url}`;
+              const newUser = {...user, avatar: avatarUrl };
+              this.currentUserSubject.next(newUser);
+            });
+
             // store data details and jwt token in local storage to keep data logged in between page refreshes
-            localStorage.setItem('currentUser', JSON.stringify({ ...data.user, accessToken: data.accessToken, avatar: 'avatar-s-3.jpg' }));
+            localStorage.setItem('currentUser', JSON.stringify({ ...data.user, accessToken: data.jwt, avatar: 'avatar-s-3.jpg', role: Role.User }));
 
             // Display welcome toast!
             setTimeout(() => {
               this._toastrService.success(
                 'You have successfully logged in as an ' +
-                  data.user.role +
-                  ' user to School-IMS.',
-                '👋 Welcome, ' + data.user.firstName + '!',
+                Role.User +
+                ' user to School-IMS.',
+                '👋 Welcome, ' + data.user.username + '!',
                 { toastClass: 'toast ngx-toastr', closeButton: true }
               );
             }, 2500);
 
+            data.user.accessToken = data.jwt;
             // notify
-            this.currentUserSubject.next(data.user);
+            this.currentUserSubject.next({ ...data.user, role: Role.User });
           }
 
           return data;
         })
       );
+  }
+
+  getAvatar(response: StrapiListResponse<Avatar>) {
+    const userId = 9;
+    const avatar = this.avatarService.findAvatarByUserId(userId, response.data.map(entry => entry.attributes));
   }
 
   /**

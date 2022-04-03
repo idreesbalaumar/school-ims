@@ -11,10 +11,11 @@ import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.s
 import { CoreConfigService } from '@core/services/config.service';
 import { CoreMediaService } from '@core/services/media.service';
 
-import { User } from 'app/auth/models';
+import { User as OldUser } from 'app/auth/models';
 
 import { coreConfig } from 'app/app-config';
 import { Router } from '@angular/router';
+import { User } from 'app/models/auth.model';
 
 @Component({
   selector: 'app-navbar',

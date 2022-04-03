@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import * as _ from 'lodash';
+import { CoreConfig } from '@core/types';
 
 // Injection token for the core custom settings
 export const CORE_CUSTOM_CONFIG = new InjectionToken('coreCustomConfig');

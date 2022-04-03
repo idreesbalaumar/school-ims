@@ -5,7 +5,11 @@
 export const environment = {
   production: false,
   hmr: false,
-  apiUrl: 'http://localhost:3000/api'
+  apiUrl: 'http://localhost:1337',
+  BASE_URL: 'http://localhost:1337/api',
+  BASE_URL_II: 'http://localhost:1337/api',
+  API_URL: '/',
+  // apiUrl: 'http://localhost:3000/api'
 };
 
 /*

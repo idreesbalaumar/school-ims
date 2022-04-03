@@ -21,6 +21,7 @@ import { DxSelectBoxModule, DxTextAreaModule, DxDateBoxModule, DxFormModule, DxD
 import { CoreCommonModule } from '@core/common.module';
 import { CardSnippetModule } from '@core/components/card-snippet/card-snippet.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 const routes: Routes = [
   { path: '', component: SettingsComponent }
@@ -55,6 +56,7 @@ const routes: Routes = [
     DxSpeedDialActionModule,
     CardSnippetModule,
     CoreCommonModule,
+    NgSelectModule,
     RouterModule.forChild(routes)
   ]
 })

@@ -1,1 +1,124 @@
-<p>grade-system works!</p>
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- content-header component -->
+        <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+        <!-- / Subject Form section start -->
+        <div class="card" *ngIf="displayForm">
+            <div class="card-body">
+                <section id="multiple-column-form">
+                    <div class="row match-height">
+                        <div class="col-12">
+                            <h4 class="card-title">{{operation}} Record</h4>
+                            <div class="card-body">
+
+                                <form class="form" role="form" #form="ngForm" (ngSubmit)="processForm()">
+                                    <div class="row">
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="grade"
+                                                    [class.text-danger]="grade.invalid && grade.touched">Grade</label><i class="text-danger">*</i>
+                                                <input type="text" id="grade" name="grade"
+                                                    #grade="ngModel" [(ngModel)]="apiModel.name"
+                                                    [class.is-invalid]="grade.invalid && grade.touched"
+                                                    class="form-control" placeholder="Enter Grade..." required>
+                                                <div *ngIf="grade.invalid && grade.touched">
+                                                    <small *ngIf="grade.errors?.required"
+                                                        class="text-danger">Grade is
+                                                        Required</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="upper_point"
+                                                    [class.text-danger]="upper_point.invalid && upper_point.touched">Upper Point</label><i class="text-danger">*</i>
+                                                <input type="number" max="100" min="0" id="upper_point" name="upper_point"
+                                                    #upper_point="ngModel" [(ngModel)]="apiModel.upper"
+                                                    [class.is-invalid]="upper_point.invalid && upper_point.touched"
+                                                    class="form-control" placeholder="Enter Upper Point..." required>
+                                                <div *ngIf="upper_point.invalid && upper_point.touched">
+                                                    <small *ngIf="upper_point.errors?.required"
+                                                        class="text-danger">Upper Point is
+                                                        Required</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="lower_point"
+                                                    [class.text-danger]="lower_point.invalid && lower_point.touched">Lower Point</label><i class="text-danger">*</i>
+                                                <input type="number" max="100" min="0" id="lower_point" name="lower_point"
+                                                    #lower_point="ngModel" [(ngModel)]="apiModel.lower"
+                                                    [class.is-invalid]="lower_point.invalid && lower_point.touched"
+                                                    class="form-control" placeholder="Enter Lower Point..." required>
+                                                <div *ngIf="lower_point.invalid && lower_point.touched">
+                                                    <small *ngIf="lower_point.errors?.required"
+                                                        class="text-danger">Lower Point is
+                                                        Required</small>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-actions right">
+                                        <button type="button" class="btn btn-warning mr-1 btn-sm" (click)="hideForm()">
+                                            Cancel
+                                        </button>
+                                        <button type="submit" class="btn btn-primary btn-sm" [disabled]="form.invalid">
+                                            {{operation}}
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <!-- Subject Form section end -->
+
+        <div class="card">
+            <div class="card-header">
+                <h4 class="float-left mb-0 font-weight-bolder">
+                    <strong>List of Records</strong>
+                </h4>
+                <div class="float-right rounded border-radius-lg">
+                    <button class="btn btn-primary ml-1 btn-sm" rippleEffect (click)="addItem()"><span
+                            class="fa fa-plus mr-1"></span>
+                        <span class="d-none d-sm-inline-block">Add New
+                            Record</span>
+                    </button>
+                </div>
+
+            </div>
+            <!-- /.box-header -->
+            <div class="card-content collapse show">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <dx-data-grid class="dx-card wide-card" [dataSource]="grades" [showBorders]="true"
+                            [visible]="true" placeholder="Search..." [showColumnLines]="true" [showRowLines]="true"
+                            [rowAlternationEnabled]="true" keyExpr="id" [focusedRowEnabled]="true" [focusedRowIndex]="0"
+                            [columnAutoWidth]="true" [allowColumnReordering]="true" [allowColumnResizing]="true"
+                            [columnAutoWidth]="true" [columnHidingEnabled]=false>
+                            <dxo-paging [pageSize]="20"></dxo-paging>
+                            <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
+                            <dxo-filter-row [visible]="true"></dxo-filter-row>
+                            <!-- <dxi-column dataField="id" caption="Suject ID"></dxi-column> -->
+                            <dxi-column dataField="attributes.name" caption="Grade"></dxi-column>
+                            <dxi-column dataField="attributes.upper" caption="Upper Point"></dxi-column>
+                            <dxi-column dataField="attributes.lower" caption="Lower Point"></dxi-column>
+                            <dxi-column type="buttons" fixed=true caption="Action(s)">
+                                <dxi-button icon="edit" text="Edit" [onClick]="loadItem"></dxi-button>
+                                <dxi-button icon="trash" text="Delete" [onClick]="deleteItem">
+                                </dxi-button>
+                            </dxi-column>
+                        </dx-data-grid>
+                    </div>
+                </div>
+            </div>
+            <!-- end box-body -->
+        </div>
+
+    </div>
+</div>

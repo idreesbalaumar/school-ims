@@ -18,6 +18,11 @@ import { locale as menuEnglish } from 'app/menu/i18n/en';
 import { locale as menuFrench } from 'app/menu/i18n/fr';
 import { locale as menuGerman } from 'app/menu/i18n/de';
 import { locale as menuPortuguese } from 'app/menu/i18n/pt';
+import { SchoolService } from './services/school.service';
+import { CoreConfig } from '@core/types';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { config } from 'process';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -25,8 +30,12 @@ import { locale as menuPortuguese } from 'app/menu/i18n/pt';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  coreConfig: any;
+
+  schoolInfo$ = this.schoolService.getSchoolInfor();
+
+  coreConfig: CoreConfig;
   menu: any;
+  appLogoImage: any;
   defaultLanguage: 'en'; // This language will be used as a fallback when a translation isn't found in the current language
   appLanguage: 'en'; // Set application default language i.e fr
 
@@ -48,6 +57,7 @@ export class AppComponent implements OnInit, OnDestroy {
    * @param {TranslateService} _translateService
    */
   constructor(
+    private schoolService: SchoolService,
     @Inject(DOCUMENT) private document: any,
     private _title: Title,
     private _renderer: Renderer2,
@@ -59,6 +69,9 @@ export class AppComponent implements OnInit, OnDestroy {
     private _coreTranslationService: CoreTranslationService,
     private _translateService: TranslateService
   ) {
+
+    //Set the school logo
+
     // Get the application main menu
     this.menu = menu;
 
@@ -79,6 +92,44 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // Set the private defaults
     this._unsubscribeAll = new Subject();
+
+    this.schoolInfo$.subscribe((info) => {
+      this._coreConfigService.resetConfig();
+      // console.log("School Info", info);
+      this._coreConfigService.getConfig().subscribe(config => {
+        // console.log("Config Info", config);
+        let newConfig = {...config};
+        const imageLogo = info.data.attributes.logo.data.attributes.url;
+        newConfig.app.appLogoImage = `${environment.apiUrl}${imageLogo}`;
+        // console.log("New Config: ", newConfig);
+      });
+      // const config = this._coreConfigService.config;
+      // console.log("Config: ", config);
+      // this._coreConfigService.getConfig().subscribe((data: CoreConfig) => {
+      //   console.log(data);
+      //   let newConfig = {...data};
+      //   const imageLogo = info.data.attributes.logo.name;
+      //   newConfig.app.appLogoImage = imageLogo;
+      // });
+      // const imageLogo = info.data.attributes.logo.name;
+      // let newConfig = {...config};
+      // newConfig.app.appLogoImage = imageLogo;
+      // this._coreConfigService.setConfig(newConfig);
+      //   this._coreConfigService.getConfig().subscribe((newConfig) => {
+      //     console.log("New config", newConfig);
+      //   });
+      // this._coreConfigService.getConfig().subscribe((config) => {
+      //   // this.schoolInfo$
+      //   // const imageLogo = info.data.attributes.logo.name;
+      //   // let newConfig = {...config};
+      //   // newConfig.app.appLogoImage = imageLogo;
+      //   // this._coreConfigService.setConfig(newConfig, { emitEvent: true });
+      //   // this._coreConfigService.getConfig().subscribe((newConfig) => {
+      //   //   console.log("New config", newConfig);
+      //   // });
+      // }).unsubscribe();
+      
+    }); 
   }
 
   // Lifecycle hooks
@@ -229,7 +280,8 @@ export class AppComponent implements OnInit, OnDestroy {
       }
 
       // Skin Class (Adding to body as it requires highest priority)
-      if (this.coreConfig.layout.skin !== '' && this.coreConfig.layout.skin !== undefined) {
+      // if (this.coreConfig.layout.skin !== '' && this.coreConfig.layout.skin !== undefined) {
+      if (this.coreConfig.layout.skin !== undefined) {
         this.document.body.classList.remove('default-layout', 'bordered-layout', 'dark-layout', 'semi-dark-layout');
         this.document.body.classList.add(this.coreConfig.layout.skin + '-layout');
       }

@@ -7,7 +7,8 @@ import { filter, takeUntil } from 'rxjs/operators';
 import { CoreConfigService } from '@core/services/config.service';
 import { CoreMenuService } from '@core/components/core-menu/core-menu.service';
 
-import { User } from 'app/auth/models';
+import { User as OldUser } from 'app/auth/models';
+import { User } from 'app/models/auth.model';
 
 @Component({
   selector: '[core-menu-horizontal-collapsible]',
