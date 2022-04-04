@@ -40,18 +40,6 @@
               </span>
             </button>
           </div>
-          <!-- <div class="line"><i data-feather="chevron-right" class="font-medium-2"></i></div>
-          <div class="step" data-target="#social-links">
-            <button class="step-trigger">
-              <span class="bs-stepper-box">
-                <i data-feather="mail" class="font-medium-3"></i>
-              </span>
-              <span class="bs-stepper-label">
-                <span class="bs-stepper-title">Contact</span>
-                <span class="bs-stepper-subtitle">Add Contact Details</span>
-              </span>
-            </button>
-          </div> -->
         </div>
         <div class="bs-stepper-content">
           <form role="form" #form="ngForm" (ngSubmit)="processForm()">
@@ -65,8 +53,8 @@
                 <!-- header media -->
                 <div class="media mb-1">
                   <a href="javascript:void(0);" class="mr-25">
-                    <img [src]="avatarImage" class="rounded border border-secondary border-1 rounded bg-light mr-50"
-                      alt="profile image" height="100" width="100" />
+                    <img [src]="photoUrl" class="rounded border border-secondary border-1 rounded bg-light mr-50"
+                      alt="student photo" height="100" width="100" />
                   </a>
                   <!-- upload and reset button -->
                   <div class="media-body mt-75 ml-1">
@@ -74,14 +62,13 @@
                       rippleEffect>
                       Upload Photo
                     </button>
-                    <input [(ngModel)]="photoUrl" #TDPhotoRef="ngModel" required type="file" #file
-                      name="StudentPhotoUpload" id="StudentPhotoUpload" class="form-control" hidden accept="image/*"
-                      (change)="uploadImage($event)" />
+                    <input type="file" #file name="StudentPhotoUpload" id="StudentPhotoUpload" class="form-control"
+                      hidden accept="image/*" (change)="uploadImage($event)" />
                     <!-- <button class="btn btn-sm btn-outline-secondary mb-75" rippleEffect>Reset</button> -->
-                    <span *ngIf="studentDetailsForm.submitted && TDPhotoRef.invalid" class="invalid-form">
+                    <!-- <span *ngIf="studentDetailsForm.submitted && TDPhotoRef.invalid" class="invalid-form">
                       <small class="form-text text-danger" *ngIf="TDPhotoRef.errors.required">Student photo is
                         required!</small>
-                    </span>
+                    </span> -->
                     <p><small>Allowed JPG, GIF or PNG. Max size of 800kB</small></p>
                   </div>
                   <!--/ upload and reset button -->
@@ -107,8 +94,8 @@
                     <label class="form-label" for="surname"
                       [class.text-danger]="!surnameRef.valid && studentDetailsForm.submitted">Surname<i
                         class="text-danger">*</i></label>
-                    <input [(ngModel)]="apiModel.data.surname" #surnameRef="ngModel" required type="text"
-                      name="surname" id="surname" class="form-control"
+                    <input [(ngModel)]="apiModel.data.surname" #surnameRef="ngModel" required type="text" name="surname"
+                      id="surname" class="form-control"
                       [class.error]="!surnameRef.valid && studentDetailsForm.submitted"
                       placeholder="Enter Surname . . ." />
                     <span *ngIf="studentDetailsForm.submitted && surnameRef.invalid" class="invalid-form">
@@ -134,10 +121,6 @@
                         [class.error]="!date_of_birthRef.valid && studentDetailsForm.submitted"
                         #date_of_birthRef="ngModel" required placeholder="Enter date of birth . . ."
                         name="date_of_birth" [(ngModel)]="apiModel.data.date_of_birth">
-                      <!-- <div class="input-group-append">
-                        <button class="btn btn-outline-secondary feather icon-calendar" (click)="MinMaxDP.toggle()"
-                          type="button" rippleEffect></button>
-                      </div> -->
                     </div>
                     <span *ngIf="studentDetailsForm.submitted && date_of_birthRef.invalid" class="invalid-form">
                       <small class="form-text text-danger" *ngIf="date_of_birthRef.errors.required">Date of birth is
@@ -233,42 +216,6 @@
                 </div>
 
                 <div class="row">
-                  <!-- <div class="form-group col-md-6">
-                    <label class="form-label" for="classcategory"
-                      [class.text-danger]="!ArtOrScience.valid && acedemicInfoForm.submitted">Assign Class Category<i
-                        class="text-danger">*</i></label>
-                    <ng-select [class.error]="!ArtOrScience.valid && acedemicInfoForm.submitted" #ArtOrScience="ngModel"
-                      required [items]="classcategorys" [closeOnSelect]="true" [searchable]="true"
-                      bindLabel="attributes.name" name="classcategory" id="classcategory" bindValue="id"
-                      placeholder="Select Class Category . . ." [(ngModel)]="apiModel.classcategory_id">
-                      <ng-template ng-label-tmp let-item="item" let-clear="clear">
-                        <span class="ng-value-label"> {{ item.attributes.name }}</span>
-                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
-                      </ng-template>
-                    </ng-select>
-                    <span *ngIf="acedemicInfoForm.submitted && ArtOrScience.invalid" class="invalid-form">
-                      <small class="form-text text-danger" *ngIf="ArtOrScience.errors.required">Class Category is
-                        required!</small>
-                    </span>
-                  </div> -->
-
-                  <!-- <div class="form-group col-md-6">
-                    <label class="form-label" for="class"
-                      [class.text-danger]="!ArtOrScience.valid && acedemicInfoForm.submitted">Assign Class<i
-                        class="text-danger">*</i></label>
-                    <ng-select [class.error]="!ArtOrScience.valid && acedemicInfoForm.submitted" #ArtOrScience="ngModel"
-                      required [items]="classs" [closeOnSelect]="true" [searchable]="true" bindLabel="attributes.name"
-                      name="class" id="class" bindValue="id" placeholder="Select Class . . ." [(ngModel)]="apiModel.class_id">
-                      <ng-template ng-label-tmp let-item="item" let-clear="clear">
-                        <span class="ng-value-label"> {{ item.attributes.name }}</span>
-                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
-                      </ng-template>
-                    </ng-select>
-                    <span *ngIf="acedemicInfoForm.submitted && ArtOrScience.invalid" class="invalid-form">
-                      <small class="form-text text-danger" *ngIf="ArtOrScience.errors.required">Class is
-                        required!</small>
-                    </span>
-                  </div> -->
 
                   <div class="form-group col-md-6">
                     <label class="form-label" for="classrooms"
@@ -288,25 +235,6 @@
                         required!</small>
                     </span>
                   </div>
-
-                  <!-- <div class="form-group col-md-6">
-                    <label class="form-label" for="selectArtOrScience"
-                      [class.text-danger]="!ArtOrScience.valid && acedemicInfoForm.submitted">Art or Science<i
-                        class="text-danger">*</i></label>
-                    <ng-select [class.error]="!ArtOrScience.valid && acedemicInfoForm.submitted" #ArtOrScience="ngModel"
-                      required [items]="selectArtOrScience" [closeOnSelect]="true" [searchable]="true" bindLabel="name"
-                      name="selectArtOrScience" id="selectArtOrScience" placeholder="Select Art or Science . . ."
-                      [(ngModel)]="apiModel.selectArtOrScienceSelected">
-                      <ng-template ng-label-tmp let-item="item" let-clear="clear">
-                        <span class="ng-value-label"> {{ item.name }}</span>
-                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
-                      </ng-template>
-                    </ng-select>
-                    <span *ngIf="acedemicInfoForm.submitted && ArtOrScience.invalid" class="invalid-form">
-                      <small class="form-text text-danger" *ngIf="ArtOrScience.errors.required">Art or Science is
-                        required!</small>
-                    </span>
-                  </div> -->
 
                   <div class="form-group col-md-6">
                     <label>Select Elective Subjects</label>
@@ -379,72 +307,6 @@
                   <small>Enter Parent/Guardian Information</small>
                 </div>
 
-                <!-- <div class="row">
-                  <div class="form-group col-md-6">
-
-                    <label class="form-label" for="parent_full_name"
-                      [class.text-danger]="!parent_full_nameRef.valid && parentDetailsForm.submitted">Parent First Name<i
-                        class="text-danger">*</i></label>
-                    <input [(ngModel)]="apiModel.data.parent.id" #parent_full_nameRef="ngModel" required type="text"
-                      name="parent_full_name" id="parent_full_name" class="form-control"
-                      [class.error]="!parent_full_nameRef.valid && parentDetailsForm.submitted"
-                      placeholder="Enter Parent First Name . . ." />
-                    <span *ngIf="parentDetailsForm.submitted && parent_full_nameRef.invalid" class="invalid-form">
-                      <small class="form-text text-danger" *ngIf="parent_full_nameRef.errors.required">Parent First Name
-                        is
-                        required!</small>
-                    </span>
-                  </div>
-                </div> -->
-
-                <!-- <div class="row">
-
-                  <div class="form-group col-md-6">
-                    <label class="form-label" for="parent_gender"
-                      [class.text-danger]="!parent_genderRef.valid && parentDetailsForm.submitted">Gender<i
-                        class="text-danger">*</i></label>
-                    <ng-select [class.error]="!parent_genderRef.valid && parentDetailsForm.submitted" #parent_genderRef="ngModel"
-                      required [items]="genders" [closeOnSelect]="true" [searchable]="true" bindLabel="attributes.name"
-                      name="parent_gender" id="parent_gender" placeholder="Select gender . . ." [(ngModel)]="apiModel.attributes.parent.data.attributes.gender.data.attributes.name">
-                      <ng-template ng-label-tmp let-item="item" let-clear="clear">
-                        <span class="ng-value-label"> {{ item.attributes.name }}</span>
-                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
-                      </ng-template>
-                    </ng-select>
-                    <span *ngIf="parentDetailsForm.submitted && parent_genderRef.invalid" class="invalid-form">
-                      <small class="form-text text-danger" *ngIf="parent_genderRef.errors.required">Gender is
-                        required!</small>
-                    </span>
-                  </div>
-                </div> -->
-
-                <!-- <div class="row">
-                  <div class="form-group col-md-6">
-                    <label class="form-label" for="parent_address"
-                      [class.text-danger]="!parent_addressRef.valid && parentDetailsForm.submitted">Parent Address<i
-                        class="text-danger">*</i></label>
-                    <input [(ngModel)]="apiModel.attributes.parent.data.attributes.address" #parent_addressRef="ngModel" required type="text"
-                      id="parent_address" name="parent_address" class="form-control"
-                      [class.error]="parentDetailsForm.submitted && parent_addressRef.invalid"
-                      placeholder="Enter Parent Address" />
-                    <span *ngIf="parentDetailsForm.submitted && parent_addressRef.invalid" class="invalid-form">
-                      <small class="form-text text-danger" *ngIf="parent_addressRef.errors.required">Parent Address is
-                        required!</small>
-                    </span>
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label class="form-control-label" for="TDRegex">Parent Phone Number</label>
-                    <input [(ngModel)]="apiModel.attributes.parent.data.attributes.phone" type="number" name="TDRegex" class="form-control"
-                      [class.error]="TDRegexRef.invalid && parentDetailsForm.submitted" pattern="^([0-9]+)$"
-                      id="TDRegex" placeholder="Enter Parent Phone Number . . ." minlength="11" required ngModel
-                      #TDRegexRef="ngModel" />
-                    <small class="form-text text-danger" *ngIf="TDRegexRef.invalid && parentDetailsForm.submitted">Phone
-                      number format is invalid!</small>
-                  </div>
-                </div> -->
-                <!-- <div class="divider">
-                  <div class="divider-text">OR</div>
-                </div> -->
                 <div class="row">
 
                   <div class="form-group col-md-12">
@@ -474,13 +336,7 @@
                     <i data-feather="arrow-left" class="align-middle mr-sm-25 mr-0"></i>
                     <span class="align-middle d-sm-inline-block d-none">Previous</span>
                   </button>
-                  <!-- <button (click)="horizontalWizardStepperNext(parentDetailsForm)" class="btn btn-primary btn-next"
-                    rippleEffect>
-                    <span class="align-middle d-sm-inline-block d-none">Next</span>
-                    <i data-feather="arrow-right" class="align-middle ml-sm-25 ml-0"></i>
-                  </button> -->
-                  <button (click)="horizontalWizardStepperSubmit(form)" class="btn btn-success btn-submit"
-                    rippleEffect>
+                  <button (click)="horizontalWizardStepperSubmit(form)" class="btn btn-success btn-submit" rippleEffect>
                     <span class="align-middle d-sm-inline-block d-none">Save</span>
                     <i data-feather="save" class="align-middle ml-sm-25 ml-0"></i>
                   </button>

@@ -4,8 +4,11 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-date-struct';
 import { DataService } from 'app/main/forms/form-elements/select/data.service';
+import { BASE_URL } from 'app/services/app-config';
+import { UploadService } from 'app/services/upload.service';
 
 import Stepper from 'bs-stepper';
+import { environment } from 'environments/environment';
 import { Observable } from 'rxjs/internal/Observable';
 import Swal from 'sweetalert2';
 import { GeneralService } from '../../general.service';
@@ -177,17 +180,7 @@ export class StudentAddComponent implements OnInit {
     return false;
   }
 
-  uploadImage(event: any) {
-    if (event.target.files && event.target.files[0]) {
-      let reader = new FileReader();
-
-      reader.onload = (event: any) => {
-        this.avatarImage = event.target.result;
-      };
-
-      reader.readAsDataURL(event.target.files[0]);
-    }
-  }
+ 
 
   // ng-select in model
   modalSelectOpen(modalSelect) {
@@ -202,6 +195,7 @@ export class StudentAddComponent implements OnInit {
     private modalService: NgbModal,
     private studentService: StudentService,
     private router: Router,
+    private uploadService: UploadService,
   ) { }
 
   // Lifecycle Hooks
@@ -294,7 +288,7 @@ export class StudentAddComponent implements OnInit {
     );
 
     this.selectMulti = this.dataService.getArtElectiveSubject()
-    this.avatarImage = "assets/images/portrait/small/user-alt-512.png";
+    this.photoUrl = "assets/images/portrait/small/user-alt-512.png";
     this.horizontalWizardStepper = new Stepper(document.querySelector('#stepper1'), {});
 
     // this.verticalWizardStepper = new Stepper(document.querySelector('#stepper2'), {
@@ -345,6 +339,26 @@ export class StudentAddComponent implements OnInit {
     this.save();
   }
 
+  uploadImage(e) {
+    this.photoUrl = '/assets/images/signature/loading.gif';
+    // this.displaySignatureInput = true;
+    let file = e.target.files[0];
+    const formData: FormData = new FormData();
+    formData.append('files', file, file.name);
+    // formData.append('visibility', 'public');
+
+    this.uploadService.upload2(formData, `${environment.apiUrl + '/api/upload'}`).subscribe(
+      res => {
+        console.log('Response: ', res);
+        const singlePhoto = res[0];
+        // this.apiModel.url = res.data;
+        this.photoUrl = environment.apiUrl + singlePhoto.url;
+        this.apiModel.data.photo.id = singlePhoto.id;
+      },
+      error => console.log(error)
+    );
+  }
+
   populateSubjectsInApiModel() {
     this.selectedSubjectIds.forEach((id) => {
       const field = new RelationField();
@@ -365,7 +379,7 @@ export class StudentAddComponent implements OnInit {
     console.log("Save Student");
     Swal.showLoading();
     this.populateSubjectsInApiModel();
-    this.apiModel.data.photo.id = 1;
+    // this.apiModel.data.photo.id = 1;
     let httpCall = this.studentService.add(this.apiModel);
     httpCall.subscribe(
       success => {
