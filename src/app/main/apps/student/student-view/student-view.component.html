@@ -14,27 +14,30 @@
                 <div class="col-xl-6 col-lg-12 d-flex flex-column justify-content-between border-container-lg">
                   <div class="user-avatar-section">
                     <div class="d-flex justify-content-start">
-                      <div *ngIf="data.avatar.length > 0; else customAvatar">
-                        <img class="img-fluid rounded" [src]="data.avatar" height="104" width="104" alt="User avatar" />
+                      <div *ngIf="studentPhoto.length > 0; else customAvatar">
+                        <img class="img-fluid rounded shadow-sm" [src]="studentPhoto"
+                          onError="this.src='assets/images/noimage.gif';" height="104" width="104"
+                          alt="Student avatar" />
                       </div>
                       <ng-template #customAvatar>
                         <div class="mr-1 ml-0 border border-secondary border-1 rounded bg-light">
                           <div class="rounded p-3">
                             <h2 class="m-0">
-                              {{ data.first_name | initials }}
+                              {{ student?.attributes?.first_name | initials }}
                             </h2>
                           </div>
                         </div>
                       </ng-template>
                       <div class="d-flex flex-column ml-1">
                         <div class="user-info mb-1">
-                          <h4 class="mb-0">{{ data.first_name }}</h4>
-                          <span class="card-text">{{ data.surname }} {{data.other_name}}</span>
+                          <h4 class="mb-0">{{ student?.attributes?.first_name }}</h4>
+                          <span class="card-text">{{ student?.attributes?.surname }}
+                            {{student?.attributes?.other_name}}</span>
                         </div>
                         <div class="d-flex flex-wrap">
-                          <a routerLink="/apps/student/student-edit/{{ data.id }}" class="btn btn-primary"
+                          <a routerLink="/apps/student/student-edit/" class="btn btn-primary"
                             rippleEffect>Edit</a>
-                          <button class="btn btn-outline-danger ml-1" (click)="deleteItem()" rippleEffect>Delete</button>
+                          <a class="btn btn-outline-danger ml-1" href="javascript:window.print();" rippleEffect>Print</a>
                         </div>
                       </div>
                     </div>
@@ -48,8 +51,10 @@
                           <i [data-feather]="'home'" [class]="'text-primary'"></i>
                         </div>
                         <div class="ml-1">
-                          <h5 class="mb-0"><strong>HOUSE COLOR : </strong>{{data.house}}</h5>
-                          <small><strong>HOUSE NAME : </strong>{{data.house_name}}</small>
+                          <h5 class="mb-0"><strong>HOUSE COLOR :
+                            </strong>{{student?.attributes?.house?.data?.attributes?.color}}</h5>
+                          <small><strong>HOUSE NAME :
+                            </strong>{{student?.attributes?.house?.data?.attributes?.name}}</small>
                         </div>
                       </div>
                     </div>
@@ -59,12 +64,12 @@
                         <div class="color-box bg-light-primary">
                           <i [data-feather]="'link'" [class]="'text-primary'"></i>
                         </div>
-                        <a routerLink="/apps/student/student-view/{{ data.id }}" placement="right"
+                        <a routerLink="/apps/student/student-view/" placement="right"
                           ngbTooltip="Click link to view parents information">
                           <div class="ml-1">
                             <h5 class="mb-0">Parent/Guadian Info</h5>
-                            <small><strong>LINK : </strong>{{data.parent_first_name}} {{data.parent_surname}}
-                              {{data.parent_other_name}}</small>
+                            <small><strong>LINK :
+                              </strong>{{student?.attributes?.parent?.data?.attributes?.full_name}}</small>
                           </div>
                         </a>
                       </div>
@@ -72,7 +77,7 @@
                       </div>
                     </div>
                   </div>
-                  
+
 
                 </div>
                 <div class="col-xl-6 col-lg-12 mt-2 mt-xl-0">
@@ -83,35 +88,35 @@
                         <i [class]="'text-primary'" data-feather="folder" class="mr-1"></i>
                         <span class="card-text user-info-title font-weight-bold mb-0">Students ID</span>
                       </div>
-                      <p class="card-text mb-0">: {{ data.id }}</p>
+                      <p class="card-text mb-0">: {{ student?.id }}</p>
                     </div>
                     <div class="d-flex flex-wrap my-50">
                       <div class="user-info-title">
                         <i [class]="'text-primary'" data-feather="hexagon" class="mr-1"></i>
                         <span class="card-text user-info-title font-weight-bold mb-0">Gender</span>
                       </div>
-                      <p class="card-text mb-0">: {{data.gender}}</p>
+                      <p class="card-text mb-0">: {{student?.attributes?.gender?.data?.attributes?.name}}</p>
                     </div>
                     <div class="d-flex flex-wrap my-50">
                       <div class="user-info-title">
                         <i [class]="'text-primary'" data-feather="map" class="mr-1"></i>
                         <span class="card-text user-info-title font-weight-bold mb-0">State of Origin</span>
                       </div>
-                      <p class="card-text mb-0">: {{data.state_of_origin}}</p>
+                      <p class="card-text mb-0">: {{student?.attributes?.state?.data?.attributes?.name}}</p>
                     </div>
                     <div class="d-flex flex-wrap my-50">
                       <div class="user-info-title">
                         <i [class]="'text-primary'" data-feather="maximize" class="mr-1"></i>
                         <span class="card-text user-info-title font-weight-bold mb-0">LGA</span>
                       </div>
-                      <p class="card-text mb-0">: {{data.lga}}</p>
+                      <p class="card-text mb-0">: {{student?.attributes?.lga?.data?.attributes?.name}}</p>
                     </div>
                     <div class="d-flex flex-wrap my-50">
                       <div class="user-info-title">
                         <i [class]="'text-primary'" data-feather="calendar" class="mr-1"></i>
                         <span class="card-text user-info-title font-weight-bold mb-0">Date of Birth</span>
                       </div>
-                      <p class="card-text mb-0">: {{data.date_of_birth}}</p>
+                      <p class="card-text mb-0">: {{student?.attributes?.date_of_birth | date:'longDate'}}</p>
                     </div>
 
                     <div class="d-flex flex-wrap my-50">
@@ -119,7 +124,16 @@
                         <i [class]="'text-primary'" data-feather="home" class="mr-1"></i>
                         <span class="card-text user-info-title font-weight-bold mb-0">Current Class</span>
                       </div>
-                      <p class="card-text mb-0">: {{ data.classs }}{{data.classs_name}}</p>
+                      <p class="card-text mb-0">: {{ student?.attributes?.class_room?.data?.attributes?.name}}</p>
+                    </div>
+
+                    
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title">
+                        <i [class]="'text-primary'" data-feather="calendar" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">Registration Date</span>
+                      </div>
+                      <p class="card-text mb-0">: {{student?.attributes?.createdAt | date:'longDate'}}</p>
                     </div>
 
                     <div class="d-flex flex-wrap my-50">
@@ -127,17 +141,10 @@
                         <i [class]="'text-primary'" data-feather="user-check" class="mr-1"></i>
                         <span class="card-text user-info-title font-weight-bold mb-0">Status</span>
                       </div>
-                      :&nbsp;<p class="card-text mb-0 badge badge-pill px-2" [ngClass]="{
-                        'badge-light-success': data.status == 'Active',
-                        'badge-light-secondary': data.status == 'Inactive'
-                      }">{{ data.status }}</p>
-                    </div>
-                    <div class="d-flex flex-wrap">
-                      <div class="user-info-title">
-                        <i [class]="'text-primary'" data-feather="calendar" class="mr-1"></i>
-                        <span class="card-text user-info-title font-weight-bold mb-0">Registration Date</span>
-                      </div>
-                      <p class="card-text mb-0">: July 22, 2020</p>
+                      :&nbsp;<p class="card-text mb-0 px-2 badge" [ngClass]="{
+                        'badge-success': student?.attributes?.is_active == true,
+                        'badge-danger': student?.attributes?.is_active == false
+                      }">{{ student?.attributes?.is_active ? "Active" : "In-Active"}}</p>
                     </div>
                   </div>
                 </div>
@@ -170,36 +177,20 @@
                   <!-- <li>
                   <span class="align-middle"><strong>Elective Subjects</strong></span>
                 </li> -->
-                  <li>
-                    <span class="align-middle">Cretive Craft Practice</span>
+                  <li *ngFor="let item of subjects">
+                    <span class="align-middle">{{item.attributes.name}}</span>
                   </li>
-                  <li>
-                    <span class="align-middle">Auto Mechanic Work</span>
-                  </li>
-                  <li>
-                    <span class="align-middle">Dyeing & Bleaching</span>
-                  </li>
-                  <li>
-                    <span class="align-middle">Agricultural Science</span>
-                  </li>
-                  <li>
-                    <span class="align-middle">Economics</span>
-                  </li>
-                  <li>
-                    <span class="align-middle">Technical Drawing</span>
-                  </li>
-                  <li>
-                    <span class="align-middle">Geography</span>
-                  </li>
-                  <li>
-                    <span class="align-middle">Physical Education</span>
-                  </li>
-                  <li>
-                    <span class="align-middle">Food & Nutrition</span>
-                  </li>
+                  <!-- <li class="text-black" *ngFor="let item of contractDocumentTypes">
+                    <div class="col-12">
+                        <span>
+                            {{item.name}}
+                        </span>
+                    </div>
+                </li> -->
                 </ul>
               </small>
-              <a style="margin-top: -8px;" class="btn btn-outline-primary d-print-none text-center btn-block" href="javascript:window.print();" rippleEffect>Print Page</a>
+              <!-- <a style="margin-top: -8px;" class="btn btn-outline-primary d-print-none text-center btn-block"
+                href="javascript:window.print();" rippleEffect>Print Page</a> -->
 
             </div>
           </div>
@@ -386,7 +377,7 @@
           </div>
         </div>
       </div>
-      
+
       <!-- <div class="row invoice-list-wrapper d-print-none">
         <div class="col-12">
           <div class="card">

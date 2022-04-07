@@ -32,7 +32,10 @@ export class Attributes {
     class_room: ClassRoom;
     house: House;
     parent: Parent;
-    subject: Subject;
+    subjects: Subject[];
+    is_active: boolean;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export class Photo {
