@@ -30,4 +30,16 @@ export class StudentService {
       student
     );
   }
+
+  get(id: number) {
+    return this.httpService.get(
+      `${studentUrl.student.get}/${id}?populate=*`
+    );
+  }
+
+  delete(id: number) {
+    return this.httpService.delete(
+      `${studentUrl.student.delete}/${id}`
+    );
+  }
 }

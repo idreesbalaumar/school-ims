@@ -98,6 +98,7 @@ export class StudentListComponent implements OnInit {
     this._unsubscribeAll = new Subject();
     this.loadProfile = this.loadProfile.bind(this);
     this.loadItem = this.loadItem.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
     this.apiModel = new Student();
   }
 
@@ -137,38 +138,10 @@ export class StudentListComponent implements OnInit {
     }, 100);
   }
 
-  // deleteItem(id) {
-  //     swal.fire({
-  //         title: 'Delete',
-  //         text: 'Are you sure you want to delete this item?',
-  //         type: 'warning',
-  //         showCancelButton: true,
-  //         confirmButtonText: 'Yes',
-  //         cancelButtonText: 'No'
-  //     }).then(result => {
-  //         if (result.value) {
-  //             this.appraisalSystemsService.delete(id.row.data.id).subscribe(
-  //                 _ => {
-  //                     this.appraisalSystems = this.appraisalSystems.filter(
-  //                         e => e.id !== id.row.data.id
-  //                     );
-  //                     this.alert.success('Record deleted');
-  //                 },
-  //                 error => {
-  //                     this.alert.error(
-  //                         error
-  //                     );
-  //                 }
-  //             );
-  //         } else if (result.dismiss === swal.DismissReason.cancel) {
-  //         }
-  //     });
-  // }
-
-  deleteItem() {
+  deleteItem(id) {
     Swal.fire({
       title: 'Delete',
-      text: "Are you sure you want to delete this item?",
+      text: "Are you sure you want to delete this record?",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, delete it!',
@@ -176,16 +149,35 @@ export class StudentListComponent implements OnInit {
         confirmButton: 'btn btn-primary',
         cancelButton: 'btn btn-danger ml-1'
       }
-    }).then(function (result) {
+    }).then(result => {
       if (result.value) {
-        Swal.fire({
-          title: 'Deleted!',
-          text: 'Record has been deleted.',
-          icon: 'success',
-          customClass: {
-            confirmButton: 'btn btn-success'
+        this.studentService.delete(id.row.data.id).subscribe(
+          _ => {
+            this.students = this.students.filter(
+              e => e.id !== id.row.data.id
+            );
+            // this.alert.success('Record deleted');
+            Swal.fire({
+              icon: 'success',
+              title: 'Deleted!',
+              text: 'Your record has been deleted.',
+              customClass: {
+                confirmButton: 'btn btn-success'
+              }
+            });
+          },
+          error => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error!!',
+              text: error,
+              customClass: {
+                confirmButton: 'btn btn-danger'
+              }
+            });
           }
-        });
+        );
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
       }
     });
   }

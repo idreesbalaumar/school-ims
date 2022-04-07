@@ -1,16 +1,19 @@
 import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Subject } from 'rxjs';
+// import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { StudentViewService } from 'app/main/apps/student/student-view/student-view.service';
-import { Student } from '@fake-db/students.data';
+// import { Student } from '@fake-db/students.data';
 import { StudentListService } from '../student-list/student-list.service';
 import Swal from 'sweetalert2';
 import { ColumnMode, DatatableComponent } from '@swimlane/ngx-datatable';
 import { CoreConfigService } from '@core/services/config.service';
 import { ResultListService } from '../../result/result-list/result-list.service';
+import { StudentService } from '../student.service';
+import { Student, Subject, SubjectAttributes, SubjectData } from '../student.model';
+import { environment } from 'environments/environment';
 // import { id } from '@fake-db/students.data';
 
 @Component({
@@ -39,12 +42,19 @@ export class StudentViewComponent implements OnInit, OnDestroy {
 
   // private
   private tempData = [];
-  private _unsubscribeAll: Subject<any>;
+  // private _unsubscribeAll: Subject<any>;
   public rows;
   public tempFilterData;
   public previousTermFilter = '';
 
-  
+  subjects: SubjectData[] = [];
+  students: Student[] = [];
+  student: Student;
+  apiModel: Student;
+
+  studentPhoto = 'assets/images/noimage.gif';
+
+
   // public
   public url = this.router.url;
   public lastValue;
@@ -77,11 +87,11 @@ export class StudentViewComponent implements OnInit, OnDestroy {
     avatar: null
   };
 
-  students: Student[];
 
   public contentHeader: object;
+  basePath = environment.apiUrl;
 
-  
+
 
   /**
    * Constructor
@@ -92,18 +102,29 @@ export class StudentViewComponent implements OnInit, OnDestroy {
    * @param {CalendarService} _calendarService
    * @param {ResultListService} _resultListService
    */
-  constructor(private router: Router, private _studentViewService: StudentViewService, private route: ActivatedRoute, private _studentsListServe: StudentListService,private _resultListService: ResultListService, private _coreConfigService: CoreConfigService) {
-    this._unsubscribeAll = new Subject();
+  constructor(private router: Router,
+    private _studentViewService: StudentViewService,
+    private route: ActivatedRoute,
+    private _studentsListServe: StudentListService,
+    private _resultListService: ResultListService,
+    private _coreConfigService: CoreConfigService,
+    private studentService: StudentService,
+  ) {
+    // this._unsubscribeAll = new Subject();
     // get empId from url
     this.stuId = this.route.snapshot.params.id;
-    console.log(this.students);
+    this.apiModel = new Student();
     this.loadItem = this.loadItem.bind(this);
-    this._unsubscribeAll = new Subject();
+    // this._unsubscribeAll = new Subject();
     this.lastValue = this.url.substr(this.url.lastIndexOf('/') + 1);
   }
 
   loadItem(id) {
-    this.obj = this.data.find(item => item.id === id.row.data.id);
+    // this.obj = this.data.find(item => item.id === id.row.data.id);
+    let student = this.students.find(
+      item => item.id === id.row.data.id
+    );
+    Object.assign(this.apiModel, student);
   }
 
   deleteItem() {
@@ -139,7 +160,7 @@ export class StudentViewComponent implements OnInit, OnDestroy {
    *
    * @param event
    */
-   filterUpdate(event) {
+  filterUpdate(event) {
     // Reset ng-select on search
     this.selectedTerm = this.selectTerm[0];
 
@@ -195,8 +216,54 @@ export class StudentViewComponent implements OnInit, OnDestroy {
     // this._studentsListServe.getDataTableRows().subscribe(
     //   ({ data }) => this.students = data,
     // );
-    this._studentViewService.onStudentViewChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(response => {
-      this.data = response;
+    // this.studentService.getAll().subscribe(
+    //   ({ data }) => this.students = data,
+    //   err => {
+    //     console.log(err);
+    //   }
+    // );
+
+    Swal.showLoading();
+
+    // this.studentService.getAll().subscribe(
+    //   ({ data }) => {
+    //     this.students = data;
+    //     this.students = this.students.map(student => {
+    //       return { ...student, url: this.basePath + student.attributes.photo.data.attributes.url }
+    //     });
+    //   },
+    //   err => {
+    //     console.log(err);
+    //   }
+    // );
+
+    // this._studentViewService.onStudentViewChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(response => {
+    //   this.data = response;
+    // });
+
+    this.route.params.subscribe(params => {
+      if (params.id) {
+        this.studentService.get(params.id)
+          .subscribe(response => {
+            this.student = response.data;
+            this.loadSubjects();
+            this.subjects = response.data.attributes.subjects.data.map((entry) => {
+              return entry;
+            });
+            this.studentPhoto = this.basePath + this.student.attributes.photo.data.attributes.url;
+          }, error => {
+            console.log(error);
+
+            Swal.fire({
+              icon: 'error',
+              title: 'Error!!',
+              text: error,
+              customClass: {
+                confirmButton: 'btn btn-danger'
+              }
+            });
+          });
+      }
     });
 
 
@@ -225,6 +292,7 @@ export class StudentViewComponent implements OnInit, OnDestroy {
         ]
       }
     };
+    Swal.close();
   }
 
   /**
@@ -232,7 +300,13 @@ export class StudentViewComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
+    // this._unsubscribeAll.next();
+    // this._unsubscribeAll.complete();
+  }
+
+  loadSubjects() {
+    // this.subjects = this.student.attributes.subject.map((entry) => {
+    //   return entry.attributes.name;
+    // });
   }
 }

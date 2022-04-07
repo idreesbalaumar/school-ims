@@ -5,5 +5,7 @@ export let studentUrl = {
         list: API_URL + 'students' +'?populate=*',
         add: API_URL + 'students',
 		update: API_URL + 'students',
+		get: API_URL + 'students',
+		delete: API_URL + 'students',
     },
 }
