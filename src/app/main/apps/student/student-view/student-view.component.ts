@@ -246,7 +246,6 @@ export class StudentViewComponent implements OnInit, OnDestroy {
         this.studentService.get(params.id)
           .subscribe(response => {
             this.student = response.data;
-            this.loadSubjects();
             this.subjects = response.data.attributes.subjects.data.map((entry) => {
               return entry;
             });
@@ -302,11 +301,5 @@ export class StudentViewComponent implements OnInit, OnDestroy {
     // Unsubscribe from all subscriptions
     // this._unsubscribeAll.next();
     // this._unsubscribeAll.complete();
-  }
-
-  loadSubjects() {
-    // this.subjects = this.student.attributes.subject.map((entry) => {
-    //   return entry.attributes.name;
-    // });
   }
 }

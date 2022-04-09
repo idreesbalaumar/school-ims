@@ -1,5 +1,5 @@
 <!-- Footer -->
-<p class="clearfix mb-0 text-center">
+<p class="clearfix mb-0 text-center d-print-none">
   <span class="d-block d-md-inline-block mt-25">
     COPYRIGHT &copy; {{ year }}
     <span class="ml-25">School-IMS</span>
@@ -13,7 +13,9 @@
 <!--/ Footer -->
 
 <!-- Move to top Button-->
-<app-scroll-top *ngIf="coreConfig.layout.scrollTop"></app-scroll-top>
+<div class="d-print-none">
+  <app-scroll-top *ngIf="coreConfig.layout.scrollTop"></app-scroll-top>
+</div>
 
 <!-- Buynow Button-->
 <!-- <div class="buy-now">
