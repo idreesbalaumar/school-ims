@@ -7,6 +7,11 @@ import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.s
 
 import { repeaterAnimation } from 'app/main/forms/form-repeater/form-repeater.animation';
 import { ResultAddService } from './result-add.service';
+import { School } from '../../school.model';
+import { GradeData } from '../../settings/pages/grade-system/grade.model';
+import { environment } from 'environments/environment';
+import { Student } from '../../student/student.model';
+import { StudentService } from '../../student/student.service';
 
 @Component({
   selector: 'app-result-add',
@@ -21,6 +26,16 @@ export class ResultAddComponent implements OnInit, OnDestroy {
   public sidebarToggleRef = false;
   public resultSelect;
   public resultSelected;
+  public studentSelected;
+
+  public contentHeader: object;
+
+  school: School;
+  students: Student[] = [];
+  apiModel: Student;
+  state: any;
+  schoolLogo = 'assets/images/noimage.gif';
+  basePath = environment.apiUrl;
 
   public paymentDetails = {
     totalDue: '$12,110.55',
@@ -63,8 +78,13 @@ export class ResultAddComponent implements OnInit, OnDestroy {
    * @param {ResultAddService} _resultAddService
    * @param {CoreSidebarService} _coreSidebarService
    */
-  constructor(private _resultAddService: ResultAddService, private _coreSidebarService: CoreSidebarService) {
+  constructor(
+    private _resultAddService: ResultAddService,
+    private _coreSidebarService: CoreSidebarService,
+    private readonly studentService: StudentService,
+    ) {
     this._unsubscribeAll = new Subject();
+    this.apiModel = new Student();
   }
 
   // Public Methods
@@ -111,6 +131,45 @@ export class ResultAddComponent implements OnInit, OnDestroy {
    * On init
    */
   ngOnInit(): void {
+    // content header
+    this.contentHeader = {
+      headerTitle: 'Results',
+      actionButton: true,
+      breadcrumb: {
+        type: '',
+        links: [
+          {
+            name: 'Dashboard',
+            isLink: true,
+            link: '/dashboard/school'
+          },
+          {
+            name: 'List',
+            isLink: true,
+            link: '/apps/result/list'
+          },
+          {
+            name: `Create Result`,
+            // name: `Teachers ID: ${id}`,
+            isLink: false
+          }
+        ]
+      }
+    }
+
+    this.studentService.getAll().subscribe(
+      ({ data }) => {
+        this.students = data;
+        this.students = this.students.map(student => {
+          return { ...student, url: this.basePath+student.attributes.photo.data.attributes.url }
+          // return { ...letter, reference_no: `NCDMB/DLS/${letter.reference_no.toUpperCase()}` , contract_sum: `₦${letter.contract_sum}`}
+        });
+      },
+      err => {
+        console.log(err);
+      }
+    );
+
     this._resultAddService.onInvoicAddChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(response => {
       let responseData = response;
       this.apiData = responseData.slice(5, 10);

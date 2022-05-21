@@ -245,6 +245,16 @@ export class AcademicSessionComponent implements OnInit {
       }
     );
 
+    this.generalService.getSchoolData().subscribe(
+      ({ data }) => {
+        console.log("School Data");
+        console.log(data);
+      },
+      err => {
+        console.log(err);
+      }
+    );
+
   }
 
 }

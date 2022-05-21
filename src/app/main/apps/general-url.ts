@@ -1,6 +1,10 @@
 import { API_URL } from "app/services/app-config";
 
 export let generalUrl = {
+    school: {
+        root: API_URL + "school?populate=*",
+    },
+
     gender: {
         list: API_URL + 'genders',
     },
