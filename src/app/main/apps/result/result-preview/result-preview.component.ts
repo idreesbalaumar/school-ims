@@ -89,6 +89,32 @@ export class ResultPreviewComponent implements OnInit, OnDestroy {
    * On init
    */
   ngOnInit(): void {
+    // content header
+    this.contentHeader = {
+      headerTitle: 'Results',
+      actionButton: true,
+      breadcrumb: {
+        type: '',
+        links: [
+          {
+            name: 'Dashboard',
+            isLink: true,
+            link: '/dashboard/school'
+          },
+          {
+            name: 'List',
+            isLink: true,
+            link: '/apps/result/list'
+          },
+          {
+            name: `Preview Result`,
+            // name: `Teachers ID: ${id}`,
+            isLink: false
+          }
+        ]
+      }
+    };
+
     this._resultPreviewService.onInvoicPreviewChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(response => {
       this.apiData = response;
     });

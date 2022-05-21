@@ -15,6 +15,8 @@ import { catchError, retry } from 'rxjs/operators';
 import { SessionTermPostModel, TermPostModel } from './settings/pages/academic-term/academic-term.model';
 import { zip } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
+import { School } from './school.model';
+import { StrapiSingleResponse } from 'app/models/strapi-responses.model';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +39,10 @@ export class GeneralService {
       'Content-Type': 'application/json',
     }),
   };
+
+  getSchoolData() {
+    return this.http.get<StrapiSingleResponse<School>>(`${generalUrl.school.root}`);
+  }
 
   getAllGenders() {
     return this.httpService.get(`${generalUrl.gender.list}`);
