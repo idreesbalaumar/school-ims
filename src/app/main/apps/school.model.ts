@@ -5,6 +5,7 @@ export class School {
     name: string;
     address: string;
     email: string;
+    website: string;
     logo: StrapiSingleResponse<StrapiImageModel>;
     school_banner: StrapiImageModel;
 }
