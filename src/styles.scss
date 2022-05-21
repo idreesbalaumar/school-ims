@@ -2,3 +2,7 @@
 @import './assets/scss/styles';
 @import '@core/scss/angular/libs/sweet-alerts.component.scss';
 @import "~@ng-select/ng-select/themes/default.theme.css";
+
+.text-black {
+  color: #000 !important;
+}
